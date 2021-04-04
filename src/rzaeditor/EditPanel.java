@@ -11,7 +11,7 @@ public class EditPanel extends javax.swing.JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Logic.drawEditPanel(g);
+        Drawing.drawEditPanel(g);
     }
     
     public EditPanel() {

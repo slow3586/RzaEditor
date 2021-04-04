@@ -14,7 +14,7 @@ public class WireIntersection {
 
     private WireIntersection(Vector2i p) {
         pos = p;
-        for (Wire wire : Logic.pageWires) {
+        for (Wire wire : Page.wires) {
             if (wire.start.equals(pos)) {
                 wire.startWI = this;
                 wireIntersects.add(wire);
@@ -28,7 +28,7 @@ public class WireIntersection {
             }
         }
         if (!wireIntersects.isEmpty()) {
-            Logic.pageWireIntersections.add(this);
+            Page.wireIntersections.add(this);
         }
     }
 
@@ -43,11 +43,11 @@ public class WireIntersection {
     public void draw(Graphics2D g) {
         g.setStroke(new BasicStroke());
         Vector2f t0 = Logic.gridToScreen(pos);
-        Logic.fillOval(g, t0.x + Logic.zoomGridGap / 4, t0.y + Logic.zoomGridGap / 4, Logic.zoomGridGap / 2, Logic.zoomGridGap / 2);
+        Drawing.fillOval(t0.x + Logic.zoomGridGap / 4, t0.y + Logic.zoomGridGap / 4, Logic.zoomGridGap / 2, Logic.zoomGridGap / 2);
     }
 
     public static WireIntersection getWIAt(Vector2i p) {
-        Optional<WireIntersection> m = Logic.pageWireIntersections.stream().filter((t) -> {
+        Optional<WireIntersection> m = Page.wireIntersections.stream().filter((t) -> {
             return t.pos.equals(p);
         }).findFirst();
         return m.orElse(null);
@@ -60,7 +60,7 @@ public class WireIntersection {
     }
 
     public void delete() {
-        Logic.pageWireIntersections.remove(this);
+        Page.wireIntersections.remove(this);
     }
 
 }

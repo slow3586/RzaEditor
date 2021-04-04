@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
+import java.util.HashSet;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 import org.joml.primitives.Intersectionf;
@@ -28,8 +29,8 @@ public class Wire {
 
     public static Wire create(Vector2i s, Vector2i e) {
         Wire w = new Wire();
-        w.start = s;
-        w.end = e;
+        w.start = new Vector2i(s);
+        w.end = new Vector2i(e);
         int temp = 0;
         if (w.start.x > w.end.x) {
             temp = w.start.x;
@@ -42,38 +43,49 @@ public class Wire {
             w.end.y = temp;
         }
         w.color = new Color((float) Math.random(), (float) Math.random(), (float) Math.random());
+        
         w.checkIntersections();
         return w;
     }
 
     public void delete() {
-        Logic.pageWireIntersections.stream().forEach((t) -> {
+        new HashSet<>(Page.wireIntersections).stream().forEach((t) -> {
             t.wireIntersects.remove(this);
             t.checkIsEmpty();
         });
-        Logic.pageWires.remove(this);
+        Page.wires.remove(this);
         deleted = true;
     }
 
     public void checkIntersections() {
-        ArrayList<Wire> wiresTemp = new ArrayList<>(Logic.pageWires);
-        for (Wire w : wiresTemp) {
-            if (w.equals(this)) {
+        Page.wires.add(this);
+        
+        if (startWI != null) {
+            startWI.wireIntersects.remove(this);
+            startWI.checkIsEmpty();
+        }
+        if (endWI != null) {
+            endWI.wireIntersects.remove(this);
+            endWI.checkIsEmpty();
+        }
+        startWI = WireIntersection.getWI(start);
+        startWI.wireIntersects.add(this);
+        endWI = WireIntersection.getWI(end);
+        endWI.wireIntersects.add(this);
+        
+        for (Wire w : new ArrayList<>(Page.wires)) {
+            if (w.equals(this) || w.deleted)
                 continue;
-            }
-            if (w.deleted) {
-                continue;
-            }
             if (w.isHorizontal() == isHorizontal()) {
                 if (w.start.equals(end)) {
-                    if (w.startWI.wireIntersects.size() <= 1) {
+                    if (w.startWI.wireIntersects.size() <= 2) {
                         w.start = start;
                         delete();
                         w.checkIntersections();
                         return;
                     }
                 } else if (w.end.equals(start)) {
-                    if (w.endWI.wireIntersects.size() <= 1) {
+                    if (w.endWI.wireIntersects.size() <= 2) {
                         w.end = end;
                         delete();
                         w.checkIntersections();
@@ -88,21 +100,13 @@ public class Wire {
                 }
             }
         }
-        if (!deleted) {
-            Logic.pageWires.add(this);
-            if (startWI != null) {
-                startWI.wireIntersects.remove(this);
-                startWI.checkIsEmpty();
+        
+        for (WireIntersection wi : new HashSet<>(Page.wireIntersections)) {
+            if(pointInside(wi.pos, 1)){
+                split(wi.pos);
             }
-            if (endWI != null) {
-                endWI.wireIntersects.remove(this);
-                endWI.checkIsEmpty();
-            }
-            startWI = WireIntersection.getWI(start);
-            startWI.wireIntersects.add(this);
-            endWI = WireIntersection.getWI(end);
-            endWI.wireIntersects.add(this);
         }
+        
     }
     
     public Vector2i getCenter(){
@@ -118,7 +122,7 @@ public class Wire {
             g.setStroke(new BasicStroke(3));
         }
         g.setStroke(new BasicStroke(2));
-        Logic.drawLine(g, t0.x, t0.y, t1.x, t1.y);
+        Drawing.drawLine(t0.x, t0.y, t1.x, t1.y);
     }
 
     public Vector2i getVec() {
@@ -151,6 +155,7 @@ public class Wire {
         }
         Vector2i temp = end;
         end = p;
+        checkIntersections();
         Wire w1 = Wire.create(p, temp);
     }
 

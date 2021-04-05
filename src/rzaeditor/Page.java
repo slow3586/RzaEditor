@@ -1,18 +1,62 @@
 package rzaeditor;
 
+import rzaeditor.pageobjects.PageObject;
+import rzaeditor.pageobjects.Wire;
+import rzaeditor.pageobjects.WireIntersection;
 import java.util.HashSet;
 import org.joml.Vector2i;
 import org.joml.primitives.Rectanglei;
 
 public class Page {
-
-    public static Vector2i titleSize = new Vector2i(185, 55);
-    public static Vector2i sizeNoBorder = new Vector2i(420, 297);
-    public static HashSet<Wire> wires = new HashSet<>();
-    public static HashSet<WireIntersection> wireIntersections = new HashSet<>();
-    public static Vector2i pos = new Vector2i(0, 0);
-    public static Vector2i size = new Vector2i(395, 287);
-    public static Vector2i gridSize = new Vector2i(size.x / Logic.gridGap, size.y / Logic.gridGap);
-    public static Rectanglei rect = new Rectanglei(-1, -1, gridSize.x, gridSize.y);
+    
+    public int gridGap = 6;
+    public static Page current = newCircuitA3Page();
+    
+    public Vector2i titleSize;
+    public Vector2i sizeNoBorder;
+    public HashSet<PageObject> primitives = new HashSet<>();
+    public HashSet<Wire> wires = new HashSet<>();
+    public HashSet<WireIntersection> wireIntersections = new HashSet<>();
+    public Vector2i pos= new Vector2i(0, 0);
+    public Vector2i size;
+    public Vector2i gridSize;
+    public Rectanglei rect;
+    public boolean resizable;
+    public boolean hasBorder;
+    public boolean hasUnsavedProgress = true;
+    
+    private Page(){
+        
+    }
+    
+    public void save(){
+        hasUnsavedProgress = false;
+    }
+    
+    public static Page newCircuitA3Page(){
+        Page p = new Page();
+        p.titleSize = new Vector2i(185, 55);
+        p.sizeNoBorder = new Vector2i(420, 297);
+        p.size = new Vector2i(395, 287);
+        p.gridGap = 6;
+        p.gridSize = new Vector2i(p.size.x / p.gridGap, p.size.y / p.gridGap);
+        p.rect = new Rectanglei(-1, -1, p.gridSize.x, p.gridSize.y);
+        p.resizable = false;
+        p.hasBorder = true;
+        return p;
+    }
+    
+    public static Page newObjectPage(){
+        Page p = new Page();
+        p.titleSize = new Vector2i(0,0);
+        p.sizeNoBorder = new Vector2i(0,0);
+        p.size = new Vector2i(10,10);
+        p.gridGap = 1;
+        p.gridSize = new Vector2i(p.size.x / p.gridGap, p.size.y / p.gridGap);
+        p.rect = new Rectanglei(-1, -1, p.gridSize.x, p.gridSize.y);
+        p.resizable = true;
+        p.hasBorder = false;
+        return p;
+    }
 
 }

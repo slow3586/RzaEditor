@@ -1,4 +1,4 @@
-package rzaeditor;
+package rzaeditor.pageobjects;
 
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
@@ -6,6 +6,9 @@ import java.util.HashSet;
 import java.util.Optional;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
+import rzaeditor.Drawing;
+import rzaeditor.Logic;
+import rzaeditor.Page;
 
 public class WireIntersection {
 
@@ -14,7 +17,7 @@ public class WireIntersection {
 
     private WireIntersection(Vector2i p) {
         pos = p;
-        for (Wire wire : Page.wires) {
+        for (Wire wire : Page.current.wires) {
             if (wire.start.equals(pos)) {
                 wire.startWI = this;
                 wireIntersects.add(wire);
@@ -28,7 +31,7 @@ public class WireIntersection {
             }
         }
         if (!wireIntersects.isEmpty()) {
-            Page.wireIntersections.add(this);
+            Page.current.wireIntersections.add(this);
         }
     }
 
@@ -40,14 +43,13 @@ public class WireIntersection {
         return wi;
     }
 
-    public void draw(Graphics2D g) {
-        g.setStroke(new BasicStroke());
-        Vector2f t0 = Logic.gridToScreen(pos);
+    public void draw() {
+        Vector2i t0 = Logic.gridToScreen(pos);
         Drawing.fillOval(t0.x + Logic.zoomGridGap / 4, t0.y + Logic.zoomGridGap / 4, Logic.zoomGridGap / 2, Logic.zoomGridGap / 2);
     }
 
     public static WireIntersection getWIAt(Vector2i p) {
-        Optional<WireIntersection> m = Page.wireIntersections.stream().filter((t) -> {
+        Optional<WireIntersection> m = Page.current.wireIntersections.stream().filter((t) -> {
             return t.pos.equals(p);
         }).findFirst();
         return m.orElse(null);
@@ -60,7 +62,7 @@ public class WireIntersection {
     }
 
     public void delete() {
-        Page.wireIntersections.remove(this);
+        Page.current.wireIntersections.remove(this);
     }
 
 }

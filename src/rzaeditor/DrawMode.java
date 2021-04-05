@@ -4,8 +4,5 @@ public abstract class DrawMode {
     abstract public void mouseMove();
     abstract public void draw();
     abstract public void mousePressed();
-    abstract public void mouseReleased();
-    
-    
-    
+    abstract public void mouseReleased();  
 }

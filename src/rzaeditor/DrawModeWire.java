@@ -1,33 +1,17 @@
 package rzaeditor;
 
+import rzaeditor.pageobjects.Wire;
 import java.awt.Color;
+import org.joml.Vector2f;
 import org.joml.Vector2i;
-import static rzaeditor.Drawing.g;
+import static rzaeditor.Logic.*;
 
 public class DrawModeWire extends DrawMode {
 
-    public static DrawModeWire ins = new DrawModeWire();
-    public static boolean dwGood = false;
-    public static Wire drawWire = Wire.createDrawWire();
-    public static boolean isDrawing = false;
+    public static DrawModeWire imp = new DrawModeWire();
     
     @Override
     public void mouseDrag() {
-        drawWire.end = Cursor.posGrid;
-        
-        Vector2i dpvec = drawWire.getVec();
-        if(Math.abs(dpvec.x) > Math.abs(dpvec.y))
-            drawWire.end.y=drawWire.start.y;
-        else
-            drawWire.end.x=drawWire.start.x;
-
-        dwGood=drawWire.getLen()!=0;
-        for (Wire w : Page.wires) {
-            if(w.containsWire(drawWire)){
-                dwGood=false;
-                break;
-            }
-        }
     }
 
     @Override
@@ -36,31 +20,39 @@ public class DrawModeWire extends DrawMode {
 
     @Override
     public void draw() {
-        if(!isDrawing) return;
+        if(!Logic.isDragging) return;
         
-        g.setColor(Color.RED);
-        if (dwGood) {
-            g.setColor(Color.GREEN);
+        Vector2i s = new Vector2i(dragStart);
+        Vector2i e = new Vector2i(dragEnd);
+        if(Math.abs(dragVec.x) > Math.abs(dragVec.y))
+            e.y=s.y;
+        else
+            e.x=s.x;
+        
+        Drawing.setColor(Color.RED);
+        if(Wire.canBePlacedAt(s, e)){
+            Drawing.setColor(Color.GREEN);
         }
-        drawWire.draw(g);
+        
+        Drawing.drawLine(Logic.gridToScreenCenter(s), Logic.gridToScreenCenter(e));
     }
 
     @Override
     public void mousePressed() {
-        drawWire.start = Cursor.posGrid;
-        drawWire.end = Cursor.posGrid;
-        isDrawing = true;
     }
 
     @Override
     public void mouseReleased() {
-        if(dwGood){
-            Wire nw = Wire.create(drawWire.start, drawWire.end);
-        }
+        Vector2i s = new Vector2i(dragStart);
+        Vector2i e = new Vector2i(dragEnd);
+        if(Math.abs(dragVec.x) > Math.abs(dragVec.y))
+            e.y=s.y;
+        else
+            e.x=s.x;
         
-        drawWire.start.zero();
-        drawWire.end.zero();
-        isDrawing = false;
+        if(Wire.canBePlacedAt(s, e)){
+            Wire.create(s, e);
+        }
     }
 
 }

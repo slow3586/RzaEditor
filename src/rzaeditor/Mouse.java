@@ -10,7 +10,7 @@ import org.joml.Vector2i;
 
 public class Mouse extends MouseInputAdapter {
 
-    public static Mouse ins = new Mouse();
+    public static Mouse imp = new Mouse();
     
     public static Vector2i pos = new Vector2i();
     public static Vector2i rel = new Vector2i();

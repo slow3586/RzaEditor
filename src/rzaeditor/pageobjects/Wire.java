@@ -1,4 +1,4 @@
-package rzaeditor;
+package rzaeditor.pageobjects;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -9,56 +9,64 @@ import java.util.HashSet;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 import org.joml.primitives.Intersectionf;
+import rzaeditor.Drawing;
+import rzaeditor.Logic;
+import rzaeditor.Page;
 
-public class Wire {
-
-    Vector2i start = new Vector2i();
-    Vector2i end = new Vector2i();
+public class Wire extends PageLine {
+    
     WireIntersection endWI = null;
     WireIntersection startWI = null;
-    Color color = Color.BLACK;
     boolean deleted = false;
-    boolean selected = false;
-
-    public Wire() {
+    
+    Wire(){
+        super();
     }
-
-    public static Wire createDrawWire() {
-        return new Wire();
-    }
-
+    
     public static Wire create(Vector2i s, Vector2i e) {
+        if(s.x!=e.x && s.y!=e.y){
+            throw new IllegalArgumentException("Tried to create a non-straight wire. s:"+s.x+" "+s.y+" e:"+e.x+" "+e.y);
+        }
+        
         Wire w = new Wire();
         w.start = new Vector2i(s);
         w.end = new Vector2i(e);
-        int temp = 0;
-        if (w.start.x > w.end.x) {
-            temp = w.start.x;
-            w.start.x = w.end.x;
-            w.end.x = temp;
-        }
-        if (w.start.y > w.end.y) {
-            temp = w.start.y;
-            w.start.y = w.end.y;
-            w.end.y = temp;
-        }
+        Logic.fixVectorPositions(w.start, w.end);
         w.color = new Color((float) Math.random(), (float) Math.random(), (float) Math.random());
+        
+        w.name = "Провод "+Page.current.wires.size();
+        w.ID = "Провод "+Page.current.wires.size();
+        w.type = "Провод";
         
         w.checkIntersections();
         return w;
     }
 
     public void delete() {
-        new HashSet<>(Page.wireIntersections).stream().forEach((t) -> {
+        new HashSet<>(Page.current.wireIntersections).stream().forEach((t) -> {
             t.wireIntersects.remove(this);
             t.checkIsEmpty();
         });
-        Page.wires.remove(this);
+        Page.current.wires.remove(this);
         deleted = true;
+    }
+    
+    public static boolean canBePlacedAt(Vector2i s, Vector2i e){
+        Vector2i vec = new Vector2i(e).sub(s);
+        
+        if(vec.length()<=0) return false;
+        
+        for (Wire w1 : Page.current.wires) {
+            if ((vec.y == 0)==w1.isHorizontal() && (w1.pointInside(s, 1) || w1.pointInside(e, 1))) {
+                return false;
+            }
+        }
+        
+        return true;
     }
 
     public void checkIntersections() {
-        Page.wires.add(this);
+        Page.current.wires.add(this);
         
         if (startWI != null) {
             startWI.wireIntersects.remove(this);
@@ -73,7 +81,7 @@ public class Wire {
         endWI = WireIntersection.getWI(end);
         endWI.wireIntersects.add(this);
         
-        for (Wire w : new ArrayList<>(Page.wires)) {
+        for (Wire w : new ArrayList<>(Page.current.wires)) {
             if (w.equals(this) || w.deleted)
                 continue;
             if (w.isHorizontal() == isHorizontal()) {
@@ -101,28 +109,30 @@ public class Wire {
             }
         }
         
-        for (WireIntersection wi : new HashSet<>(Page.wireIntersections)) {
+        for (WireIntersection wi : new HashSet<>(Page.current.wireIntersections)) {
             if(pointInside(wi.pos, 1)){
                 split(wi.pos);
             }
         }
         
+        pos = getCenter();
+        rectangle.setMin(start);
+        rectangle.setMax(end);
     }
     
     public Vector2i getCenter(){
         return getVec().div(2).add(start);
     }
 
-    public void draw(Graphics2D g) {
-        Vector2f t0 = Logic.gridToScreenCenter(start);
-        Vector2f t1 = Logic.gridToScreenCenter(end);
-        g.setColor(color);
+    @Override
+    public void draw() {
+        Drawing.setColor(color);
         if(selected){
-            g.setColor(Color.RED);
-            g.setStroke(new BasicStroke(3));
+            Drawing.setColor(Color.RED);
+            Drawing.setStroke(3);
         }
-        g.setStroke(new BasicStroke(2));
-        Drawing.drawLine(t0.x, t0.y, t1.x, t1.y);
+        Drawing.setStroke(2);
+        Drawing.drawLine(Logic.gridToScreenCenter(start), Logic.gridToScreenCenter(end));
     }
 
     public Vector2i getVec() {

@@ -6,7 +6,7 @@ import javax.swing.event.MouseInputAdapter;
 
 public class EditPanel extends javax.swing.JPanel {
 
-    public static EditPanel ins = new EditPanel();
+    public static EditPanel imp = new EditPanel();
 
     @Override
     public void paintComponent(Graphics g) {
@@ -18,9 +18,9 @@ public class EditPanel extends javax.swing.JPanel {
         initComponents();
         
         setBackground(Color.WHITE);
-        addMouseListener(Mouse.ins);
-        addMouseMotionListener(Mouse.ins);
-        addMouseWheelListener(Mouse.ins);
+        addMouseListener(Mouse.imp);
+        addMouseMotionListener(Mouse.imp);
+        addMouseWheelListener(Mouse.imp);
     }
 
     @SuppressWarnings("unchecked")

@@ -9,8 +9,9 @@ import org.joml.primitives.Rectanglei;
 
 public class Page {
     
-    public int gridGap = 6;
+    public static int gridGap = 6;
     public static Page current = newCircuitA3Page();
+    
     
     public Vector2i titleSize;
     public Vector2i sizeNoBorder;
@@ -24,6 +25,7 @@ public class Page {
     public boolean resizable;
     public boolean hasBorder;
     public boolean hasUnsavedProgress = true;
+    public boolean useFineGrid = false;
     
     private Page(){
         
@@ -38,7 +40,6 @@ public class Page {
         p.titleSize = new Vector2i(185, 55);
         p.sizeNoBorder = new Vector2i(420, 297);
         p.size = new Vector2i(395, 287);
-        p.gridGap = 6;
         p.gridSize = new Vector2i(p.size.x / p.gridGap, p.size.y / p.gridGap);
         p.rect = new Rectanglei(-1, -1, p.gridSize.x, p.gridSize.y);
         p.resizable = false;
@@ -50,12 +51,12 @@ public class Page {
         Page p = new Page();
         p.titleSize = new Vector2i(0,0);
         p.sizeNoBorder = new Vector2i(0,0);
-        p.size = new Vector2i(10,10);
-        p.gridGap = 1;
-        p.gridSize = new Vector2i(p.size.x / p.gridGap, p.size.y / p.gridGap);
+        p.size = new Vector2i(gridGap * 5, gridGap * 5);
+        p.gridSize = new Vector2i(p.size.x / gridGap, p.size.y / gridGap);
         p.rect = new Rectanglei(-1, -1, p.gridSize.x, p.gridSize.y);
         p.resizable = true;
         p.hasBorder = false;
+        p.useFineGrid = true;
         return p;
     }
 

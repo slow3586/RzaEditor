@@ -44,8 +44,10 @@ public class WireIntersection {
     }
 
     public void draw() {
-        Vector2i t0 = Logic.gridToScreen(pos);
-        Drawing.fillOval(t0.x + Logic.zoomGridGap / 4, t0.y + Logic.zoomGridGap / 4, Logic.zoomGridGap / 2, Logic.zoomGridGap / 2);
+        Vector2i t0 = Logic.gridToScreenCenter(pos);
+        int size = Math.round(3 * Logic.zoom);
+        
+        Drawing.fillOval(t0.x - size/2, t0.y - size/2, size, size);
     }
 
     public static WireIntersection getWIAt(Vector2i p) {

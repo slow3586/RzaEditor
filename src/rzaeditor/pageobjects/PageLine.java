@@ -60,4 +60,9 @@ public class PageLine extends PageObject {
         Drawing.drawLine(Logic.gridToScreenCenter(start), Logic.gridToScreenCenter(end));
     }
 
+    @Override
+    public void updatePageInteractions() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

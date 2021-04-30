@@ -1,7 +1,9 @@
 package rzaeditor;
 
+import java.awt.Color;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
+import static rzaeditor.Drawing.setColor;
 
 public class Cursor {
 
@@ -21,6 +23,11 @@ public class Cursor {
             gridMoved = true;
             posPageGridSnap = new Vector2f(posGrid.x * Logic.zoomGridGap, posGrid.y * Logic.zoomGridGap).add(Page.current.pos.x, Page.current.pos.y);
         }
+    }
+    
+    public static void draw(){
+        setColor(Color.red);
+        Drawing.drawOval(Cursor.posPageGridSnap.x, Cursor.posPageGridSnap.y, Logic.zoomGridGap, Logic.zoomGridGap);
     }
 
 }

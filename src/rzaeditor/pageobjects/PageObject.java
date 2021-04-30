@@ -13,6 +13,7 @@ public abstract class PageObject {
     public boolean selected = false;
     
     abstract public void draw();
+    abstract public void updatePageInteractions();
    // abstract boolean canBeMovedTo();
     
     public String getType(){

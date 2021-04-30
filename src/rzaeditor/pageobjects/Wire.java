@@ -38,7 +38,7 @@ public class Wire extends PageLine {
         w.ID = "Провод "+Page.current.wires.size();
         w.type = "Провод";
         
-        w.checkIntersections();
+        w.updatePageInteractions();
         return w;
     }
 
@@ -65,7 +65,7 @@ public class Wire extends PageLine {
         return true;
     }
 
-    public void checkIntersections() {
+    public void updatePageInteractions() {
         Page.current.wires.add(this);
         
         if (startWI != null) {
@@ -89,14 +89,14 @@ public class Wire extends PageLine {
                     if (w.startWI.wireIntersects.size() <= 2) {
                         w.start = start;
                         delete();
-                        w.checkIntersections();
+                        w.updatePageInteractions();
                         return;
                     }
                 } else if (w.end.equals(start)) {
                     if (w.endWI.wireIntersects.size() <= 2) {
                         w.end = end;
                         delete();
-                        w.checkIntersections();
+                        w.updatePageInteractions();
                         return;
                     }
                 }
@@ -131,7 +131,7 @@ public class Wire extends PageLine {
             Drawing.setColor(Color.RED);
             Drawing.setStroke(3);
         }
-        Drawing.setStroke(2);
+        Drawing.setStroke(1 * Logic.zoom);
         Drawing.drawLine(Logic.gridToScreenCenter(start), Logic.gridToScreenCenter(end));
     }
 
@@ -165,7 +165,7 @@ public class Wire extends PageLine {
         }
         Vector2i temp = end;
         end = p;
-        checkIntersections();
+        updatePageInteractions();
         Wire w1 = Wire.create(p, temp);
     }
 

@@ -13,7 +13,7 @@ import org.joml.Vector2i;
 public class Drawing {
     
     private static Graphics2D g;
-
+    
     public static void drawLine(Vector2i s, Vector2i e) {
         drawLine(s.x, s.y, e.x, e.y);
     }
@@ -41,22 +41,52 @@ public class Drawing {
     public static void setColor(Color c){
         g.setColor(c);
     }
+    
+    public static void drawWire(){
+        Vector2i offset = new Vector2i(Page.current.pos);
+        
+        if(Page.current.useFineGrid){
+            setColor(new Color(0.9F, 0.9F, 0.9F));
+            for (float i = 0; i < Page.current.size.y * Logic.zoom; i += Page.gridGap/2 * Logic.zoom) {
+                drawLine(offset.x, offset.y + i, offset.x + (Page.current.size.x * Logic.zoom), offset.y + i);
+            }
+            for (float i = 0; i < Page.current.size.x * Logic.zoom; i += Page.gridGap/2 * Logic.zoom) {
+                drawLine(offset.x + i, offset.y, offset.x + i, offset.y + (Page.current.size.y * Logic.zoom));
+            }
+        }
+        
+        
+        int count = 3;
+        for (float i = 0; i < Page.current.size.y * Logic.zoom; i += Page.gridGap * Logic.zoom) {
+            count++;
+            setColor(new Color(0.8F, 0.8F, 0.8F));
+            if(count==4){
+                setColor(new Color(0.6f, 0.6f, 0.6f));
+                count = 0;
+            }
+            drawLine(offset.x, offset.y + i, offset.x + (Page.current.size.x * Logic.zoom), offset.y + i);
+        }
+        count = 3;
+        for (float i = 0; i < Page.current.size.x * Logic.zoom; i += Page.gridGap * Logic.zoom) {
+            count++;
+            setColor(new Color(0.8F, 0.8F, 0.8F));
+            if(count==4){
+                setColor(new Color(0.6f, 0.6f, 0.6f));
+                count = 0;
+            }
+            drawLine(offset.x + i, offset.y, offset.x + i, offset.y + (Page.current.size.y * Logic.zoom));
+        }
+    }
 
     public static void drawEditPanel(Graphics gr) {
         g = (Graphics2D) gr;
         EditPanel ep = EditPanel.imp;
-        g.setColor(new Color(0.8F, 0.8F, 0.8F));
-        float newGap = Logic.zoomGridGap;
-        Vector2i offset = new Vector2i(Page.current.pos);
-        for (float i = 0; i < Page.current.size.y * Logic.zoom; i += Logic.zoomGridGap) {
-            drawLine(offset.x, offset.y + i, offset.x + (Page.current.size.x * Logic.zoom), offset.y + i);
-        }
-        for (float i = 0; i < Page.current.size.x * Logic.zoom; i += Logic.zoomGridGap) {
-            drawLine(offset.x + i, offset.y, offset.x + i, offset.y + (Page.current.size.y * Logic.zoom));
-        }
-        g.setColor(Color.red);
-        drawOval(Cursor.posPageGridSnap.x, Cursor.posPageGridSnap.y, Logic.zoomGridGap, Logic.zoomGridGap);
-        g.setColor(Color.BLACK);
+        
+        drawWire();
+        
+        Cursor.draw();
+        
+        Drawing.setColor(Color.BLACK);
         Page.current.primitives.stream().forEach((PageObject t) -> {
             t.draw();
         });
@@ -67,11 +97,10 @@ public class Drawing {
         
         Logic.drawMode.draw();
         
-        g.setColor(Color.BLACK);
+        Drawing.setColor(Color.BLACK);
         Page.current.wireIntersections.stream().forEach((WireIntersection t) -> {
             t.draw();
         });
-        g.setStroke(new BasicStroke(2));
     }
 
 }

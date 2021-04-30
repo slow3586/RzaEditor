@@ -49,7 +49,7 @@ public class Logic {
     
     public static void mouseEvent(){
         Logic.zoom-=Mouse.wheel*0.1f;
-        zoomGridGap = zoom * Page.current.gridGap;
+        zoomGridGap = zoom * Page.gridGap;
         
         rzaeditor.Cursor.updateCursor();
         

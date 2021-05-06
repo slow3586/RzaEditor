@@ -10,6 +10,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
+import rzaeditor.pageobjects.Primitive;
 
 public class Drawing {
     
@@ -131,7 +132,7 @@ public class Drawing {
         Cursor.draw();
         
         Drawing.setColor(Color.BLACK);
-        Page.current.primitives.stream().forEach((PageObject t) -> {
+        Page.current.primitives.stream().forEach((Primitive t) -> {
             t.draw();
         });
         

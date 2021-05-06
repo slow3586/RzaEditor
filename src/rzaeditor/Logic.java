@@ -171,7 +171,7 @@ public class Logic {
     }
     
     public static Vector2i posToScreen(float x, float y){
-        return new Vector2i(Math.round(Page.current.pos.x+x), Math.round(Page.current.pos.y+y));
+        return new Vector2i(Math.round(x*zoom), Math.round(y*zoom));
     }
     
     public static void fixVectorPositions(Vector2i start, Vector2i end){

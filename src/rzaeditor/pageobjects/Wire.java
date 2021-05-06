@@ -13,12 +13,13 @@ import rzaeditor.Drawing;
 import rzaeditor.Logic;
 import rzaeditor.Page;
 
-public class Wire extends PageObject {
+public class Wire{
     
     WireIntersection endWI = null;
     WireIntersection startWI = null;
     boolean deleted = false;
     boolean allowMerge = true;
+    public boolean selected = false;
     
     Vector2i start = new Vector2i();
     Vector2i end = new Vector2i();
@@ -38,10 +39,6 @@ public class Wire extends PageObject {
         w.end = new Vector2i(e);
         Logic.fixVectorPositions(w.start, w.end);
         w.color = new Color((float) Math.random(), (float) Math.random(), (float) Math.random());
-        
-        w.name = "Провод "+Page.current.wires.size();
-        w.ID = "Провод "+Page.current.wires.size();
-        w.type = "Провод";
         
         if(update)
             w.updatePageInteractions();
@@ -122,14 +119,12 @@ public class Wire extends PageObject {
             }
         }
         
-        pos = getCenter();
     }
     
     public Vector2i getCenter(){
         return getVec().div(2).add(start);
     }
 
-    @Override
     public void draw() {
         Drawing.setColor(color);
         if(selected){

@@ -15,9 +15,6 @@ public class PageRect extends Primitive {
     Color color = Color.BLACK;
     
     PageRect() {
-        name = "Прямоугольник "+Page.current.wires.size();
-        ID = "Прямоугольник "+Page.current.wires.size();
-        type = "Прямоугольник";
     }
     
     public static PageRect create(Vector2i pos, Vector2i size){
@@ -33,12 +30,6 @@ public class PageRect extends Primitive {
         Vector2i vec = new Vector2i(e).sub(s);
         
         if(vec.length()<=0) return false;
-        
-        for (PageObject primitive : Page.current.primitives) {
-            if(primitive instanceof PageLine){
-            
-            }
-        }
         
         for (Wire w1 : Page.current.wires) {
             if ((vec.y == 0)==w1.isHorizontal() && (w1.pointInside(s, 1) || w1.pointInside(e, 1))) {
@@ -59,10 +50,5 @@ public class PageRect extends Primitive {
         Drawing.setStroke(2);
         //Drawing.drawRect(Logic.gridToScreen(pos));
         Drawing.drawRect(Logic.gridToScreen(pos), new Vector2i(Math.round(size.x*zoomGridGap), Math.round(size.y*zoomGridGap))); 
-    }
-
-    @Override
-    public void updatePageInteractions() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

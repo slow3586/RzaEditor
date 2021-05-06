@@ -1,4 +1,10 @@
 package rzaeditor.pageobjects;
-public abstract class Primitive extends PageObject {
 
+import org.joml.Vector2i;
+
+public abstract class Primitive {
+
+    public boolean selected = false;
+    
+    public void draw(){}
 }

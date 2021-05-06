@@ -1,22 +1,17 @@
 package rzaeditor.pageobjects;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
 import org.joml.Vector2i;
-import org.joml.primitives.Rectanglei;
 import rzaeditor.Drawing;
 import rzaeditor.Logic;
-import rzaeditor.Page;
+import static rzaeditor.Logic.posToScreen;
 
-public class Relay extends PageObject {
+public class ContactOpen extends Contact {
 
-    public static final Vector2i size = new Vector2i(3,2);
+    public static Vector2i size = new Vector2i(3,1);
     
-    public Relay(Vector2i p, boolean rot) {
-        super(p,rot);
-        name = "Реле "+Page.current.wires.size();
-        ID = "Реле "+Page.current.wires.size();
-        type = "Реле";
+    public ContactOpen(Vector2i p, boolean rot) {
+        super(p, rot);
+        
         WireIntersection w0 = WireIntersection.getWI(Logic.swapIfTrue(0, 1, rot).add(pos)); 
         WireIntersection w1 = WireIntersection.getWI(Logic.swapIfTrue(3, 1, rot).add(pos)); 
         wireIntersections.add(w0);
@@ -27,11 +22,14 @@ public class Relay extends PageObject {
         PageObject.rotateCheck(pos, size, rot);
         Drawing.drawLineGrid(0,1,1,1);
         Drawing.drawLineGrid(2,1,3,1);
-        Drawing.drawRectGrid(1,0,1,2);
+        
+        Drawing.drawLine(posToScreen(6,6),
+                posToScreen(12,2));
     }
 
     @Override
     public void updatePageInteractions() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
 }

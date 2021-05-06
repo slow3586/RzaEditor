@@ -34,7 +34,7 @@ public class DrawModeSelect extends DrawMode {
             w.selected=false;
             if(w.pointInside(Cursor.posGrid, 1)){
                 w.selected=true;
-                selectedObject =w;
+                //selectedObject =w;
             }
         }
     }

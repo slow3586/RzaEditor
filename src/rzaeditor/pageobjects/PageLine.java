@@ -14,9 +14,6 @@ public class PageLine extends Primitive {
     Color color = Color.BLACK;
     
     PageLine() {
-        name = "Линия "+Page.current.wires.size();
-        ID = "Линия "+Page.current.wires.size();
-        type = "Линия";
     }
     
     public static PageLine create(Vector2i s, Vector2i e){
@@ -33,12 +30,6 @@ public class PageLine extends Primitive {
         Vector2i vec = new Vector2i(e).sub(s);
         
         if(vec.length()<=0) return false;
-        
-        for (PageObject primitive : Page.current.primitives) {
-            if(primitive instanceof PageLine){
-            
-            }
-        }
         
         for (Wire w1 : Page.current.wires) {
             if ((vec.y == 0)==w1.isHorizontal() && (w1.pointInside(s, 1) || w1.pointInside(e, 1))) {
@@ -58,10 +49,5 @@ public class PageLine extends Primitive {
         }
         Drawing.setStroke(2);
         Drawing.drawLine(Logic.gridToScreen(start), Logic.gridToScreen(end));
-    }
-
-    @Override
-    public void updatePageInteractions() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

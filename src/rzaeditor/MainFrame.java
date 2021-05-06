@@ -2,6 +2,8 @@ package rzaeditor;
 
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import rzaeditor.pageobjects.ContactClosed;
+import rzaeditor.pageobjects.ContactOpen;
 import rzaeditor.pageobjects.CurrentTransformer;
 import rzaeditor.pageobjects.Relay;
 import rzaeditor.pageobjects.RelayBig;
@@ -148,6 +150,11 @@ public class MainFrame extends javax.swing.JFrame {
         jMenu3.add(jMenuItem4);
 
         jMenuItem5.setText("Разомкнутый");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem5);
 
         jMenu2.add(jMenu3);
@@ -223,7 +230,8 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        // TODO add your handling code here:
+        Logic.drawMode = DrawModeObject.imp;
+        DrawModeObject.objectClass = ContactClosed.class;
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
@@ -264,6 +272,11 @@ public class MainFrame extends javax.swing.JFrame {
         Logic.drawMode = DrawModeObject.imp;
         DrawModeObject.objectClass = RelayBig.class;
     }//GEN-LAST:event_jMenuItem13ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        Logic.drawMode = DrawModeObject.imp;
+        DrawModeObject.objectClass = ContactOpen.class;
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JPanel editPanel;

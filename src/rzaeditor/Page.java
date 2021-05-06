@@ -9,7 +9,9 @@ import org.joml.primitives.Rectanglei;
 
 public class Page {
     
+    //size of one cell in a diagram, related to relay size
     public static int gridGap = 6;
+    //public static float gridGapFine = 0.5f;
     public static Page current = newCircuitA3Page();
     
     
@@ -26,6 +28,7 @@ public class Page {
     public boolean hasBorder;
     public boolean hasUnsavedProgress = true;
     public boolean useFineGrid = false;
+    public float cmPerCell;
     
     private Page(){
         
@@ -44,6 +47,7 @@ public class Page {
         p.rect = new Rectanglei(-1, -1, p.gridSize.x, p.gridSize.y);
         p.resizable = false;
         p.hasBorder = true;
+        p.cmPerCell = 6;
         return p;
     }
     
@@ -51,13 +55,49 @@ public class Page {
         Page p = new Page();
         p.titleSize = new Vector2i(0,0);
         p.sizeNoBorder = new Vector2i(0,0);
-        p.size = new Vector2i(gridGap * 5, gridGap * 5);
+        p.size = new Vector2i(gridGap * 18*2, gridGap * 18*2);
         p.gridSize = new Vector2i(p.size.x / gridGap, p.size.y / gridGap);
         p.rect = new Rectanglei(-1, -1, p.gridSize.x, p.gridSize.y);
         p.resizable = true;
         p.hasBorder = false;
         p.useFineGrid = true;
+        p.cmPerCell = 0.5f;
         return p;
     }
 
+    /*
+    public static Page fromText(String s){
+        Page p = newObjectPage();
+        
+        String[] split = s.split("\n");
+        for (int i = 0; i < split.length; i++) {
+            String s0 = split[i];
+            
+            String[] split1 = s0.split("\t");
+            String objClassName = split1[0];
+            
+            Class<? extends PageObject> c = null;
+            try {
+                c = Class.forName("rzaeditor.pageobjects."+objClassName).asSubclass(PageObject.class);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            
+            String[] objArgs = new String[split1.length-1];
+            for(int j=1; j<split1.length; j++){
+                objArgs[j-1]=split1[j];
+            }
+            
+            PageObject o = c.cast(PageObject.class);
+            o.fromText(objArgs);
+            if(o instanceof Wire){
+                p.wires.add(o);
+            }else if(o instanceof WireIntersection){
+                p.wireIntersections.add(o);
+            }
+            p.primitives.add(o);
+        }
+        return p;
+    }
+    */  
 }

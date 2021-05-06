@@ -5,25 +5,25 @@ import org.joml.Vector2f;
 import org.joml.Vector2i;
 import rzaeditor.Drawing;
 import rzaeditor.Logic;
+import static rzaeditor.Logic.zoomGridGap;
 import rzaeditor.Page;
 
-public class PageLine extends PageObject {
+public class PageRect extends PageObject {
 
-    Vector2i start = new Vector2i();
-    Vector2i end = new Vector2i();
+    Vector2i pos = new Vector2i();
+    Vector2i size = new Vector2i();
     Color color = Color.BLACK;
     
-    PageLine() {
-        name = "Линия "+Page.current.wires.size();
-        ID = "Линия "+Page.current.wires.size();
-        type = "Линия";
+    PageRect() {
+        name = "Прямоугольник "+Page.current.wires.size();
+        ID = "Прямоугольник "+Page.current.wires.size();
+        type = "Прямоугольник";
     }
     
-    public static PageLine create(Vector2i s, Vector2i e){
-        PageLine pl = new PageLine();
-        pl.start = new Vector2i(s);
-        pl.end = new Vector2i(e);
-        Logic.fixVectorPositions(pl.start, pl.end);
+    public static PageRect create(Vector2i pos, Vector2i size){
+        PageRect pl = new PageRect();
+        pl.pos = new Vector2i(pos);
+        pl.size = new Vector2i(size);
         
         Page.current.primitives.add(pl);
         return pl;
@@ -57,7 +57,8 @@ public class PageLine extends PageObject {
             Drawing.setStroke(3);
         }
         Drawing.setStroke(2);
-        Drawing.drawLine(Logic.gridToScreen(start), Logic.gridToScreen(end));
+        //Drawing.drawRect(Logic.gridToScreen(pos));
+        Drawing.drawRect(Logic.gridToScreen(pos), new Vector2i(Math.round(size.x*zoomGridGap), Math.round(size.y*zoomGridGap))); 
     }
 
     @Override
@@ -69,9 +70,9 @@ public class PageLine extends PageObject {
     public PageObject fromText(String[] args) {
         if(args.length!=4) throw new IllegalArgumentException();
         
-        PageObject p= null;
+        PageRect p= null;
         try{
-            p = PageLine.create(new Vector2i(Integer.valueOf(args[0]), Integer.valueOf(args[1])),
+            p = PageRect.create(new Vector2i(Integer.valueOf(args[0]), Integer.valueOf(args[1])),
                 new Vector2i(Integer.valueOf(args[2]), Integer.valueOf(args[3])));
         }catch(NumberFormatException e){
             

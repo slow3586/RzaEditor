@@ -18,12 +18,13 @@ public class Wire extends PageLine {
     WireIntersection endWI = null;
     WireIntersection startWI = null;
     boolean deleted = false;
+    boolean allowMerge = true;
     
     Wire(){
         super();
     }
     
-    public static Wire create(Vector2i s, Vector2i e) {
+    public static Wire create(Vector2i s, Vector2i e, boolean update) {
         if(s.x!=e.x && s.y!=e.y){
             throw new IllegalArgumentException("Tried to create a non-straight wire. s:"+s.x+" "+s.y+" e:"+e.x+" "+e.y);
         }
@@ -38,7 +39,8 @@ public class Wire extends PageLine {
         w.ID = "Провод "+Page.current.wires.size();
         w.type = "Провод";
         
-        w.updatePageInteractions();
+        if(update)
+            w.updatePageInteractions();
         return w;
     }
 
@@ -62,7 +64,7 @@ public class Wire extends PageLine {
             }
         }
         
-        return true;
+        return Logic.isInsideGrid(s) && Logic.isInsideGrid(e);
     }
 
     public void updatePageInteractions() {
@@ -85,6 +87,7 @@ public class Wire extends PageLine {
             if (w.equals(this) || w.deleted)
                 continue;
             if (w.isHorizontal() == isHorizontal()) {
+                if(!allowMerge) continue;
                 if (w.start.equals(end)) {
                     if (w.startWI.wireIntersects.size() <= 2) {
                         w.start = start;
@@ -132,7 +135,7 @@ public class Wire extends PageLine {
             Drawing.setStroke(3);
         }
         Drawing.setStroke(1 * Logic.zoom);
-        Drawing.drawLine(Logic.gridToScreenCenter(start), Logic.gridToScreenCenter(end));
+        Drawing.drawLine(Logic.gridToScreen(start), Logic.gridToScreen(end));
     }
 
     public Vector2i getVec() {
@@ -166,7 +169,7 @@ public class Wire extends PageLine {
         Vector2i temp = end;
         end = p;
         updatePageInteractions();
-        Wire w1 = Wire.create(p, temp);
+        Wire w1 = Wire.create(p, temp, true);
     }
 
     public boolean pointInside(Vector2i p, int offset) {
@@ -210,6 +213,22 @@ public class Wire extends PageLine {
             i = new Vector2i((int) t.x, (int) t.y);
         }
         return r;
+    }
+    
+    @Override
+    public PageObject fromText(String[] args) {
+        if(args.length!=4) throw new IllegalArgumentException();
+        
+        Wire o= null;
+        try{
+            o = Wire.create(new Vector2i(Integer.valueOf(args[0]), Integer.valueOf(args[1])),
+                new Vector2i(Integer.valueOf(args[2]), Integer.valueOf(args[3])), false);
+            o.allowMerge = false;
+            o.updatePageInteractions();
+        }catch(NumberFormatException e){
+            
+        }
+        return o;
     }
 
 }

@@ -34,7 +34,7 @@ public class DrawModeWire extends DrawMode {
             Drawing.setColor(Color.GREEN);
         }
         
-        Drawing.drawLine(Logic.gridToScreenCenter(s), Logic.gridToScreenCenter(e));
+        Drawing.drawLine(Logic.gridToScreen(s), Logic.gridToScreen(e));
     }
 
     @Override
@@ -51,7 +51,7 @@ public class DrawModeWire extends DrawMode {
             e.x=s.x;
         
         if(Wire.canBePlacedAt(s, e)){
-            Wire.create(s, e);
+            Wire.create(s, e, true);
         }
     }
 

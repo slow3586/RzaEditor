@@ -21,7 +21,10 @@ public class Logic {
     public static DrawMode drawMode = DrawModeWire.imp;
     public static Vector2i dragStart = new Vector2i();
     public static Vector2i dragEnd = new Vector2i();
+    public static Vector2i dragStartFixed = new Vector2i();
+    public static Vector2i dragEndFixed = new Vector2i();
     public static Vector2i dragVec = new Vector2i();
+    public static Vector2i dragVecFixed = new Vector2i();
     public static Rectanglei dragRect = new Rectanglei();
     public static boolean isDragging = false;
             
@@ -50,32 +53,31 @@ public class Logic {
     public static void mouseEvent(){
         Logic.zoom-=Mouse.wheel*0.1f;
         zoomGridGap = zoom * Page.gridGap;
+        MainFrame.zoomLabel.setText("Zoom: "+Math.round(Logic.zoom*100)
+                +"% X:"+Cursor.posGrid.x*Page.current.cmPerCell
+                +"см Y:"+Cursor.posGrid.y*Page.current.cmPerCell+"см");
         
         rzaeditor.Cursor.updateCursor();
         
         dragEnd = Cursor.posGrid;
-        dragRect.setMin(dragStart);
-        dragRect.setMax(dragEnd);
+        
+        dragStartFixed = new Vector2i(dragStart);
+        dragEndFixed = new Vector2i(dragEnd);
+        Logic.fixVectorPositions(dragStartFixed, dragEndFixed);
+        
+        dragRect.setMin(dragStartFixed);
+        dragRect.setMax(dragEndFixed);
         dragVec = new Vector2i(dragEnd).sub(dragStart);
-
-        Vector2i adjEnd = new Vector2i();
-        Vector2i adjStart = new Vector2i();
-        if(dragStart.x>dragEnd.x) 
-            adjStart.x=0;
-        else
-            adjEnd.x=1;
-        if(dragStart.y>dragEnd.y) 
-            adjStart.y=0;
-        else
-            adjEnd.y=1;
-        Vector2i s = new Vector2i(Math.min(dragStart.x, dragEnd.x)-adjStart.x,Math.min(dragStart.y, dragEnd.y)-adjStart.y);
-        Vector2i e = new Vector2i(Math.max(dragStart.x, dragEnd.x)+adjEnd.x,Math.max(dragStart.y, dragEnd.y)+adjEnd.y);
-        dragRect.setMin(s);
-        dragRect.setMax(e);
+        dragVecFixed = new Vector2i(dragEndFixed).sub(dragStartFixed);
         
         if(Mouse.isPressed(1)){
             dragStart = Cursor.posGrid;
             dragEnd = Cursor.posGrid;
+            
+            dragStartFixed = new Vector2i(dragStart);
+            dragEndFixed = new Vector2i(dragEnd);
+            Logic.fixVectorPositions(dragStartFixed, dragEndFixed);
+            
             dragRect.setMin(dragStart);
             dragRect.setMax(dragEnd);
             isDragging = true;
@@ -122,13 +124,18 @@ public class Logic {
         ep.repaint();
     }
     
+    public static boolean isInsideGrid(Vector2i v){
+        if(!Page.current.useFineGrid)
+            return v.x>0 && v.y>0 && v.x<Page.current.gridSize.x && v.y<Page.current.gridSize.y;
+        return v.x>=0 && v.y>=0 && v.x<=Page.current.gridSize.x && v.y<=Page.current.gridSize.y;
+    }
     
     public static Vector2i gridToScreenCenter(Vector2i v){
         return gridToScreenCenter(v.x, v.y);
     }
     
     public static Vector2i gridToScreenCenter(int x, int y){
-        return new Vector2i(Math.round(Page.current.pos.x+(x*zoomGridGap)+zoomGridGap/2), Math.round(Page.current.pos.y+(y*zoomGridGap)+zoomGridGap/2));
+        return new Vector2i(Math.round(Page.current.pos.x+(x*zoomGridGap)-zoomGridGap/2), Math.round(Page.current.pos.y+(y*zoomGridGap)-zoomGridGap/2));
     }
     
     public static Vector2i gridToScreen(Vector2i v){
@@ -139,13 +146,18 @@ public class Logic {
         return new Vector2i(Math.round(Page.current.pos.x+(x*zoomGridGap)), Math.round(Page.current.pos.y+(y*zoomGridGap)));
     }
     
+    public static Vector2i posToScreen(int x, int y){
+        return new Vector2i(Math.round(Page.current.pos.x+x), Math.round(Page.current.pos.y+y));
+    }
+    
     public static void fixVectorPositions(Vector2i start, Vector2i end){
         Vector2i s = new Vector2i(Math.min(start.x, end.x),Math.min(start.y, end.y));
         Vector2i e = new Vector2i(Math.max(start.x, end.x),Math.max(start.y, end.y));
         
-        start = s;
-        end = e;
-        
+        start.x = s.x;
+        start.y = s.y;
+        end.x = e.x;
+        end.y = e.y;
         /*
         int temp = 0;
         if (start.x > end.x) {

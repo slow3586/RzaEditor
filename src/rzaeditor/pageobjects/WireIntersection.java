@@ -14,6 +14,9 @@ public class WireIntersection {
 
     Vector2i pos = new Vector2i();
     HashSet<Wire> wireIntersects = new HashSet<>();
+    HashSet<WireIntersection> connected = new HashSet<>();
+    HashSet<WireIntersection> connectedWireless = new HashSet<>();
+    HashSet<WireIntersection> voltageTo = new HashSet<>();
 
     private WireIntersection(Vector2i p) {
         pos = p;
@@ -44,13 +47,13 @@ public class WireIntersection {
     }
 
     public void draw() {
-        Vector2i t0 = Logic.gridToScreenCenter(pos);
+        Vector2i t0 = Logic.gridToScreen(pos);
         int size = Math.round(3 * Logic.zoom);
         
         Drawing.fillOval(t0.x - size/2, t0.y - size/2, size, size);
     }
 
-    public static WireIntersection getWIAt(Vector2i p) {
+    private static WireIntersection getWIAt(Vector2i p) {
         Optional<WireIntersection> m = Page.current.wireIntersections.stream().filter((t) -> {
             return t.pos.equals(p);
         }).findFirst();

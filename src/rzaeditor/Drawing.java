@@ -30,8 +30,16 @@ public class Drawing {
         g.fillOval(Math.round(x), Math.round(y), Math.round(x1), Math.round(y1));
     }
 
+    public static void drawRect(Vector2i s, Vector2i e) {
+        drawRect(s.x, s.y, e.x, e.y);
+    }
+    
     public static void drawRect(float x, float y, float w, float h) {
         g.drawRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h));
+    }
+    
+    public static void drawString(String str, float x, float y) {
+        g.drawString(str, x, y);
     }
     
     public static void setStroke(float s){
@@ -43,39 +51,33 @@ public class Drawing {
     }
     
     public static void drawWire(){
-        Vector2i offset = new Vector2i(Page.current.pos);
+        Vector2i off0 = new Vector2i(Page.current.pos);
         
-        if(Page.current.useFineGrid){
-            setColor(new Color(0.9F, 0.9F, 0.9F));
-            for (float i = 0; i < Page.current.size.y * Logic.zoom; i += Page.gridGap/2 * Logic.zoom) {
-                drawLine(offset.x, offset.y + i, offset.x + (Page.current.size.x * Logic.zoom), offset.y + i);
+        int every = 4;
+        if(Page.current.useFineGrid) 
+            every=2;
+        Color c0 = new Color(0.8f,0.8f,0.8f);
+        Color c1 = new Color(0.6f,0.6f,0.6f);
+        Color cur = c1;
+        float off1 = 0;
+        for (int i = 1; i<=Math.max(Page.current.gridSize.x, Page.current.gridSize.y); i++){
+            off1 = i * Page.gridGap * Logic.zoom;
+            cur = c0;
+            if(i%every==0){
+                cur = c1;
+                if(Page.current.useFineGrid)
+                    drawString(String.valueOf(i*Page.current.cmPerCell), off0.x+off1-5, off0.y-10);
             }
-            for (float i = 0; i < Page.current.size.x * Logic.zoom; i += Page.gridGap/2 * Logic.zoom) {
-                drawLine(offset.x + i, offset.y, offset.x + i, offset.y + (Page.current.size.y * Logic.zoom));
-            }
+            setColor(cur);
+            if(i<=Page.current.gridSize.y)
+                drawLine(off0.x, off0.y + off1, off0.x + (Page.current.size.x * Logic.zoom), off0.y + off1);
+            if(i<=Page.current.gridSize.x)
+                drawLine(off0.x + off1, off0.y, off0.x + off1, off0.y + (Page.current.size.y * Logic.zoom));
         }
         
-        
-        int count = 3;
-        for (float i = 0; i < Page.current.size.y * Logic.zoom; i += Page.gridGap * Logic.zoom) {
-            count++;
-            setColor(new Color(0.8F, 0.8F, 0.8F));
-            if(count==4){
-                setColor(new Color(0.6f, 0.6f, 0.6f));
-                count = 0;
-            }
-            drawLine(offset.x, offset.y + i, offset.x + (Page.current.size.x * Logic.zoom), offset.y + i);
-        }
-        count = 3;
-        for (float i = 0; i < Page.current.size.x * Logic.zoom; i += Page.gridGap * Logic.zoom) {
-            count++;
-            setColor(new Color(0.8F, 0.8F, 0.8F));
-            if(count==4){
-                setColor(new Color(0.6f, 0.6f, 0.6f));
-                count = 0;
-            }
-            drawLine(offset.x + i, offset.y, offset.x + i, offset.y + (Page.current.size.y * Logic.zoom));
-        }
+        setColor(new Color(1,1,1));
+        setStroke(1);
+        drawRect(off0.x, off0.y, Page.current.size.x * Logic.zoom, Page.current.size.y * Logic.zoom);
     }
 
     public static void drawEditPanel(Graphics gr) {

@@ -25,7 +25,7 @@ public class DrawModePrimLine extends DrawMode {
         
         Drawing.setColor(Color.RED);
         
-        Drawing.drawLine(Logic.gridToScreenCenter(dragStart), Logic.gridToScreenCenter(dragEnd)); 
+        Drawing.drawLine(Logic.gridToScreen(dragStart), Logic.gridToScreen(dragEnd)); 
     }
 
     @Override

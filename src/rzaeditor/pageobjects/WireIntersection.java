@@ -10,13 +10,14 @@ import rzaeditor.Drawing;
 import rzaeditor.Logic;
 import rzaeditor.Page;
 
-public class WireIntersection {
+public class WireIntersection{
 
     Vector2i pos = new Vector2i();
     HashSet<Wire> wireIntersects = new HashSet<>();
     HashSet<WireIntersection> connected = new HashSet<>();
     HashSet<WireIntersection> connectedWireless = new HashSet<>();
     HashSet<WireIntersection> voltageTo = new HashSet<>();
+    boolean on = true;
 
     private WireIntersection(Vector2i p) {
         pos = p;
@@ -47,14 +48,20 @@ public class WireIntersection {
     }
 
     public void draw() {
-        Vector2i t0 = Logic.gridToScreen(pos);
         int size = Math.round(3 * Logic.zoom);
         
-        Drawing.fillOval(t0.x - size/2, t0.y - size/2, size, size);
+        Drawing.setTranslateGrid(pos);
+        
+        Drawing.fillOval(-size/2, -size/2, size, size);
     }
 
     private static WireIntersection getWIAt(Vector2i p) {
-        Optional<WireIntersection> m = Page.current.wireIntersections.stream().filter((t) -> {
+        HashSet<WireIntersection> s = new HashSet<>();
+        s.addAll(Page.current.wireIntersections);
+        Page.current.objects.forEach((t) -> {
+            s.addAll(t.wireIntersections);
+        });
+        Optional<WireIntersection> m = s.stream().filter((t) -> {
             return t.pos.equals(p);
         }).findFirst();
         return m.orElse(null);
@@ -69,5 +76,4 @@ public class WireIntersection {
     public void delete() {
         Page.current.wireIntersections.remove(this);
     }
-
 }

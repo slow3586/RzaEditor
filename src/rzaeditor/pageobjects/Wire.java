@@ -13,12 +13,16 @@ import rzaeditor.Drawing;
 import rzaeditor.Logic;
 import rzaeditor.Page;
 
-public class Wire extends PageLine {
+public class Wire extends PageObject {
     
     WireIntersection endWI = null;
     WireIntersection startWI = null;
     boolean deleted = false;
     boolean allowMerge = true;
+    
+    Vector2i start = new Vector2i();
+    Vector2i end = new Vector2i();
+    Color color = Color.BLACK;
     
     Wire(){
         super();
@@ -119,8 +123,6 @@ public class Wire extends PageLine {
         }
         
         pos = getCenter();
-        rectangle.setMin(start);
-        rectangle.setMax(end);
     }
     
     public Vector2i getCenter(){
@@ -214,21 +216,4 @@ public class Wire extends PageLine {
         }
         return r;
     }
-    
-    @Override
-    public PageObject fromText(String[] args) {
-        if(args.length!=4) throw new IllegalArgumentException();
-        
-        Wire o= null;
-        try{
-            o = Wire.create(new Vector2i(Integer.valueOf(args[0]), Integer.valueOf(args[1])),
-                new Vector2i(Integer.valueOf(args[2]), Integer.valueOf(args[3])), false);
-            o.allowMerge = false;
-            o.updatePageInteractions();
-        }catch(NumberFormatException e){
-            
-        }
-        return o;
-    }
-
 }

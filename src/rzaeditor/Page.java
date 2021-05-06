@@ -6,6 +6,7 @@ import rzaeditor.pageobjects.WireIntersection;
 import java.util.HashSet;
 import org.joml.Vector2i;
 import org.joml.primitives.Rectanglei;
+import rzaeditor.pageobjects.Primitive;
 
 public class Page {
     
@@ -17,7 +18,8 @@ public class Page {
     
     public Vector2i titleSize;
     public Vector2i sizeNoBorder;
-    public HashSet<PageObject> primitives = new HashSet<>();
+    public HashSet<Primitive> primitives = new HashSet<>();
+    public HashSet<PageObject> objects = new HashSet<>();
     public HashSet<Wire> wires = new HashSet<>();
     public HashSet<WireIntersection> wireIntersections = new HashSet<>();
     public Vector2i pos= new Vector2i(0, 0);
@@ -64,40 +66,4 @@ public class Page {
         p.cmPerCell = 0.5f;
         return p;
     }
-
-    /*
-    public static Page fromText(String s){
-        Page p = newObjectPage();
-        
-        String[] split = s.split("\n");
-        for (int i = 0; i < split.length; i++) {
-            String s0 = split[i];
-            
-            String[] split1 = s0.split("\t");
-            String objClassName = split1[0];
-            
-            Class<? extends PageObject> c = null;
-            try {
-                c = Class.forName("rzaeditor.pageobjects."+objClassName).asSubclass(PageObject.class);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-            
-            String[] objArgs = new String[split1.length-1];
-            for(int j=1; j<split1.length; j++){
-                objArgs[j-1]=split1[j];
-            }
-            
-            PageObject o = c.cast(PageObject.class);
-            o.fromText(objArgs);
-            if(o instanceof Wire){
-                p.wires.add(o);
-            }else if(o instanceof WireIntersection){
-                p.wireIntersections.add(o);
-            }
-            p.primitives.add(o);
-        }
-        return p;
-    }
-    */  
 }

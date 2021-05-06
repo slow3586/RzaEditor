@@ -9,14 +9,6 @@ import static rzaeditor.Logic.*;
 public class DrawModeWire extends DrawMode {
 
     public static DrawModeWire imp = new DrawModeWire();
-    
-    @Override
-    public void mouseDrag() {
-    }
-
-    @Override
-    public void mouseMove() {
-    }
 
     @Override
     public void draw() {
@@ -35,10 +27,6 @@ public class DrawModeWire extends DrawMode {
         }
         
         Drawing.drawLine(Logic.gridToScreen(s), Logic.gridToScreen(e));
-    }
-
-    @Override
-    public void mousePressed() {
     }
 
     @Override

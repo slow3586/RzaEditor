@@ -8,7 +8,7 @@ import rzaeditor.Logic;
 import static rzaeditor.Logic.zoomGridGap;
 import rzaeditor.Page;
 
-public class PageRect extends PageObject {
+public class PageRect extends Primitive {
 
     Vector2i pos = new Vector2i();
     Vector2i size = new Vector2i();
@@ -65,19 +65,4 @@ public class PageRect extends PageObject {
     public void updatePageInteractions() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
-    @Override
-    public PageObject fromText(String[] args) {
-        if(args.length!=4) throw new IllegalArgumentException();
-        
-        PageRect p= null;
-        try{
-            p = PageRect.create(new Vector2i(Integer.valueOf(args[0]), Integer.valueOf(args[1])),
-                new Vector2i(Integer.valueOf(args[2]), Integer.valueOf(args[3])));
-        }catch(NumberFormatException e){
-            
-        }
-        return p;
-    }
-
 }

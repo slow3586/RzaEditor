@@ -2,6 +2,9 @@ package rzaeditor;
 
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import rzaeditor.pageobjects.CurrentTransformer;
+import rzaeditor.pageobjects.Relay;
+import rzaeditor.pageobjects.RelayBig;
 
 public class MainFrame extends javax.swing.JFrame {
 
@@ -16,6 +19,7 @@ public class MainFrame extends javax.swing.JFrame {
                 Logic.winResized();
             }         
         });
+        addKeyListener(Keyboard.imp);
     }
 
     @SuppressWarnings("unchecked")
@@ -33,13 +37,17 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuItem11 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem10 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
+        jMenu6 = new javax.swing.JMenu();
+        jMenuItem12 = new javax.swing.JMenuItem();
+        jMenu7 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem13 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
 
@@ -109,9 +117,6 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem1);
 
-        jMenuItem3.setText("Реле");
-        jMenu2.add(jMenuItem3);
-
         jMenu5.setText("Линии");
 
         jMenuItem8.setText("Линия");
@@ -146,6 +151,38 @@ public class MainFrame extends javax.swing.JFrame {
         jMenu3.add(jMenuItem5);
 
         jMenu2.add(jMenu3);
+
+        jMenu6.setText("Источники");
+
+        jMenuItem12.setText("Трансформатор тока");
+        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem12ActionPerformed(evt);
+            }
+        });
+        jMenu6.add(jMenuItem12);
+
+        jMenu2.add(jMenu6);
+
+        jMenu7.setText("Реле");
+
+        jMenuItem3.setText("Реле РТ-40");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem3);
+
+        jMenuItem13.setText("Реле РТ-85");
+        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem13ActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem13);
+
+        jMenu2.add(jMenu7);
 
         jMenuBar1.add(jMenu2);
 
@@ -213,6 +250,21 @@ public class MainFrame extends javax.swing.JFrame {
         //Page.current = Page.fromText("");
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        Logic.drawMode = DrawModeObject.imp;
+        DrawModeObject.objectClass = Relay.class;
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+        Logic.drawMode = DrawModeObject.imp;
+        DrawModeObject.objectClass = CurrentTransformer.class;
+    }//GEN-LAST:event_jMenuItem12ActionPerformed
+
+    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
+        Logic.drawMode = DrawModeObject.imp;
+        DrawModeObject.objectClass = RelayBig.class;
+    }//GEN-LAST:event_jMenuItem13ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JPanel editPanel;
     private javax.swing.JMenu jMenu1;
@@ -220,10 +272,14 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
+    private javax.swing.JMenuItem jMenuItem12;
+    private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

@@ -50,6 +50,18 @@ public class Logic {
         
     }
     
+    public static void keyboardEvent(){
+        drawMode.keyboardEvent();
+        Keyboard.reset();
+    }
+    
+    public static Vector2i swapIfTrue(int x, int y, boolean b){
+        if(b)
+            return new Vector2i(y, x);
+        else
+            return new Vector2i(x, y);
+    }
+    
     public static void mouseEvent(){
         Logic.zoom-=Mouse.wheel*0.1f;
         zoomGridGap = zoom * Page.gridGap;
@@ -138,6 +150,14 @@ public class Logic {
         return new Vector2i(Math.round(Page.current.pos.x+(x*zoomGridGap)-zoomGridGap/2), Math.round(Page.current.pos.y+(y*zoomGridGap)-zoomGridGap/2));
     }
     
+    public static int posToScreen(float x){
+        return Math.round(x*zoom);
+    }
+    
+    public static int gridToScreen(float x){
+        return Math.round(x*zoomGridGap);
+    }
+    
     public static Vector2i gridToScreen(Vector2i v){
         return gridToScreen(v.x, v.y);
     }
@@ -146,7 +166,11 @@ public class Logic {
         return new Vector2i(Math.round(Page.current.pos.x+(x*zoomGridGap)), Math.round(Page.current.pos.y+(y*zoomGridGap)));
     }
     
-    public static Vector2i posToScreen(int x, int y){
+    public static Vector2i sizeToScreen(float x, float y){
+        return new Vector2i(Math.round(x*zoomGridGap), Math.round(y*zoomGridGap));
+    }
+    
+    public static Vector2i posToScreen(float x, float y){
         return new Vector2i(Math.round(Page.current.pos.x+x), Math.round(Page.current.pos.y+y));
     }
     
@@ -158,19 +182,6 @@ public class Logic {
         start.y = s.y;
         end.x = e.x;
         end.y = e.y;
-        /*
-        int temp = 0;
-        if (start.x > end.x) {
-            temp = start.x;
-            start.x = end.x;
-            end.x = temp;
-        }
-        if (start.y > end.y) {
-            temp = start.y;
-            start.y = end.y;
-            end.y = temp;
-        }
-        */
     }
     
     

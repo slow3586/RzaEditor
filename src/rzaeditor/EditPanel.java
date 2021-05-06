@@ -21,6 +21,7 @@ public class EditPanel extends javax.swing.JPanel {
         addMouseListener(Mouse.imp);
         addMouseMotionListener(Mouse.imp);
         addMouseWheelListener(Mouse.imp);
+        //addKeyListener(Keyboard.imp);
     }
 
     @SuppressWarnings("unchecked")

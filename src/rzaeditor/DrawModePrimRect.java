@@ -14,15 +14,6 @@ public class DrawModePrimRect extends DrawMode {
     public boolean lineGood = false;
 
     @Override
-    public void mouseDrag() {
-    }
-
-    @Override
-    public void mouseMove() {
-
-    }
-
-    @Override
     public void draw() {
        if(!Logic.isDragging) return;
         
@@ -30,10 +21,6 @@ public class DrawModePrimRect extends DrawMode {
 
         Drawing.drawRect(Logic.gridToScreen(new Vector2i(Logic.dragRect.minX, Logic.dragRect.minY)),
                 new Vector2i(Math.round(Logic.dragRect.lengthX()*zoomGridGap), Math.round(Logic.dragRect.lengthY()*zoomGridGap))); 
-    }
-
-    @Override
-    public void mousePressed() {
     }
 
     @Override

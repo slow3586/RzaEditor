@@ -7,7 +7,7 @@ import rzaeditor.Drawing;
 import rzaeditor.Logic;
 import rzaeditor.Page;
 
-public class PageLine extends PageObject {
+public class PageLine extends Primitive {
 
     Vector2i start = new Vector2i();
     Vector2i end = new Vector2i();
@@ -64,19 +64,4 @@ public class PageLine extends PageObject {
     public void updatePageInteractions() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
-    @Override
-    public PageObject fromText(String[] args) {
-        if(args.length!=4) throw new IllegalArgumentException();
-        
-        PageObject p= null;
-        try{
-            p = PageLine.create(new Vector2i(Integer.valueOf(args[0]), Integer.valueOf(args[1])),
-                new Vector2i(Integer.valueOf(args[2]), Integer.valueOf(args[3])));
-        }catch(NumberFormatException e){
-            
-        }
-        return p;
-    }
-
 }

@@ -25,6 +25,8 @@ public class RelayRT40 extends Relay {
         id = "РТ";
         WireIntersection w0 = WireIntersection.getWI(Logic.swapIfTrue(0, 1, rot).add(pos)); 
         WireIntersection w1 = WireIntersection.getWI(Logic.swapIfTrue(3, 1, rot).add(pos)); 
+        w0.addWireless(w1);
+        Wire.checkAllWires();
         wireIntersections.add(w0);
         wireIntersections.add(w1);
     }

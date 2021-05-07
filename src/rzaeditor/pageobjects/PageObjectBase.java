@@ -24,7 +24,8 @@ public abstract class PageObjectBase {
     protected Method methodDrawPhantom;
     public String id = "?";
     public String name = "";
-    private Vector2i size = new Vector2i(1,1);
+    private Vector2i size = new Vector2i(0,0);
+    public boolean visible = true;
     
     public PageObjectBase(Vector2i p) {
         pos = new Vector2i(p);

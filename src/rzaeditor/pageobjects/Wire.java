@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.HashSet;
+import jdk.nashorn.internal.objects.NativeError;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 import org.joml.primitives.Intersectionf;
@@ -29,6 +30,16 @@ public class Wire extends PageObjectBase{
     }
     
     public static void checkAllWires(){
+        
+        for (Wire w : Page.current.getWires()) {
+            for (WireIntersection wi : Page.current.getWireIntersections()) {
+                if(!wi.wireIntersects.contains(w) && w.pointInside(wi.pos, 1)){
+                    w.split(wi.pos);
+                    return;
+                }
+            }
+        }
+        
         int index = 0;
         ArrayList<Wire> wires = new ArrayList<>();
         wires.addAll(Page.current.getWires());
@@ -36,6 +47,7 @@ public class Wire extends PageObjectBase{
             Wire w0 = wires.get(i);
             for (int j = i+1; j < wires.size(); j++) {
                 Wire w1 = wires.get(j);  
+                
                 
                 if(w0.isHorizontal() == w1.isHorizontal() && w0.startWI.pos == w1.endWI.pos && w0.startWI.wireIntersects.size()==2){
                     w0.setStartWI(w1.startWI);
@@ -47,6 +59,7 @@ public class Wire extends PageObjectBase{
                     w1.delete();
                     return;
                 }
+                
                 if(w0.isHorizontal() == w1.isHorizontal() && w0.containsWire(w1)){
                     if(w0.isHorizontal()){
                         if(w0.pos.x > w1.pos.x){
@@ -66,53 +79,60 @@ public class Wire extends PageObjectBase{
                 }
 
                 if(w0.pointInside(w1.startWI.pos, 1)){
-                    Vector2i t = new Vector2i(w0.endWI.pos);
-                    w0.setEndWI(w1.startWI);
-                    Wire.create(w1.startWI.pos, t, true);
+                    w0.split(w0.startWI.pos);
                     return;
                 }
                 if(w0.pointInside(w1.endWI.pos, 1)){
-                    Vector2i t = new Vector2i(w0.endWI.pos);
-                    w0.setEndWI(w1.endWI);
-                    Wire.create(w1.endWI.pos, t, true);
+                    w0.split(w1.endWI.pos);
                     return;
                 }
                 if(w1.pointInside(w0.startWI.pos, 1)){
-                    Vector2i t = new Vector2i(w1.endWI.pos);
-                    w1.setEndWI(w0.startWI);
-                    Wire.create(w0.startWI.pos, t, true);
+                    w1.split(w0.startWI.pos);
                     return;
                 }
                 if(w1.pointInside(w0.endWI.pos, 1)){
-                    Vector2i t = new Vector2i(w1.endWI.pos);
-                    w1.setEndWI(w0.endWI);
-                    Wire.create(w0.endWI.pos, t, true);
+                    w1.split(w0.endWI.pos);
                     return;
                 }
             }
         }
+        
+        
+        
+    }
+    
+    public void split(Vector2i p){
+        Vector2i t = new Vector2i(endWI.pos);
+        setEndWI(WireIntersection.getWI(p));
+        Wire.create(p, t, true);
     }
     
     public void setStartWI(WireIntersection i){
         if(startWI!=null)
             startWI.removeWire(this);
-        Vector2i s = i.pos;
-        Vector2i e = endWI.pos;
-        Logic.fixVectorPositions(s, e);
-        startWI = WireIntersection.getWI(s);
-        endWI = WireIntersection.getWI(e);
-        i.wireIntersects.add(this);
+        setStartEndWI(i.pos, endWI.pos);
     }
     
     public void setEndWI(WireIntersection i){
         if(endWI!=null)
             endWI.removeWire(this);
-        Vector2i s = startWI.pos;
-        Vector2i e = i.pos;
+        setStartEndWI(startWI.pos, i.pos);
+    }
+    
+    public boolean setStartEndWI(Vector2i s0, Vector2i e0){
+        Vector2i s = new Vector2i(s0);
+        Vector2i e = new Vector2i(e0);
         Logic.fixVectorPositions(s, e);
         startWI = WireIntersection.getWI(s);
         endWI = WireIntersection.getWI(e);
-        i.wireIntersects.add(this);
+        pos = startWI.pos;
+        startWI.wireIntersects.add(this);
+        endWI.wireIntersects.add(this);
+        if(startWI.connectedWireless.contains(endWI)){
+            delete();
+            return false;
+        }
+        return true;
     }
     
     public static Wire create(Vector2i s, Vector2i e, boolean update) {
@@ -120,12 +140,8 @@ public class Wire extends PageObjectBase{
             throw new IllegalArgumentException("Tried to create a non-straight wire. s:"+s.x+" "+s.y+" e:"+e.x+" "+e.y);
         }
         
-        Logic.fixVectorPositions(s, e);
         Wire w = new Wire(s);
-        w.startWI = WireIntersection.getWI(s);
-        w.endWI = WireIntersection.getWI(e);
-        w.startWI.wireIntersects.add(w);
-        w.endWI.wireIntersects.add(w);
+        if(!w.setStartEndWI(s, e)) return null;
         w.color = new Color((float) Math.random(), (float) Math.random(), (float) Math.random());
         Page.current.objects.add(w);
         
@@ -160,11 +176,9 @@ public class Wire extends PageObjectBase{
 
     public void draw() {
         Drawing.setTranslateGrid(startWI.pos);
-        Drawing.setColor(color);
-        if(selected){
-            Drawing.setColor(Color.RED);
-            Drawing.setStroke(3);
-        }
+        Drawing.setColor(Color.black);
+        //Drawing.setColor(color);
+        selectedCheck();
         Drawing.setStroke(1 * Logic.zoom);
         Vector2i s = getVec();
         Drawing.drawLineGrid(0,0, s.x, s.y);

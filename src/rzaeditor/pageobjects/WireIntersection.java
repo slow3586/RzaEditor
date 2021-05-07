@@ -25,7 +25,7 @@ public class WireIntersection extends PageObjectBase{
 
     private WireIntersection(Vector2i p) {
         super(p);
-
+        
         Page.current.objects.add(this);
     }
 
@@ -37,6 +37,11 @@ public class WireIntersection extends PageObjectBase{
         return wi;
     }
     
+    public void addWireless(WireIntersection i){
+        connectedWireless.add(i);
+        i.connectedWireless.add(this);
+    }
+    
     public void removeWire(Wire w){
         wireIntersects.remove(w);
         checkIsEmpty();
@@ -46,7 +51,7 @@ public class WireIntersection extends PageObjectBase{
         
         int size = Math.round(3 * Logic.zoom);
         
-        Drawing.setColor(Color.black);
+        selectedCheck();
         Drawing.setTranslateGrid(pos);
         
         Drawing.fillOval(-size/2, -size/2, size, size);

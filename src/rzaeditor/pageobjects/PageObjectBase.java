@@ -55,7 +55,7 @@ public abstract class PageObjectBase {
     }
     
     public Rectanglei getRect(){
-        return new Rectanglei(pos.x, pos.y, pos.x+size.x, pos.y+size.y);
+        return new Rectanglei(pos.x, pos.y, pos.x+getSize().x, pos.y+getSize().y);
     }
     
     public boolean isRectTouching(Rectanglei r){

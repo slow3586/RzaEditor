@@ -35,66 +35,84 @@ public class Wire extends PageObjectBase{
         for (int i = 0; i < wires.size()-1; i++) {
             Wire w0 = wires.get(i);
             for (int j = i+1; j < wires.size(); j++) {
-                Wire w1 = wires.get(j);     
-                Vector2i at = new Vector2i();
+                Wire w1 = wires.get(j);  
+                
+                if(w0.isHorizontal() == w1.isHorizontal() && w0.startWI.pos == w1.endWI.pos && w0.startWI.wireIntersects.size()==2){
+                    w0.setStartWI(w1.startWI);
+                    w1.delete();
+                    return;
+                }
+                if(w0.isHorizontal() == w1.isHorizontal() && w0.endWI.pos == w1.startWI.pos && w0.endWI.wireIntersects.size()==2){
+                    w0.setEndWI(w1.endWI);
+                    w1.delete();
+                    return;
+                }
                 if(w0.isHorizontal() == w1.isHorizontal() && w0.containsWire(w1)){
                     if(w0.isHorizontal()){
                         if(w0.pos.x > w1.pos.x){
-                            w0.startWI.removeWire(w0);
-                            w0.startWI = w1.startWI;
-                            w0.startWI.wireIntersects.add(w0);
+                            w0.setStartWI(w1.startWI);
                         }else{
-                            w0.endWI.removeWire(w0);
-                            w0.endWI = w1.endWI;
-                            w0.endWI.wireIntersects.add(w0);
+                            w0.setEndWI(w1.startWI);
                         }
                     }else{
                         if(w0.pos.y > w1.pos.y){
-                            w0.startWI.removeWire(w0);
-                            w0.startWI = w1.startWI;
-                            w0.startWI.wireIntersects.add(w0);
+                            w0.setStartWI(w1.startWI);
                         }else{
-                            w0.endWI.removeWire(w0);
-                            w0.endWI = w1.endWI;
-                            w0.endWI.wireIntersects.add(w0);
+                            w0.setEndWI(w1.startWI);
                         }
                     }
                     w1.delete();
-                    checkAllWires();
                     return;
                 }
+
                 if(w0.pointInside(w1.startWI.pos, 1)){
                     Vector2i t = new Vector2i(w0.endWI.pos);
                     w0.setEndWI(w1.startWI);
                     Wire.create(w1.startWI.pos, t, true);
+                    return;
                 }
-                else if(w0.pointInside(w1.endWI.pos, 1)){
+                if(w0.pointInside(w1.endWI.pos, 1)){
                     Vector2i t = new Vector2i(w0.endWI.pos);
-                    w0.setStartWI(w1.endWI);
+                    w0.setEndWI(w1.endWI);
                     Wire.create(w1.endWI.pos, t, true);
+                    return;
                 }
-                else if(w1.pointInside(w0.startWI.pos, 1)){
+                if(w1.pointInside(w0.startWI.pos, 1)){
                     Vector2i t = new Vector2i(w1.endWI.pos);
                     w1.setEndWI(w0.startWI);
-                    Wire.create(w1.startWI.pos, t, true);
+                    Wire.create(w0.startWI.pos, t, true);
+                    return;
                 }
-                else if(w1.pointInside(w0.endWI.pos, 1)){
+                if(w1.pointInside(w0.endWI.pos, 1)){
                     Vector2i t = new Vector2i(w1.endWI.pos);
-                    w1.setStartWI(w0.endWI);
-                    Wire.create(w1.endWI.pos, t, true);
+                    w1.setEndWI(w0.endWI);
+                    Wire.create(w0.endWI.pos, t, true);
+                    return;
                 }
             }
         }
     }
     
     public void setStartWI(WireIntersection i){
-        startWI = i;
-        startWI.wireIntersects.add(this);
+        if(startWI!=null)
+            startWI.removeWire(this);
+        Vector2i s = i.pos;
+        Vector2i e = endWI.pos;
+        Logic.fixVectorPositions(s, e);
+        startWI = WireIntersection.getWI(s);
+        endWI = WireIntersection.getWI(e);
+        i.wireIntersects.add(this);
     }
     
     public void setEndWI(WireIntersection i){
-        endWI = i;
-        endWI.wireIntersects.add(this);
+        if(endWI!=null)
+            endWI.removeWire(this);
+        Vector2i s = startWI.pos;
+        Vector2i e = i.pos;
+        Logic.fixVectorPositions(s, e);
+        startWI = WireIntersection.getWI(s);
+        endWI = WireIntersection.getWI(e);
+        i.wireIntersects.add(this);
     }
     
     public static Wire create(Vector2i s, Vector2i e, boolean update) {
@@ -108,13 +126,17 @@ public class Wire extends PageObjectBase{
         w.endWI = WireIntersection.getWI(e);
         w.startWI.wireIntersects.add(w);
         w.endWI.wireIntersects.add(w);
-        w.setSize(new Vector2i(e).sub(s));
         w.color = new Color((float) Math.random(), (float) Math.random(), (float) Math.random());
         Page.current.objects.add(w);
         
         checkAllWires();
         
         return w;
+    }
+
+    @Override
+    public Vector2i getSize() {
+        return getVec();
     }
 
     public void delete() {
@@ -125,6 +147,7 @@ public class Wire extends PageObjectBase{
         endWI.checkIsEmpty();
         endWI=null;
         Page.current.objects.remove(this);
+        checkAllWires();
     }
     
     public static boolean canBePlacedAt(Vector2i s, Vector2i e){

@@ -7,18 +7,19 @@ import static rzaeditor.Logic.posToScreen;
 import rzaeditor.Page;
 
 public class ContactClosed extends Contact {
-
     public static Vector2i defaultSize = new Vector2i(3,1);
     
     public ContactClosed(Vector2i p, boolean rot) {
         super(p,rot);
-        name = "Реле "+Page.current.wires.size();
-        ID = "Реле "+Page.current.wires.size();
-        type = "Реле";
         WireIntersection w0 = WireIntersection.getWI(Logic.swapIfTrue(0, 0, rot).add(pos)); 
         WireIntersection w1 = WireIntersection.getWI(Logic.swapIfTrue(3, 0, rot).add(pos)); 
         wireIntersections.add(w0);
         wireIntersections.add(w1);
+    }
+    
+    @Override
+    public String getType() {
+        return "Закрытый контакт";
     }
     
     public static void drawPhantom(Vector2i pos, boolean rot) {

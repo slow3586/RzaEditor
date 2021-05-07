@@ -13,15 +13,18 @@ public class RelayRT85 extends Relay {
     
     public RelayRT85(Vector2i p, boolean rot) {
         super(p,rot);
-        name = "Реле "+Page.current.wires.size();
-        ID = "Реле "+Page.current.wires.size();
-        type = "Реле";
+        id = "РТ";
         WireIntersection w0 = WireIntersection.getWI(Logic.swapIfTrue(0, 1, rot).add(pos)); 
         WireIntersection w1 = WireIntersection.getWI(Logic.swapIfTrue(0, 3, rot).add(pos)); 
         WireIntersection w2 = WireIntersection.getWI(Logic.swapIfTrue(3, 2, rot).add(pos)); 
         wireIntersections.add(w0);
         wireIntersections.add(w1);
         wireIntersections.add(w2);
+    }
+    
+    @Override
+    public String getType() {
+        return "Реле РТ-85";
     }
     
     public static void drawPhantom(Vector2i pos, boolean rot) {

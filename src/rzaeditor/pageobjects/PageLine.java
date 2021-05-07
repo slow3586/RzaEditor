@@ -8,13 +8,17 @@ import rzaeditor.Logic;
 import rzaeditor.Page;
 
 public class PageLine extends Primitive {
-
     Vector2i start = new Vector2i();
     Vector2i end = new Vector2i();
     Color color = Color.BLACK;
 
     public PageLine(Vector2i pos) {
         super(pos);
+    }
+    
+    @Override
+    public String getType() {
+        return "Линия";
     }
     
     public static PageLine create(Vector2i s, Vector2i e){

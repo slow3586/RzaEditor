@@ -5,6 +5,7 @@ import static rzaeditor.Logic.ep;
 public abstract class DrawMode {
 
     private static DrawMode current = DrawModeWire.imp;
+    public String infoText = "";
     
     
     public static DrawMode getCurrent(){

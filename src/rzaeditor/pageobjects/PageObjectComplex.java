@@ -15,7 +15,6 @@ import rzaeditor.Logic;
 import rzaeditor.Page;
 
 public abstract class PageObjectComplex extends PageObjectBase {
-    
     public boolean rotated = false;
     public HashSet<WireIntersection> wireIntersections = new HashSet<>();
 
@@ -36,6 +35,11 @@ public abstract class PageObjectComplex extends PageObjectBase {
             System.err.println("defaultSize field not found in class "+getClass().getName()+"!!!");
             Logger.getLogger(PageObjectComplex.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    @Override
+    public String getType() {
+        return "Сложный объект";
     }
 
     public void drawChildren(){
@@ -72,8 +76,4 @@ public abstract class PageObjectComplex extends PageObjectBase {
     }
     
     abstract public void updatePageInteractions();
-    
-    public String getType(){
-        return type;
-    }
 }

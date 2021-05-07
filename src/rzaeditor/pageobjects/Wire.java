@@ -14,7 +14,6 @@ import rzaeditor.Logic;
 import rzaeditor.Page;
 
 public class Wire extends PageObjectBase{
-    
     WireIntersection endWI = null;
     WireIntersection startWI = null;
     boolean deleted = false;
@@ -25,6 +24,11 @@ public class Wire extends PageObjectBase{
     
     Wire(Vector2i p){
         super(p);
+    }
+    
+    @Override
+    public String getType() {
+        return "Провод";
     }
     
     public static Wire create(Vector2i s, Vector2i e, boolean update) {

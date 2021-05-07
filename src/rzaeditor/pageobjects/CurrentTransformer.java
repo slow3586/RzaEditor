@@ -8,18 +8,19 @@ import static rzaeditor.Logic.posToScreen;
 import rzaeditor.Page;
 
 public class CurrentTransformer extends CurrentSource {
-
     public static final Vector2i defaultSize = new Vector2i(4,2);
     
     public CurrentTransformer(Vector2i p, boolean rot) {
         super(p, rot);
-        name = "ТТ "+Page.current.wires.size();
-        ID = "ТТ "+Page.current.wires.size();
-        type = "ТТ";
         WireIntersection w0 = WireIntersection.getWI(Logic.swapIfTrue(0, 1, rot).add(pos)); 
         WireIntersection w1 = WireIntersection.getWI(Logic.swapIfTrue(4, 1, rot).add(pos)); 
         wireIntersections.add(w0);
         wireIntersections.add(w1);
+    }
+    
+    @Override
+    public String getType() {
+        return "Трансформатор тока";
     }
     
     @Override

@@ -3,6 +3,7 @@ package rzaeditor.pageobjects;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
@@ -11,25 +12,33 @@ import org.joml.Vector2i;
 import org.joml.primitives.Rectanglei;
 import rzaeditor.Cursor;
 import rzaeditor.Drawing;
+import rzaeditor.InfoTable;
 import rzaeditor.Logic;
 import rzaeditor.Page;
 
 public abstract class PageObjectBase {
+    
     Vector2i pos = new Vector2i();
     public boolean selected = false;
     public boolean hovered = false;
     protected Method methodDrawPhantom;
-    String ID = "";
-    String name = "";
-    protected String type = "";
+    public String id = "?";
+    public String name = "";
     private Vector2i size = new Vector2i(1,1);
     
     public PageObjectBase(Vector2i p) {
         pos = new Vector2i(p);
-        
-        name = "Объект "+Page.current.wires.size();
-        ID = "Объект "+Page.current.wires.size();
-        type = "Объект";
+        name = getType()+" №"+(getCountInPage()+1);
+    }
+    
+    public String getType(){
+        return "Объект";
+    }
+    
+    public long getCountInPage(){
+        return Page.current.objects.stream().filter((t) -> {
+            return t.getClass().equals(this.getClass());
+        }).count(); 
     }
     
     public void selectedCheck(){
@@ -76,5 +85,11 @@ public abstract class PageObjectBase {
     
     public Vector2i toGlobal(Vector2i loc){
         return new Vector2i(pos.x+loc.x, pos.y+loc.y);
+    }
+    
+    public void onSelect(){
+        InfoTable.addLine("Имя", name, null);
+        InfoTable.addLine("Тип", getType(), null);
+        InfoTable.addLine("ID", id, null);
     }
 }

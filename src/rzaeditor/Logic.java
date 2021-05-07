@@ -45,10 +45,7 @@ public class Logic {
         
         mf.setSize((int)newWinSize.x, (int)newWinSize.y);
         mf.setLocation((int)newWinPos.x, (int)newWinPos.y);
-    }
-    
-    public static void dragBorder(){
-        
+        mf.revalidate();
     }
     
     public static void forAllObjects(Consumer c){
@@ -84,7 +81,8 @@ public class Logic {
         zoomGridGap = zoom * Page.gridGap;
         MainFrame.zoomLabel.setText("Zoom: "+Math.round(Logic.zoom*100)
                 +"% X:"+Cursor.posGrid.x*Page.current.cmPerCell
-                +"см Y:"+Cursor.posGrid.y*Page.current.cmPerCell+"см");
+                +"см Y:"+Cursor.posGrid.y*Page.current.cmPerCell+"см "+
+                DrawMode.getCurrent().infoText);
         
         rzaeditor.Cursor.updateCursor();
         

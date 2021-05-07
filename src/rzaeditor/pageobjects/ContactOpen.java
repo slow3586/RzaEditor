@@ -6,7 +6,6 @@ import rzaeditor.Logic;
 import static rzaeditor.Logic.posToScreen;
 
 public class ContactOpen extends Contact {
-
     public static Vector2i defaultSize = new Vector2i(3,1);
     
     public ContactOpen(Vector2i p, boolean rot) {
@@ -16,6 +15,11 @@ public class ContactOpen extends Contact {
         WireIntersection w1 = WireIntersection.getWI(Logic.swapIfTrue(3, 1, rot).add(pos)); 
         wireIntersections.add(w0);
         wireIntersections.add(w1);
+    }
+    
+    @Override
+    public String getType() {
+        return "Открытый контакт";
     }
     
     public static void drawPhantom(Vector2i pos, boolean rot) {

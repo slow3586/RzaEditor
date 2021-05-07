@@ -59,10 +59,15 @@ public class DrawModeSelect extends DrawMode {
 
     @Override
     public void mouseReleased() {  
+        InfoTable.reset();
+        
         Logic.forAllObjects((Consumer) (Object t) -> {
             PageObjectBase o = (PageObjectBase) t;
             o.selected = o.hovered;
             o.hovered = false;
+            if(o.selected){
+                o.onSelect();
+            }
         });
         
         selectedObjects.clear();

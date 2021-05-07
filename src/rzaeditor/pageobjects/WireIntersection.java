@@ -11,12 +11,16 @@ import rzaeditor.Logic;
 import rzaeditor.Page;
 
 public class WireIntersection extends PageObjectBase{
-
     HashSet<Wire> wireIntersects = new HashSet<>();
     HashSet<WireIntersection> connected = new HashSet<>();
     HashSet<WireIntersection> connectedWireless = new HashSet<>();
     HashSet<WireIntersection> voltageTo = new HashSet<>();
     boolean on = true;
+    
+    @Override
+    public String getType() {
+        return "Связка";
+    }
 
     private WireIntersection(Vector2i p) {
         super(p);

@@ -9,9 +9,13 @@ import static rzaeditor.Logic.zoomGridGap;
 import rzaeditor.Page;
 
 public class PageRect extends Primitive {
-
     public PageRect(Vector2i pos) {
         super(pos);
+    }
+    
+    @Override
+    public String getType() {
+        return "Прямоугольник";
     }
     
     public static PageRect create(Vector2i pos, Vector2i size){

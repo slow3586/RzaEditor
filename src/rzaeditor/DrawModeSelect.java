@@ -20,7 +20,7 @@ public class DrawModeSelect extends DrawMode {
     
     @Override
     public void mouseDrag() {        
-        Logic.forAllObjects((Consumer) (Object t) -> {
+        Page.current.objects.stream().forEach((t) -> {
             PageObjectBase o = (PageObjectBase) t;
             o.hovered=false;
             if(o.isRectTouching(dragRect)){
@@ -34,7 +34,7 @@ public class DrawModeSelect extends DrawMode {
     public void mouseMove() {
         if(!selectedObjects.isEmpty()) return;
         
-        Logic.forAllObjects((Consumer) (Object t) -> {
+        Page.current.objects.stream().forEach((t) -> {
             PageObjectBase o = (PageObjectBase) t;
             o.hovered=false;
             if(o.isVecTouching(Cursor.posGrid)){
@@ -61,7 +61,7 @@ public class DrawModeSelect extends DrawMode {
     public void mouseReleased() {  
         InfoTable.reset();
         
-        Logic.forAllObjects((Consumer) (Object t) -> {
+        Page.current.objects.stream().forEach((t) -> {
             PageObjectBase o = (PageObjectBase) t;
             o.selected = o.hovered;
             o.hovered = false;
@@ -76,7 +76,7 @@ public class DrawModeSelect extends DrawMode {
 
     @Override
     public void cleanup() {
-        Logic.forAllObjects((Consumer) (Object t) -> {
+        Page.current.objects.stream().forEach((t) -> {
             PageObjectBase o = (PageObjectBase) t;
             o.selected = false;
             o.hovered = false;

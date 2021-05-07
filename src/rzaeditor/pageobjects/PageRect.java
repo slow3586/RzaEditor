@@ -22,24 +22,10 @@ public class PageRect extends Primitive {
         PageRect pl = new PageRect(pos);
         pl.setSize(new Vector2i(size));
         
-        Page.current.primitives.add(pl);
+        Page.current.objects.add(pl);
         return pl;
     }
-    
-    public static boolean canBePlacedAt(Vector2i s, Vector2i e){
-        Vector2i vec = new Vector2i(e).sub(s);
-        
-        if(vec.length()<=0) return false;
-        
-        for (Wire w1 : Page.current.wires) {
-            if ((vec.y == 0)==w1.isHorizontal() && (w1.pointInside(s, 1) || w1.pointInside(e, 1))) {
-                return false;
-            }
-        }
-        
-        return true;
-    }
-    
+
     @Override
     public void draw() {
         selectedCheck();

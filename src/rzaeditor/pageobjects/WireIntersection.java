@@ -1,6 +1,7 @@
 package rzaeditor.pageobjects;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.HashSet;
 import java.util.Optional;
@@ -24,22 +25,8 @@ public class WireIntersection extends PageObjectBase{
 
     private WireIntersection(Vector2i p) {
         super(p);
-        for (Wire wire : Page.current.wires) {
-            if (wire.start.equals(pos)) {
-                wire.startWI = this;
-                wireIntersects.add(wire);
-            }
-            if (wire.end.equals(pos)) {
-                wire.endWI = this;
-                wireIntersects.add(wire);
-            }
-            if (wire.pointInside(pos, 1)) {
-                wireIntersects.add(wire);
-            }
-        }
-        if (!wireIntersects.isEmpty()) {
-            Page.current.wireIntersections.add(this);
-        }
+
+        Page.current.objects.add(this);
     }
 
     public static WireIntersection getWI(Vector2i p) {
@@ -49,10 +36,17 @@ public class WireIntersection extends PageObjectBase{
         }
         return wi;
     }
+    
+    public void removeWire(Wire w){
+        wireIntersects.remove(w);
+        checkIsEmpty();
+    }
 
     public void draw() {
+        
         int size = Math.round(3 * Logic.zoom);
         
+        Drawing.setColor(Color.black);
         Drawing.setTranslateGrid(pos);
         
         Drawing.fillOval(-size/2, -size/2, size, size);
@@ -60,9 +54,12 @@ public class WireIntersection extends PageObjectBase{
 
     private static WireIntersection getWIAt(Vector2i p) {
         HashSet<WireIntersection> s = new HashSet<>();
-        s.addAll(Page.current.wireIntersections);
+        s.addAll(Page.current.getWireIntersections());
         Page.current.objects.forEach((t) -> {
-            s.addAll(t.wireIntersections);
+            if(!t.getClass().equals(PageObjectComplex.class)) return;
+            
+            PageObjectComplex o = (PageObjectComplex) t;
+            s.addAll(o.wireIntersections);
         });
         Optional<WireIntersection> m = s.stream().filter((t) -> {
             return t.pos.equals(p);
@@ -77,6 +74,6 @@ public class WireIntersection extends PageObjectBase{
     }
 
     public void delete() {
-        Page.current.wireIntersections.remove(this);
+        Page.current.objects.remove(this);
     }
 }

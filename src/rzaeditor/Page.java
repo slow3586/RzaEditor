@@ -6,6 +6,7 @@ import rzaeditor.pageobjects.WireIntersection;
 import java.util.HashSet;
 import org.joml.Vector2i;
 import org.joml.primitives.Rectanglei;
+import rzaeditor.pageobjects.PageObjectBase;
 import rzaeditor.pageobjects.Primitive;
 
 public class Page {
@@ -18,10 +19,7 @@ public class Page {
     
     public Vector2i titleSize;
     public Vector2i sizeNoBorder;
-    public HashSet<Primitive> primitives = new HashSet<>();
-    public HashSet<PageObjectComplex> objects = new HashSet<>();
-    public HashSet<Wire> wires = new HashSet<>();
-    public HashSet<WireIntersection> wireIntersections = new HashSet<>();
+    public HashSet<PageObjectBase> objects = new HashSet<>();
     public Vector2i pos= new Vector2i(0, 0);
     public Vector2i size;
     public Vector2i gridSize;
@@ -31,6 +29,36 @@ public class Page {
     public boolean hasUnsavedProgress = true;
     public boolean useFineGrid = false;
     public float cmPerCell;
+    
+    public HashSet<PageObjectBase> getObjectsClass(Class c){
+        HashSet<PageObjectBase> h = new HashSet<>();
+        objects.parallelStream().filter((t) -> {
+            return t.getClass().equals(c);
+        }).forEach((t) -> {
+            h.add(t);
+        });
+        return h;
+    }
+    
+    public HashSet<Wire> getWires(){
+        HashSet<Wire> h = new HashSet<>();
+        objects.parallelStream().filter((t) -> {
+            return t.getClass().equals(Wire.class);
+        }).forEach((t) -> {
+            h.add((Wire)t);
+        });
+        return h;
+    }
+    
+    public HashSet<WireIntersection> getWireIntersections(){
+        HashSet<WireIntersection> h = new HashSet<>();
+        objects.parallelStream().filter((t) -> {
+            return t.getClass().equals(WireIntersection.class);
+        }).forEach((t) -> {
+            h.add((WireIntersection)t);
+        });
+        return h;
+    }
     
     private Page(){
         

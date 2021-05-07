@@ -137,20 +137,10 @@ public class Drawing {
         Cursor.draw();
         
         Drawing.setColor(Color.BLACK);
-        Page.current.primitives.stream().forEach((Primitive t) -> {
-            t.draw();
-        });
-        
-        Page.current.wires.stream().forEach((Wire t) -> {
-            t.draw();
-        });
         
         DrawMode.getCurrent().draw();
         
         Drawing.setColor(Color.BLACK);
-        Page.current.wireIntersections.stream().forEach((WireIntersection t) -> {
-            t.draw();
-        });
         
         Page.current.objects.stream().forEach((t) -> {
             t.draw();

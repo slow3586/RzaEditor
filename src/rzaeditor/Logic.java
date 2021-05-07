@@ -48,22 +48,6 @@ public class Logic {
         mf.revalidate();
     }
     
-    public static void forAllObjects(Consumer c){
-        
-        Page.current.objects.forEach((t) -> {
-            c.accept(t);
-        });
-        Page.current.primitives.forEach((t) -> {
-            c.accept(t);
-        });
-        Page.current.wires.forEach((t) -> {
-            c.accept(t);
-        });
-        Page.current.wireIntersections.forEach((t) -> {
-            c.accept(t);
-        });
-    }
-    
     public static void keyboardEvent(){
         DrawMode.getCurrent().keyboardEvent();
         Keyboard.reset();

@@ -7,11 +7,11 @@ import rzaeditor.Drawing;
 import rzaeditor.Logic;
 import rzaeditor.Page;
 
-public class RelayBig extends PageObject {
+public class RelayRT85 extends Relay {
 
-    public static final Vector2i size = new Vector2i(3,4);
+    public static final Vector2i defaultSize = new Vector2i(3,4);
     
-    public RelayBig(Vector2i p, boolean rot) {
+    public RelayRT85(Vector2i p, boolean rot) {
         super(p,rot);
         name = "Реле "+Page.current.wires.size();
         ID = "Реле "+Page.current.wires.size();
@@ -25,7 +25,7 @@ public class RelayBig extends PageObject {
     }
     
     public static void drawPhantom(Vector2i pos, boolean rot) {
-        PageObject.rotateCheck(pos, size, rot);
+        PageObjectComplex.rotateCheck(pos, defaultSize, rot);
         Drawing.drawLineGrid(0,1,1,1);
         Drawing.drawLineGrid(2,2,3,2);
         Drawing.drawLineGrid(0,3,1,3);

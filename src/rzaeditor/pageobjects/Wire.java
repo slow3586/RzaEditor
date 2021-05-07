@@ -13,20 +13,18 @@ import rzaeditor.Drawing;
 import rzaeditor.Logic;
 import rzaeditor.Page;
 
-public class Wire{
+public class Wire extends PageObjectBase{
     
     WireIntersection endWI = null;
     WireIntersection startWI = null;
     boolean deleted = false;
-    boolean allowMerge = true;
-    public boolean selected = false;
     
     Vector2i start = new Vector2i();
     Vector2i end = new Vector2i();
     Color color = Color.BLACK;
     
-    Wire(){
-        super();
+    Wire(Vector2i p){
+        super(p);
     }
     
     public static Wire create(Vector2i s, Vector2i e, boolean update) {
@@ -34,10 +32,11 @@ public class Wire{
             throw new IllegalArgumentException("Tried to create a non-straight wire. s:"+s.x+" "+s.y+" e:"+e.x+" "+e.y);
         }
         
-        Wire w = new Wire();
+        Wire w = new Wire(s);
         w.start = new Vector2i(s);
         w.end = new Vector2i(e);
         Logic.fixVectorPositions(w.start, w.end);
+        w.setSize(new Vector2i(w.end).sub(w.start));
         w.color = new Color((float) Math.random(), (float) Math.random(), (float) Math.random());
         
         if(update)
@@ -88,7 +87,7 @@ public class Wire{
             if (w.equals(this) || w.deleted)
                 continue;
             if (w.isHorizontal() == isHorizontal()) {
-                if(!allowMerge) continue;
+                //if(!allowMerge) continue;
                 if (w.start.equals(end)) {
                     if (w.startWI.wireIntersects.size() <= 2) {
                         w.start = start;
@@ -165,6 +164,7 @@ public class Wire{
         }
         Vector2i temp = end;
         end = p;
+        setSize(new Vector2i(end).sub(start));
         updatePageInteractions();
         Wire w1 = Wire.create(p, temp, true);
     }

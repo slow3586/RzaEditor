@@ -1,6 +1,6 @@
 package rzaeditor;
 
-import rzaeditor.pageobjects.PageObject;
+import rzaeditor.pageobjects.PageObjectComplex;
 import rzaeditor.pageobjects.Wire;
 import rzaeditor.pageobjects.WireIntersection;
 import java.util.HashSet;
@@ -19,7 +19,7 @@ public class Page {
     public Vector2i titleSize;
     public Vector2i sizeNoBorder;
     public HashSet<Primitive> primitives = new HashSet<>();
-    public HashSet<PageObject> objects = new HashSet<>();
+    public HashSet<PageObjectComplex> objects = new HashSet<>();
     public HashSet<Wire> wires = new HashSet<>();
     public HashSet<WireIntersection> wireIntersections = new HashSet<>();
     public Vector2i pos= new Vector2i(0, 0);

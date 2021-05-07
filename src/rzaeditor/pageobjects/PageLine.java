@@ -12,15 +12,17 @@ public class PageLine extends Primitive {
     Vector2i start = new Vector2i();
     Vector2i end = new Vector2i();
     Color color = Color.BLACK;
-    
-    PageLine() {
+
+    public PageLine(Vector2i pos) {
+        super(pos);
     }
     
     public static PageLine create(Vector2i s, Vector2i e){
-        PageLine pl = new PageLine();
+        PageLine pl = new PageLine(s);
         pl.start = new Vector2i(s);
         pl.end = new Vector2i(e);
         Logic.fixVectorPositions(pl.start, pl.end);
+        pl.setSize(new Vector2i(pl.end).sub(pl.start));
         
         Page.current.primitives.add(pl);
         return pl;
@@ -42,11 +44,7 @@ public class PageLine extends Primitive {
     
     @Override
     public void draw() {
-        Drawing.setColor(color);
-        if(selected){
-            Drawing.setColor(Color.RED);
-            Drawing.setStroke(3);
-        }
+        selectedCheck();
         Drawing.setStroke(2);
         Drawing.drawLine(Logic.gridToScreen(start), Logic.gridToScreen(end));
     }

@@ -1,6 +1,6 @@
 package rzaeditor;
 
-import rzaeditor.pageobjects.PageObject;
+import rzaeditor.pageobjects.PageObjectComplex;
 import rzaeditor.pageobjects.Wire;
 import rzaeditor.pageobjects.WireIntersection;
 import java.awt.BasicStroke;
@@ -28,6 +28,11 @@ public class Drawing {
     public static void drawLineGrid(int x, int y, int x1, int y1) {
         g.drawLine(Math.round(x*Logic.zoomGridGap), Math.round(y*Logic.zoomGridGap), 
                 Math.round(x1*Logic.zoomGridGap), Math.round(y1*Logic.zoomGridGap));
+    }
+    
+    public static void drawLineGrid(Vector2i s, Vector2i e) {
+        g.drawLine(Math.round(s.x*Logic.zoomGridGap), Math.round(s.y*Logic.zoomGridGap), 
+                Math.round(e.x*Logic.zoomGridGap), Math.round(e.y*Logic.zoomGridGap));
     }
 
     public static void drawOval(float x, float y, float x1, float y1) {
@@ -140,7 +145,7 @@ public class Drawing {
             t.draw();
         });
         
-        Logic.drawMode.draw();
+        DrawMode.getCurrent().draw();
         
         Drawing.setColor(Color.BLACK);
         Page.current.wireIntersections.stream().forEach((WireIntersection t) -> {

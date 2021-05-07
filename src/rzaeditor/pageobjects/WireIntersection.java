@@ -10,9 +10,8 @@ import rzaeditor.Drawing;
 import rzaeditor.Logic;
 import rzaeditor.Page;
 
-public class WireIntersection{
+public class WireIntersection extends PageObjectBase{
 
-    Vector2i pos = new Vector2i();
     HashSet<Wire> wireIntersects = new HashSet<>();
     HashSet<WireIntersection> connected = new HashSet<>();
     HashSet<WireIntersection> connectedWireless = new HashSet<>();
@@ -20,7 +19,7 @@ public class WireIntersection{
     boolean on = true;
 
     private WireIntersection(Vector2i p) {
-        pos = p;
+        super(p);
         for (Wire wire : Page.current.wires) {
             if (wire.start.equals(pos)) {
                 wire.startWI = this;

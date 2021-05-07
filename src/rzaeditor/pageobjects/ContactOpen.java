@@ -7,7 +7,7 @@ import static rzaeditor.Logic.posToScreen;
 
 public class ContactOpen extends Contact {
 
-    public static Vector2i size = new Vector2i(3,1);
+    public static Vector2i defaultSize = new Vector2i(3,1);
     
     public ContactOpen(Vector2i p, boolean rot) {
         super(p, rot);
@@ -19,7 +19,7 @@ public class ContactOpen extends Contact {
     }
     
     public static void drawPhantom(Vector2i pos, boolean rot) {
-        PageObject.rotateCheck(pos, size, rot);
+        PageObjectComplex.rotateCheck(pos, defaultSize, rot);
         Drawing.drawLineGrid(0,1,1,1);
         Drawing.drawLineGrid(2,1,3,1);
         

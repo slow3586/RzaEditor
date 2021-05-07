@@ -10,17 +10,13 @@ import rzaeditor.Page;
 
 public class PageRect extends Primitive {
 
-    Vector2i pos = new Vector2i();
-    Vector2i size = new Vector2i();
-    Color color = Color.BLACK;
-    
-    PageRect() {
+    public PageRect(Vector2i pos) {
+        super(pos);
     }
     
     public static PageRect create(Vector2i pos, Vector2i size){
-        PageRect pl = new PageRect();
-        pl.pos = new Vector2i(pos);
-        pl.size = new Vector2i(size);
+        PageRect pl = new PageRect(pos);
+        pl.setSize(new Vector2i(size));
         
         Page.current.primitives.add(pl);
         return pl;
@@ -42,13 +38,8 @@ public class PageRect extends Primitive {
     
     @Override
     public void draw() {
-        Drawing.setColor(color);
-        if(selected){
-            Drawing.setColor(Color.RED);
-            Drawing.setStroke(3);
-        }
+        selectedCheck();
         Drawing.setStroke(2);
-        //Drawing.drawRect(Logic.gridToScreen(pos));
-        Drawing.drawRect(Logic.gridToScreen(pos), new Vector2i(Math.round(size.x*zoomGridGap), Math.round(size.y*zoomGridGap))); 
+        Drawing.drawRect(Logic.gridToScreen(pos), new Vector2i(Math.round(getSize().x*zoomGridGap), Math.round(getSize().y*zoomGridGap))); 
     }
 }

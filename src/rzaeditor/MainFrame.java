@@ -5,8 +5,8 @@ import java.awt.event.ComponentEvent;
 import rzaeditor.pageobjects.ContactClosed;
 import rzaeditor.pageobjects.ContactOpen;
 import rzaeditor.pageobjects.CurrentTransformer;
-import rzaeditor.pageobjects.Relay;
-import rzaeditor.pageobjects.RelayBig;
+import rzaeditor.pageobjects.RelayRT40;
+import rzaeditor.pageobjects.RelayRT85;
 
 public class MainFrame extends javax.swing.JFrame {
 
@@ -222,15 +222,15 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        Logic.drawMode = DrawModeWire.imp;
+        DrawMode.setCurrent(DrawModeWire.imp);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        Logic.drawMode = DrawModeSelect.imp;
+        DrawMode.setCurrent(DrawModeSelect.imp);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        Logic.drawMode = DrawModeObject.imp;
+        DrawMode.setCurrent(DrawModeObject.imp);
         DrawModeObject.objectClass = ContactClosed.class;
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
@@ -243,7 +243,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        Logic.drawMode = DrawModePrimLine.imp;
+        DrawMode.setCurrent(DrawModePrimLine.imp);
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
@@ -251,7 +251,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-        Logic.drawMode = DrawModePrimRect.imp;
+        DrawMode.setCurrent(DrawModePrimRect.imp);
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
@@ -259,22 +259,22 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        Logic.drawMode = DrawModeObject.imp;
-        DrawModeObject.objectClass = Relay.class;
+        DrawMode.setCurrent(DrawModeObject.imp);
+        DrawModeObject.objectClass = RelayRT40.class;
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
-        Logic.drawMode = DrawModeObject.imp;
+        DrawMode.setCurrent(DrawModeObject.imp);
         DrawModeObject.objectClass = CurrentTransformer.class;
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
-        Logic.drawMode = DrawModeObject.imp;
-        DrawModeObject.objectClass = RelayBig.class;
+        DrawMode.setCurrent(DrawModeObject.imp);
+        DrawModeObject.objectClass = RelayRT85.class;
     }//GEN-LAST:event_jMenuItem13ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        Logic.drawMode = DrawModeObject.imp;
+        DrawMode.setCurrent(DrawModeObject.imp);
         DrawModeObject.objectClass = ContactOpen.class;
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 

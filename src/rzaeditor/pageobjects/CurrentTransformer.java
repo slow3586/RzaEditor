@@ -6,11 +6,10 @@ import rzaeditor.Logic;
 import static rzaeditor.Logic.gridToScreen;
 import static rzaeditor.Logic.posToScreen;
 import rzaeditor.Page;
-import static rzaeditor.pageobjects.Relay.size;
 
 public class CurrentTransformer extends CurrentSource {
 
-    public static final Vector2i size = new Vector2i(4,2);
+    public static final Vector2i defaultSize = new Vector2i(4,2);
     
     public CurrentTransformer(Vector2i p, boolean rot) {
         super(p, rot);
@@ -30,7 +29,7 @@ public class CurrentTransformer extends CurrentSource {
     }
     
     public static void drawPhantom(Vector2i pos, boolean rot) {
-        PageObject.rotateCheck(pos, size, rot);
+        PageObjectComplex.rotateCheck(pos, defaultSize, rot);
         
         Drawing.drawArc(posToScreen(6,1),
                 new Vector2i((int)Math.round(1*Logic.zoomGridGap),  (int)Math.round(1*Logic.zoomGridGap)),

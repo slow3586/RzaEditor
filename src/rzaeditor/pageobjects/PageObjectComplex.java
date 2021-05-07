@@ -9,62 +9,35 @@ import java.util.logging.Logger;
 import org.joml.Vector2i;
 import org.joml.primitives.Rectanglef;
 import org.joml.primitives.Rectanglei;
+import rzaeditor.Cursor;
 import rzaeditor.Drawing;
 import rzaeditor.Logic;
 import rzaeditor.Page;
-import static rzaeditor.pageobjects.Relay.size;
 
-public abstract class PageObject {
-    Vector2i pos = new Vector2i();
-    String ID = "";
-    String name = "";
-    protected String type = "";
-    public boolean selected = false;
-    public PageObject parent = null;
-    public boolean rotated = false;
-    //public HashSet<PageObject> children = new HashSet<>();
-    public HashSet<WireIntersection> wireIntersections = new HashSet<>();
-    private Method methodDrawPhantom;
-    private Vector2i __size;
+public abstract class PageObjectComplex extends PageObjectBase {
     
-    public PageObject(Vector2i p, boolean rot) {
+    public boolean rotated = false;
+    public HashSet<WireIntersection> wireIntersections = new HashSet<>();
+
+    public PageObjectComplex(Vector2i pos, boolean rot) {
+        super(pos);
+        rotated = rot;
         try {
             methodDrawPhantom = getClass().getMethod("drawPhantom", Vector2i.class, boolean.class);
         } catch (NoSuchMethodException | SecurityException ex) {
-            Logger.getLogger(PageObject.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("drawPhantom method not found in class "+getClass().getName()+"!!!");
+            Logger.getLogger(PageObjectComplex.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         try {
-            Field f = getClass().getField("size");
-            //if(f.get)
-            __size = (Vector2i) f.get(Vector2i.class);
+            Field f = getClass().getField("defaultSize");
+            setSize((Vector2i) f.get(Vector2i.class));
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            Logger.getLogger(PageObject.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("defaultSize field not found in class "+getClass().getName()+"!!!");
+            Logger.getLogger(PageObjectComplex.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        pos = new Vector2i(p);
-        rotated = rot;
-        name = "Объект "+Page.current.wires.size();
-        ID = "Объект "+Page.current.wires.size();
-        type = "Объект";
     }
-    
-    public static Vector2i toGlobal(PageObject o, int x, int y){
-        return new Vector2i(o.pos.x+x, o.pos.y+y);
-    }
-    
-    public static Vector2i toGlobal(PageObject o, Vector2i loc){
-        return new Vector2i(o.pos.x+loc.x, o.pos.y+loc.y);
-    }
-    
-    final public Vector2i toGlobal(int x, int y){
-        return new Vector2i(pos.x+x, pos.y+y);
-    }
-    
-    public Vector2i toGlobal(Vector2i loc){
-        return new Vector2i(pos.x+loc.x, pos.y+loc.y);
-    }
-    
+
     public void drawChildren(){
         //children.forEach((t) -> {
         //   t.draw();
@@ -74,9 +47,7 @@ public abstract class PageObject {
         });
     }
     
-    public Vector2i getSize(){
-        return __size;
-    }
+    
     
     public static void rotateCheck(Vector2i pos, Vector2i size, boolean rot){
         Drawing.setTranslateGrid(pos);
@@ -91,13 +62,15 @@ public abstract class PageObject {
         pos.y = y;
     }
     public void draw(){
+        selectedCheck();
         try {
             methodDrawPhantom.invoke(null, pos, rotated);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            Logger.getLogger(PageObject.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PageObjectComplex.class.getName()).log(Level.SEVERE, null, ex);
         }
         drawChildren();
     }
+    
     abstract public void updatePageInteractions();
     
     public String getType(){

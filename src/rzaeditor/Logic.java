@@ -3,10 +3,12 @@ package rzaeditor;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashSet;
+import java.util.function.Consumer;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 import org.joml.primitives.Rectanglef;
 import org.joml.primitives.Rectanglei;
+import rzaeditor.pageobjects.PageObjectBase;
 
 public class Logic {
 
@@ -18,7 +20,6 @@ public class Logic {
     public static boolean isDrawing = false;
     public static Vector2i dragVector = new Vector2i();
     public static CreationMode creationMode = CreationMode.PAGE;
-    public static DrawMode drawMode = DrawModeWire.imp;
     public static Vector2i dragStart = new Vector2i();
     public static Vector2i dragEnd = new Vector2i();
     public static Vector2i dragStartFixed = new Vector2i();
@@ -50,8 +51,24 @@ public class Logic {
         
     }
     
+    public static void forAllObjects(Consumer c){
+        
+        Page.current.objects.forEach((t) -> {
+            c.accept(t);
+        });
+        Page.current.primitives.forEach((t) -> {
+            c.accept(t);
+        });
+        Page.current.wires.forEach((t) -> {
+            c.accept(t);
+        });
+        Page.current.wireIntersections.forEach((t) -> {
+            c.accept(t);
+        });
+    }
+    
     public static void keyboardEvent(){
-        drawMode.keyboardEvent();
+        DrawMode.getCurrent().keyboardEvent();
         Keyboard.reset();
     }
     
@@ -94,11 +111,11 @@ public class Logic {
             dragRect.setMax(dragEnd);
             isDragging = true;
             
-            drawMode.mousePressed();
+            DrawMode.getCurrent().mousePressed();
         }
             
         if(Mouse.isReleased(1)){
-            drawMode.mouseReleased();
+            DrawMode.getCurrent().mouseReleased();
             
             isDragging = false;
             dragStart.zero();
@@ -109,9 +126,9 @@ public class Logic {
         
         if(Cursor.gridMoved){
             if(Mouse.isDown(1)){
-                drawMode.mouseDrag();
+                DrawMode.getCurrent().mouseDrag();
             }else{
-                drawMode.mouseMove();
+                DrawMode.getCurrent().mouseMove();
             }
         }
         if(Mouse.isDown(2)){
@@ -173,6 +190,8 @@ public class Logic {
     public static Vector2i posToScreen(float x, float y){
         return new Vector2i(Math.round(x*zoom), Math.round(y*zoom));
     }
+    
+    
     
     public static void fixVectorPositions(Vector2i start, Vector2i end){
         Vector2i s = new Vector2i(Math.min(start.x, end.x),Math.min(start.y, end.y));

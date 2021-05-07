@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 import org.joml.Vector2i;
 import static rzaeditor.Logic.dragEnd;
 import static rzaeditor.Logic.dragStart;
-import rzaeditor.pageobjects.PageObject;
+import rzaeditor.pageobjects.PageObjectComplex;
 
 public class DrawModeObject extends DrawMode {
 
@@ -19,7 +19,6 @@ public class DrawModeObject extends DrawMode {
 
     @Override
     public void keyboardEvent() {
-        System.err.println("w "+ Keyboard.released.size());
         Keyboard.released.size();
         if(Keyboard.isReleased(KeyEvent.VK_SHIFT))
             rotate=!rotate;
@@ -41,7 +40,7 @@ public class DrawModeObject extends DrawMode {
     @Override
     public void mouseReleased() {
         try {
-            PageObject o = (PageObject) objectClass.getConstructor(Vector2i.class, boolean.class).newInstance(Cursor.posGrid, rotate);
+            PageObjectComplex o = (PageObjectComplex) objectClass.getConstructor(Vector2i.class, boolean.class).newInstance(Cursor.posGrid, rotate);
             Page.current.objects.add(o);
         } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger(DrawModeObject.class.getName()).log(Level.SEVERE, null, ex);

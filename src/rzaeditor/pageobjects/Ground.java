@@ -10,6 +10,7 @@ public class Ground extends PageObjectComplex {
     
     public Ground(Vector2i pos, Direction dir) {
         super(pos, dir);
+        id="";
     }
     
     public static void drawPhantom(Vector2i pos) {

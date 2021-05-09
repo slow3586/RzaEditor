@@ -64,6 +64,15 @@ public class RelayRT40 extends Relay {
     }
 
     @Override
+    public void delete() {
+        super.delete();
+        if(contactClosed!=null)
+            contactClosed.relay = null;
+        if(contactOpen!=null)
+            contactOpen.relay = null;
+    }
+    
+    @Override
     public void onSelect() {
         super.onSelect();
         

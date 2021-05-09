@@ -31,7 +31,12 @@ public class WireIntersection extends PageObjectBase{
     }
     
     public static WireIntersection getWI(int x, int y, PageObjectComplex o) {
-        return getWI(Logic.swapIfTrue(o.pos.x+x,o.pos.y+y, o.direction==Direction.UP || o.direction==Direction.DOWN));
+        return getWI(Logic.swapIfTrue(x,y, o.direction==Direction.UP || o.direction==Direction.DOWN).add(o.pos.x, o.pos.y));
+    }
+
+    @Override
+    public String save() {
+        return null;
     }
 
     public static WireIntersection getWI(Vector2i p) {
@@ -81,9 +86,5 @@ public class WireIntersection extends PageObjectBase{
         if (wires.isEmpty() && wireless.isEmpty()) {
             delete();
         }
-    }
-
-    public void delete() {
-        Page.current.objects.remove(this);
     }
 }

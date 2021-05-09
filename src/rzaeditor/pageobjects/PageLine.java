@@ -34,8 +34,7 @@ public class PageLine extends Primitive {
     
     @Override
     public void draw() {
-        selectedCheck();
-        Drawing.setTranslateGrid(start);
+        super.draw();
         Drawing.setStroke(2);
         Drawing.drawLineGrid(0,0, getSize().x, getSize().y);
     }

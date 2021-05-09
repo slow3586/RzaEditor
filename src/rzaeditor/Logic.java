@@ -50,6 +50,7 @@ public class Logic {
     
     public static void keyboardEvent(){
         DrawMode.getCurrent().keyboardEvent();
+        ep.repaint();
         Keyboard.reset();
     }
     
@@ -58,6 +59,13 @@ public class Logic {
             return new Vector2i(y, x);
         else
             return new Vector2i(x, y);
+    }
+    
+    public static Vector2i swapIfTrue(Vector2i v, boolean b){
+        if(b)
+            return new Vector2i(v.y, v.x);
+        else
+            return new Vector2i(v.x, v.y);
     }
     
     public static void mouseEvent(){
@@ -71,7 +79,7 @@ public class Logic {
         
         rzaeditor.Cursor.updateCursor();
         
-        dragEnd = Cursor.posGrid;
+        dragEnd = new Vector2i(Cursor.posGrid);
         
         dragStartFixed = new Vector2i(dragStart);
         dragEndFixed = new Vector2i(dragEnd);
@@ -83,8 +91,8 @@ public class Logic {
         dragVecFixed = new Vector2i(dragEndFixed).sub(dragStartFixed);
         
         if(Mouse.isPressed(1)){
-            dragStart = Cursor.posGrid;
-            dragEnd = Cursor.posGrid;
+            dragStart = new Vector2i(Cursor.posGrid);
+            dragEnd = new Vector2i(Cursor.posGrid);
             
             dragStartFixed = new Vector2i(dragStart);
             dragEndFixed = new Vector2i(dragEnd);
@@ -137,8 +145,6 @@ public class Logic {
     }
     
     public static boolean isInsideGrid(Vector2i v){
-        if(!Page.current.useFineGrid)
-            return v.x>0 && v.y>0 && v.x<Page.current.gridSize.x && v.y<Page.current.gridSize.y;
         return v.x>=0 && v.y>=0 && v.x<=Page.current.gridSize.x && v.y<=Page.current.gridSize.y;
     }
     

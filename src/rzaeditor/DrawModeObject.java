@@ -44,7 +44,6 @@ public class DrawModeObject extends DrawMode {
             else if(dir==Direction.DOWN){
                 dir=Direction.LEFT;
             }
-            System.out.println(dir.toString());
         }
     }
     

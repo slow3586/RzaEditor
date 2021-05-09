@@ -129,6 +129,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="&#x428;&#x438;&#x43d;&#x43a;&#x430;"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem19ActionPerformed"/>
+                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>

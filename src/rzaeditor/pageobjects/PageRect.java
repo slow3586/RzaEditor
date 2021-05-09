@@ -28,8 +28,8 @@ public class PageRect extends Primitive {
 
     @Override
     public void draw() {
-        selectedCheck();
+        super.draw();
         Drawing.setStroke(2);
-        Drawing.drawRect(Logic.gridToScreen(pos), new Vector2i(Math.round(getSize().x*zoomGridGap), Math.round(getSize().y*zoomGridGap))); 
+        Drawing.drawRect(0,0, getSize().x*zoomGridGap, getSize().y*zoomGridGap); 
     }
 }

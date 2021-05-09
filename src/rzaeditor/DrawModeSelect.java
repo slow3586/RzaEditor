@@ -3,6 +3,7 @@ package rzaeditor;
 import rzaeditor.pageobjects.PageObjectComplex;
 import rzaeditor.pageobjects.Wire;
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import java.util.HashSet;
 import java.util.function.Consumer;
 import org.joml.Vector2f;
@@ -17,6 +18,15 @@ public class DrawModeSelect extends DrawMode {
     public static DrawModeSelect imp = new DrawModeSelect();
     public static HashSet<PageObjectBase> selectedObjects = new HashSet<>();
     public static HashSet<PageObjectBase> hoveredObjects = new HashSet<>();
+
+    @Override
+    public void keyboardEvent() {
+        if(Keyboard.isReleased(KeyEvent.VK_DELETE)){
+            selectedObjects.forEach((t) -> {
+                t.delete();
+            });
+        }
+    }
     
     @Override
     public void mouseDrag() {        
@@ -32,7 +42,7 @@ public class DrawModeSelect extends DrawMode {
 
     @Override
     public void mouseMove() {
-        if(!selectedObjects.isEmpty()) return;
+        //if(!selectedObjects.isEmpty()) return;
         
         Page.current.objects.stream().forEach((t) -> {
             PageObjectBase o = (PageObjectBase) t;
@@ -66,11 +76,13 @@ public class DrawModeSelect extends DrawMode {
             o.selected = o.hovered;
             o.hovered = false;
             if(o.selected){
+                selectedObjects.add(o);
                 o.onSelect();
             }
         });
         
-        selectedObjects.clear();
+        if(hoveredObjects.isEmpty())
+            cleanup();
         hoveredObjects.clear();
     }
 

@@ -4,8 +4,11 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.joml.Vector2i;
@@ -52,7 +55,38 @@ public abstract class PageObjectBase {
     
     public void dataUpdated(){}
     
-    public void draw(){}
+    public void draw(){
+        selectedCheck();
+    }
+    
+    public static String werw(Object... a){
+        StringBuilder s = new StringBuilder();
+        for (Object o : a) {
+            s.append(o.toString());
+            s.append("\t");
+        }
+        return s.toString();
+    }
+    
+    public String save(){
+        return werw(getClass().getName(), pos.x, pos.y);
+    }
+    
+    public static PageObjectBase read(Class c, String[] args){
+        PageObjectBase i =null;
+        try {
+            Constructor o = c.getConstructor(Vector2i.class);
+            i = (PageObjectBase) o.newInstance(new Vector2i(Integer.valueOf(args[0]), Integer.valueOf(args[1])));
+            Page.current.objects.add( i);
+        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            Logger.getLogger(PageObjectBase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return i;
+    }
+    
+    public void delete(){
+        Page.current.objects.remove(this);
+    }
     
     public Vector2i getCenterScreenCoords(){
         return new Vector2i(new Vector2i(pos).add(getSize())).sub(getSize().div(2));

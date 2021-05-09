@@ -1,6 +1,7 @@
 package rzaeditor.pageobjects;
 
 import org.joml.Vector2i;
+import rzaeditor.Drawing;
 
 public abstract class Primitive extends PageObjectBase {
 
@@ -8,5 +9,8 @@ public abstract class Primitive extends PageObjectBase {
         super(p);
     }
     
-    public void draw(){}
+    public void draw(){
+        super.draw();
+        Drawing.setTranslateGrid(pos);
+    }
 }

@@ -1,6 +1,7 @@
 package rzaeditor.pageobjects;
 
 import java.awt.Color;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -18,6 +19,7 @@ import rzaeditor.InfoTable;
 import rzaeditor.Logic;
 import static rzaeditor.Logic.zoomGridGap;
 import rzaeditor.Page;
+import static rzaeditor.pageobjects.PageObjectComplex.Direction.*;
 
 public abstract class PageObjectComplex extends PageObjectBase {
     
@@ -38,8 +40,8 @@ public abstract class PageObjectComplex extends PageObjectBase {
         super(pos);
         direction=dir;
         if(!canSwitchDirection){
-            if(dir!=Direction.LEFT && dir!=Direction.RIGHT)
-                direction=Direction.LEFT;
+            if(dir!=LEFT && dir!=UP)
+                direction=LEFT;
         }
         try {
             methodDrawPhantom = getClass().getMethod("drawPhantom", Vector2i.class);
@@ -50,7 +52,7 @@ public abstract class PageObjectComplex extends PageObjectBase {
         
         try {
             Field f = getClass().getField("defaultSize");
-            setSize((Vector2i) f.get(Vector2i.class));
+            setSize(Logic.swapIfTrue((Vector2i) f.get(Vector2i.class),dir==UP||dir==DOWN));
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
             System.err.println("defaultSize field not found in class "+getClass().getName()+"!!!");
             Logger.getLogger(PageObjectComplex.class.getName()).log(Level.SEVERE, null, ex);
@@ -86,16 +88,16 @@ public abstract class PageObjectComplex extends PageObjectBase {
             Drawing.setTranslateGrid(pos.x, pos.y);
         }
         if(dir==Direction.UP){
-            Drawing.setTranslateGrid(pos.x+size.y, pos.y);
+            Drawing.setTranslateGrid(pos.x+size.x, pos.y);
             Drawing.setRot(90);
         }
         if(dir==Direction.RIGHT){
-            Drawing.setTranslateGrid(pos.x+size.y, pos.y);
+            Drawing.setTranslateGrid(pos.x+size.x, pos.y);
             Drawing.setRot(90);
             Drawing.setScale(0, -1);
         }
         if(dir==Direction.DOWN){
-            Drawing.setTranslateGrid(pos.x+size.y, pos.y);
+            Drawing.setTranslateGrid(pos.x+size.x, pos.y);
             Drawing.setRot(90);
             Drawing.setScale(0, -1);
         }
@@ -120,9 +122,37 @@ public abstract class PageObjectComplex extends PageObjectBase {
     public void drawContactLabels(){
         
     }
+
+    @Override
+    public void delete() {
+        super.delete();
+        wireIntersections.forEach((t) -> {
+            t.delete();
+        });
+    }
+
+    @Override
+    public String save() {
+        return super.save()+werw(direction);
+    }
+    
+    public static PageObjectComplex read(Class c, String[] args){
+        if(args.length!=3){
+            throw new IllegalArgumentException();
+        }
+        PageObjectComplex obj =null;
+        try {
+            Constructor constr = c.getConstructor(Vector2i.class, Direction.class);
+            obj = (PageObjectComplex) constr.newInstance(new Vector2i(Integer.valueOf(args[0]), Integer.valueOf(args[1])), Direction.valueOf(args[2]));
+            Page.current.objects.add( obj);
+        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            Logger.getLogger(PageObjectBase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return obj;
+    }
     
     public void draw(){
-        selectedCheck();
+        super.draw();
         PageObjectComplex.rotateCheck(pos, getSize(), direction);
         try {
             methodDrawPhantom.invoke(null, pos);

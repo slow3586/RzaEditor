@@ -2,6 +2,7 @@ package rzaeditor;
 
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.nio.file.Paths;
 import rzaeditor.pageobjects.*;
 
 public class MainFrame extends javax.swing.JFrame {
@@ -189,6 +190,11 @@ public class MainFrame extends javax.swing.JFrame {
         jMenu6.add(jMenuItem12);
 
         jMenuItem19.setText("Шинка");
+        jMenuItem19.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem19ActionPerformed(evt);
+            }
+        });
         jMenu6.add(jMenuItem19);
 
         jMenu2.add(jMenu6);
@@ -287,7 +293,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        Page.current = Page.newObjectPage();
+        Page.open(Paths.get("unnamed.txt").toFile());
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
@@ -299,7 +305,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
-        // TODO add your handling code here:
+        Page.current.save();
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
@@ -334,6 +340,11 @@ public class MainFrame extends javax.swing.JFrame {
         DrawMode.setCurrent(DrawModeObject.imp);
         DrawModeObject.objectClass = Ground.class;
     }//GEN-LAST:event_jMenuItem15ActionPerformed
+
+    private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
+        DrawMode.setCurrent(DrawModeObject.imp);
+        DrawModeObject.objectClass = BusBar.class;
+    }//GEN-LAST:event_jMenuItem19ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JPanel editPanel;

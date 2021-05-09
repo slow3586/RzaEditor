@@ -44,6 +44,10 @@ public class Drawing {
         g.drawLine(Math.round(s.x*Logic.zoomGridGap), Math.round(s.y*Logic.zoomGridGap), 
                 Math.round(e.x*Logic.zoomGridGap), Math.round(e.y*Logic.zoomGridGap));
     }
+    
+    public static void drawOvalZoom(float x, float y, float x1, float y1) {
+        drawOval(Math.round(x*Logic.zoom), Math.round(y*Logic.zoom), Math.round(x1*Logic.zoom), Math.round(y1*Logic.zoom));
+    }
 
     public static void drawOval(float x, float y, float x1, float y1) {
         g.drawOval(Math.round(x), Math.round(y), Math.round(x1), Math.round(y1));
@@ -132,8 +136,6 @@ public class Drawing {
         resetTransform();
         
         int every = 4;
-        if(Page.current.useFineGrid) 
-            every=2;
         Color c0 = new Color(0.8f,0.8f,0.8f);
         Color c1 = new Color(0.6f,0.6f,0.6f);
         Color cur = c1;
@@ -143,8 +145,6 @@ public class Drawing {
             cur = c0;
             if(i%every==0){
                 cur = c1;
-                if(Page.current.useFineGrid)
-                    drawString(String.valueOf(i*Page.current.cmPerCell), off0.x+off1-5, off0.y-10);
             }
             setColor(cur);
             if(i<=Page.current.gridSize.y)

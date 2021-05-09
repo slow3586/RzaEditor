@@ -17,6 +17,8 @@ public class DrawModePrimRect extends DrawMode {
     public void draw() {
        if(!Logic.isDragging) return;
         
+       Drawing.setTranslatePagePos();
+       
         Drawing.setColor(Color.RED);
 
         Drawing.drawRect(Logic.gridToScreen(new Vector2i(Logic.dragRect.minX, Logic.dragRect.minY)),

@@ -61,6 +61,7 @@ public class Logic {
     }
     
     public static void mouseEvent(){
+        
         Logic.zoom-=Mouse.wheel*0.1f;
         zoomGridGap = zoom * Page.gridGap;
         MainFrame.zoomLabel.setText("Zoom: "+Math.round(Logic.zoom*100)
@@ -146,7 +147,7 @@ public class Logic {
     }
     
     public static Vector2i gridToScreenCenter(int x, int y){
-        return new Vector2i(Math.round(Page.current.pos.x+(x*zoomGridGap)-zoomGridGap/2), Math.round(Page.current.pos.y+(y*zoomGridGap)-zoomGridGap/2));
+        return new Vector2i(Math.round((x*zoomGridGap)-zoomGridGap/2), Math.round((y*zoomGridGap)-zoomGridGap/2));
     }
     
     public static int posToScreen(float x){
@@ -162,7 +163,7 @@ public class Logic {
     }
     
     public static Vector2i gridToScreen(int x, int y){
-        return new Vector2i(Math.round(Page.current.pos.x+(x*zoomGridGap)), Math.round(Page.current.pos.y+(y*zoomGridGap)));
+        return new Vector2i(Math.round((x*zoomGridGap)), Math.round((y*zoomGridGap)));
     }
     
     public static Vector2i sizeToScreen(float x, float y){

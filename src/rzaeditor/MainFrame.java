@@ -2,11 +2,7 @@ package rzaeditor;
 
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import rzaeditor.pageobjects.ContactClosed;
-import rzaeditor.pageobjects.ContactOpen;
-import rzaeditor.pageobjects.CurrentTransformer;
-import rzaeditor.pageobjects.RelayRT40;
-import rzaeditor.pageobjects.RelayRT85;
+import rzaeditor.pageobjects.*;
 
 public class MainFrame extends javax.swing.JFrame {
 
@@ -48,11 +44,18 @@ public class MainFrame extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem17 = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         jMenuItem12 = new javax.swing.JMenuItem();
+        jMenuItem19 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem13 = new javax.swing.JMenuItem();
+        jMenu8 = new javax.swing.JMenu();
+        jMenuItem15 = new javax.swing.JMenuItem();
+        jMenuItem16 = new javax.swing.JMenuItem();
+        jMenuItem18 = new javax.swing.JMenuItem();
+        jMenuItem20 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
 
@@ -60,6 +63,7 @@ public class MainFrame extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(1, 1));
 
         jToolBar1.setFloatable(false);
+        jToolBar1.setFocusable(false);
 
         zoomLabel.setText("Zoom:");
         jToolBar1.add(zoomLabel);
@@ -76,6 +80,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
 
         infoTable.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        infoTable.setFocusable(false);
         infoTable.setGridColor(new java.awt.Color(226, 226, 226));
         infoTable.setRowSelectionAllowed(false);
         infoTable.getTableHeader().setReorderingAllowed(false);
@@ -168,6 +173,9 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem5);
 
+        jMenuItem17.setText("Ключ");
+        jMenu3.add(jMenuItem17);
+
         jMenu2.add(jMenu3);
 
         jMenu6.setText("Источники");
@@ -179,6 +187,9 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         jMenu6.add(jMenuItem12);
+
+        jMenuItem19.setText("Шинка");
+        jMenu6.add(jMenuItem19);
 
         jMenu2.add(jMenu6);
 
@@ -201,6 +212,27 @@ public class MainFrame extends javax.swing.JFrame {
         jMenu7.add(jMenuItem13);
 
         jMenu2.add(jMenu7);
+
+        jMenu8.setText("Разное");
+
+        jMenuItem15.setText("Заземление");
+        jMenuItem15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem15ActionPerformed(evt);
+            }
+        });
+        jMenu8.add(jMenuItem15);
+
+        jMenuItem16.setText("Автомат");
+        jMenu8.add(jMenuItem16);
+
+        jMenuItem18.setText("Разъединение");
+        jMenu8.add(jMenuItem18);
+
+        jMenuItem20.setText("Ответвление");
+        jMenu8.add(jMenuItem20);
+
+        jMenu2.add(jMenu8);
 
         jMenuBar1.add(jMenu2);
 
@@ -298,6 +330,11 @@ public class MainFrame extends javax.swing.JFrame {
         DrawModeObject.objectClass = ContactOpen.class;
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
+    private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
+        DrawMode.setCurrent(DrawModeObject.imp);
+        DrawModeObject.objectClass = Ground.class;
+    }//GEN-LAST:event_jMenuItem15ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JPanel editPanel;
     public static javax.swing.JTable infoTable;
@@ -308,6 +345,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenu jMenu8;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
@@ -315,7 +353,13 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
+    private javax.swing.JMenuItem jMenuItem15;
+    private javax.swing.JMenuItem jMenuItem16;
+    private javax.swing.JMenuItem jMenuItem17;
+    private javax.swing.JMenuItem jMenuItem18;
+    private javax.swing.JMenuItem jMenuItem19;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem20;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;

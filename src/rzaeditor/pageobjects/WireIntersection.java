@@ -10,11 +10,12 @@ import org.joml.Vector2i;
 import rzaeditor.Drawing;
 import rzaeditor.Logic;
 import rzaeditor.Page;
+import rzaeditor.pageobjects.PageObjectComplex.Direction;
 
 public class WireIntersection extends PageObjectBase{
-    HashSet<Wire> wireIntersects = new HashSet<>();
-    HashSet<WireIntersection> connected = new HashSet<>();
-    HashSet<WireIntersection> connectedWireless = new HashSet<>();
+    HashSet<Wire> wires = new HashSet<>();
+    //HashSet<WireIntersection> connected = new HashSet<>();
+    HashSet<WireIntersection> wireless = new HashSet<>();
     HashSet<WireIntersection> voltageTo = new HashSet<>();
     boolean on = true;
     
@@ -28,6 +29,10 @@ public class WireIntersection extends PageObjectBase{
         
         Page.current.objects.add(this);
     }
+    
+    public static WireIntersection getWI(int x, int y, PageObjectComplex o) {
+        return getWI(Logic.swapIfTrue(o.pos.x+x,o.pos.y+y, o.direction==Direction.UP || o.direction==Direction.DOWN));
+    }
 
     public static WireIntersection getWI(Vector2i p) {
         WireIntersection wi = getWIAt(p);
@@ -38,12 +43,12 @@ public class WireIntersection extends PageObjectBase{
     }
     
     public void addWireless(WireIntersection i){
-        connectedWireless.add(i);
-        i.connectedWireless.add(this);
+        wireless.add(i);
+        i.wireless.add(this);
     }
     
     public void removeWire(Wire w){
-        wireIntersects.remove(w);
+        wires.remove(w);
         checkIsEmpty();
     }
 
@@ -73,7 +78,7 @@ public class WireIntersection extends PageObjectBase{
     }
 
     public void checkIsEmpty() {
-        if (wireIntersects.isEmpty()) {
+        if (wires.isEmpty() && wireless.isEmpty()) {
             delete();
         }
     }

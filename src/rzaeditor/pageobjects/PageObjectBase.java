@@ -22,7 +22,6 @@ public abstract class PageObjectBase {
     public boolean selected = false;
     public boolean hovered = false;
     protected Method methodDrawPhantom;
-    public String id = "?";
     public String name = "";
     private Vector2i size = new Vector2i(0,0);
     public boolean visible = true;
@@ -51,8 +50,12 @@ public abstract class PageObjectBase {
             Drawing.setColor(Color.black);
     }
     
-    public void draw(){
-        
+    public void dataUpdated(){}
+    
+    public void draw(){}
+    
+    public Vector2i getCenterScreenCoords(){
+        return new Vector2i(new Vector2i(pos).add(getSize())).sub(getSize().div(2));
     }
     
     public Rectanglei getRect(){
@@ -77,7 +80,7 @@ public abstract class PageObjectBase {
     }
     
     public Vector2i getSize(){
-        return size;
+        return new Vector2i(size);
     }
     
     final public Vector2i toGlobal(int x, int y){
@@ -91,6 +94,5 @@ public abstract class PageObjectBase {
     public void onSelect(){
         InfoTable.addLine("Имя", name, null);
         InfoTable.addLine("Тип", getType(), null);
-        InfoTable.addLine("ID", id, null);
     }
 }

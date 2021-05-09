@@ -26,6 +26,7 @@ public class DrawModeWire extends DrawMode {
             Drawing.setColor(Color.GREEN);
         }
         
+        Drawing.setTranslatePagePos();
         Drawing.drawLine(Logic.gridToScreen(s), Logic.gridToScreen(e));
     }
 

@@ -10,18 +10,42 @@ import org.joml.Vector2i;
 import static rzaeditor.Logic.dragEnd;
 import static rzaeditor.Logic.dragStart;
 import rzaeditor.pageobjects.PageObjectComplex;
+import rzaeditor.pageobjects.PageObjectComplex.Direction;
 
 public class DrawModeObject extends DrawMode {
 
     public static DrawModeObject imp = new DrawModeObject();
     public static Class objectClass = null;
-    public static boolean rotate = false;
+    public static Direction dir = Direction.LEFT;
 
     @Override
     public void keyboardEvent() {
-        Keyboard.released.size();
-        if(Keyboard.isReleased(KeyEvent.VK_SHIFT))
-            rotate=!rotate;
+        if(Keyboard.isReleased(KeyEvent.VK_SHIFT)){
+            boolean canSwitchDir = false;
+            try {
+               canSwitchDir = (boolean) objectClass.getField("canSwitchDirection").get(boolean.class);
+            } catch (NoSuchFieldException ex) {
+            } catch (SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+                Logger.getLogger(DrawModeObject.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            if(dir==Direction.LEFT){
+                dir=Direction.UP;
+            }
+            else if(dir==Direction.UP){
+                if(canSwitchDir)
+                    dir=Direction.RIGHT;
+                else
+                    dir=Direction.LEFT;
+            }
+            else if(dir==Direction.RIGHT){
+                dir=Direction.DOWN;
+            }
+            else if(dir==Direction.DOWN){
+                dir=Direction.LEFT;
+            }
+            System.out.println(dir.toString());
+        }
     }
     
     @Override
@@ -30,17 +54,13 @@ public class DrawModeObject extends DrawMode {
         
         Drawing.setColor(Color.RED);
         
-        try {
-            objectClass.getMethod("drawPhantom", Vector2i.class, boolean.class).invoke(null, Cursor.posGrid, rotate);
-        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            Logger.getLogger(DrawModeObject.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        PageObjectComplex.callRotateCheck(objectClass, Cursor.posGrid, dir);
     }
 
     @Override
     public void mouseReleased() {
         try {
-            PageObjectComplex o = (PageObjectComplex) objectClass.getConstructor(Vector2i.class, boolean.class).newInstance(Cursor.posGrid, rotate);
+            PageObjectComplex o = (PageObjectComplex) objectClass.getConstructor(Vector2i.class, Direction.class).newInstance(Cursor.posGrid, dir);
             Page.current.objects.add(o);
         } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger(DrawModeObject.class.getName()).log(Level.SEVERE, null, ex);

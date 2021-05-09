@@ -19,6 +19,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import rzaeditor.pageobjects.PageObjectBase;
+import rzaeditor.pageobjects.PageObjectComplex;
 
 public class InfoTable extends JTable {
 
@@ -47,7 +48,7 @@ public class InfoTable extends JTable {
         InfoTableModel.imp.fireTableDataChanged();
     }
     
-    public static void addLineID(String n, PageObjectBase o, Runnable f){
+    public static void addLineID(String n, PageObjectComplex o, Runnable f){
         if(o!=null)
             addLine(n, o.id, f);
         else
@@ -65,6 +66,7 @@ public class InfoTable extends JTable {
             Consumer c = (Consumer) (Object foundAssignObject) -> {
                 try {
                     field.set(editedObject, foundAssignObject);
+                    editedObject.dataUpdated();
                 } catch (IllegalArgumentException | IllegalAccessException ex) {
                     Logger.getLogger(InfoTable.class.getName()).log(Level.SEVERE, null, ex);
                 }

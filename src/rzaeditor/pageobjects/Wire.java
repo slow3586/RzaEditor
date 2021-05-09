@@ -33,7 +33,7 @@ public class Wire extends PageObjectBase{
         
         for (Wire w : Page.current.getWires()) {
             for (WireIntersection wi : Page.current.getWireIntersections()) {
-                if(!wi.wireIntersects.contains(w) && w.pointInside(wi.pos, 1)){
+                if(!wi.wires.contains(w) && w.pointInside(wi.pos, 1)){
                     w.split(wi.pos);
                     return;
                 }
@@ -48,13 +48,12 @@ public class Wire extends PageObjectBase{
             for (int j = i+1; j < wires.size(); j++) {
                 Wire w1 = wires.get(j);  
                 
-                
-                if(w0.isHorizontal() == w1.isHorizontal() && w0.startWI.pos == w1.endWI.pos && w0.startWI.wireIntersects.size()==2){
+                if(w0.isHorizontal() == w1.isHorizontal() && w0.startWI.pos == w1.endWI.pos && w0.startWI.wires.size()==2){
                     w0.setStartWI(w1.startWI);
                     w1.delete();
                     return;
                 }
-                if(w0.isHorizontal() == w1.isHorizontal() && w0.endWI.pos == w1.startWI.pos && w0.endWI.wireIntersects.size()==2){
+                if(w0.isHorizontal() == w1.isHorizontal() && w0.endWI.pos == w1.startWI.pos && w0.endWI.wires.size()==2){
                     w0.setEndWI(w1.endWI);
                     w1.delete();
                     return;
@@ -126,9 +125,9 @@ public class Wire extends PageObjectBase{
         startWI = WireIntersection.getWI(s);
         endWI = WireIntersection.getWI(e);
         pos = startWI.pos;
-        startWI.wireIntersects.add(this);
-        endWI.wireIntersects.add(this);
-        if(startWI.connectedWireless.contains(endWI)){
+        startWI.wires.add(this);
+        endWI.wires.add(this);
+        if(startWI.wireless.contains(endWI)){
             delete();
             return false;
         }
@@ -156,10 +155,10 @@ public class Wire extends PageObjectBase{
     }
 
     public void delete() {
-        startWI.wireIntersects.remove(this);
+        startWI.wires.remove(this);
         startWI.checkIsEmpty();
         startWI=null;
-        endWI.wireIntersects.remove(this);
+        endWI.wires.remove(this);
         endWI.checkIsEmpty();
         endWI=null;
         Page.current.objects.remove(this);

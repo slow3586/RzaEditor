@@ -5,6 +5,8 @@ import rzaeditor.pageobjects.Wire;
 import rzaeditor.pageobjects.WireIntersection;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -25,9 +27,17 @@ public class Drawing {
         g.drawLine(Math.round(x), Math.round(y), Math.round(x1), Math.round(y1));
     }
     
+    public static void drawLineZoom(float x, float y, float x1, float y1) {
+        g.drawLine(Math.round(x*Logic.zoom), Math.round(y*Logic.zoom), Math.round(x1*Logic.zoom), Math.round(y1*Logic.zoom));
+    }
+    
     public static void drawLineGrid(int x, int y, int x1, int y1) {
         g.drawLine(Math.round(x*Logic.zoomGridGap), Math.round(y*Logic.zoomGridGap), 
                 Math.round(x1*Logic.zoomGridGap), Math.round(y1*Logic.zoomGridGap));
+    }
+    
+    public static void setScale(float x, float y){
+        g.scale(x, y);
     }
     
     public static void drawLineGrid(Vector2i s, Vector2i e) {
@@ -64,6 +74,18 @@ public class Drawing {
         g.drawArc(Math.round(x), Math.round(y), Math.round(w), Math.round(h), Math.round(startAngle), Math.round(endAngle));
     }
     
+    public static void setFont(Font font){
+        g.setFont(font);
+    }
+    
+    public static void setFontSize(float s){
+        g.setFont(g.getFont().deriveFont(s));
+    }
+    
+    public static int getStringWidth(String s){
+        return g.getFontMetrics(g.getFont()).stringWidth(s);
+    }
+    
     public static void drawString(String str, float x, float y) {
         g.drawString(str, x, y);
     }
@@ -78,6 +100,14 @@ public class Drawing {
     
     public static void resetTransform(){
         g.setTransform(new AffineTransform());
+    }
+    
+    public static void setTranslatePagePos(){
+        setTranslate(Page.current.pos);
+    }
+    
+    public static void setTranslate(Vector2i v){
+        setTranslate(v.x, v.y);
     }
     
     public static void setTranslate(int x, int y){

@@ -19,18 +19,17 @@ public class Cursor {
         Vector2i newCurPos = new Vector2i(posPage).add(Page.gridGap, Page.gridGap).div(Logic.zoomGridGap);
         if (!posGrid.equals(newCurPos)) {
             relGridMove = new Vector2i(newCurPos).sub(posGrid);
-            posGrid = newCurPos;
+            posGrid = new Vector2i(newCurPos);
             gridMoved = true;
-            //posPageGridSnap = new Vector2f(posGrid.x * Logic.zoomGridGap, posGrid.y * Logic.zoomGridGap).add(Page.current.pos.x, Page.current.pos.y);
-            posPageGridSnap = Logic.gridToScreenCenter(posGrid.x, posGrid.y);
+            posPageGridSnap = Logic.gridToScreenCenter(newCurPos);
         }
     }
     
     public static void draw(){
         setColor(Color.red);
+        Drawing.setTranslate(new Vector2i(posPageGridSnap).add(Page.current.pos));
         Drawing.setStroke(1);
-        Drawing.drawOval(Cursor.posPageGridSnap.x, Cursor.posPageGridSnap.y, Logic.zoomGridGap, Logic.zoomGridGap);
-        //Drawing.drawRect(Cursor.posPageGridSnap.x, Cursor.posPageGridSnap.y, Logic.zoomGridGap, Logic.zoomGridGap);
+        Drawing.drawOval(0,0, Logic.zoomGridGap, Logic.zoomGridGap);
     }
 
 }

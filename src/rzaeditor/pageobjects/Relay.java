@@ -7,8 +7,8 @@ public class Relay extends PageObjectComplex {
 
     HashSet<Contact> basicContacts = new HashSet<>();
     
-    public Relay(Vector2i p, boolean rot) {
-        super(p, rot);
+    public Relay(Vector2i p, Direction dir) {
+        super(p, dir);
     }
     
     public void activate(){
@@ -16,10 +16,4 @@ public class Relay extends PageObjectComplex {
             t.activate();
         });
     }
-
-    @Override
-    public void updatePageInteractions() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
 }

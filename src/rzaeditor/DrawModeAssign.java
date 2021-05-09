@@ -19,6 +19,8 @@ public class DrawModeAssign extends DrawMode {
     public static Consumer onSelect = null;
     
     public static void doAssign(PageObjectBase editObj, Class type, Consumer r){
+        imp.cleanup();
+        
         editedObject = editObj;
         editedObject.selected = true;
         objectType = type;
@@ -51,10 +53,13 @@ public class DrawModeAssign extends DrawMode {
 
     @Override
     public void cleanup() {
+        onSelect = null;
+        objectType = null;
         if(hoveredObject!=null)
             hoveredObject.hovered = false;
         hoveredObject = null;
-        editedObject.selected=false;
+        if(editedObject!=null)
+            editedObject.selected=false;
         editedObject=null;
     }
 }

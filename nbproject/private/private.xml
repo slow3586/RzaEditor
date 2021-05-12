@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/D:/RzaEditor/src/rzaeditor/pageobjects/PageObjectBase.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/pageobjects/contacts/KeySwitch.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/DrawModePrimRect.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/EditPanel.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/pageobjects/PageObjectComplex.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/pageobjects/other/Ground.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/pageobjects/other/CurrentWinding.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/pageobjects/primitives/PageLine.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/Drawing.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/MainFrame.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/pageobjects/intersections/WireIntersection.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/pageobjects/Wire.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/pageobjects/relays/Relay.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/pageobjects/other/Capacitor.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/DrawModeSelect.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/pageobjects/relays/RelayRT85.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/pageobjects/relays/RelayRT40.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/pageobjects/contacts/ContactClosed.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/pageobjects/other/Resistor.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/pageobjects/source/CurrentSource.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/pageobjects/primitives/Primitive.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/InfoTableEditMenu.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/pageobjects/other/VoltageWinding.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/Logic.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/pageobjects/primitives/PageRect.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/DrawModeAssign.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/pageobjects/contacts/ContactOpen.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/pageobjects/intersections/Cart1.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/pageobjects/source/CurrentTransformer.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/pageobjects/intersections/Cart.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/pageobjects/other/BusBar.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/DrawModeObject.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/InfoTable.java</file>
+            <file>file:/D:/RzaEditor/src/rzaeditor/pageobjects/contacts/Contact.java</file>
+        </group>
+    </open-files>
+</project-private>

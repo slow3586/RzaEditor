@@ -59,8 +59,8 @@ public class DrawModeSelect extends DrawMode {
         if(!isDragging) return;
         
         Drawing.setColor(Color.CYAN);
-        Drawing.drawRect(Logic.gridToScreen(new Vector2i(Logic.dragRect.minX, Logic.dragRect.minY)),
-                new Vector2i(Math.round(Logic.dragRect.lengthX()*zoomGridGap), Math.round(Logic.dragRect.lengthY()*zoomGridGap)));
+        Drawing.setTranslateGrid(Logic.dragRect.minX, Logic.dragRect.minY);
+        Drawing.drawRectGrid(0,0, Logic.dragRect.lengthX(), Logic.dragRect.lengthY());
     }
 
    @Override

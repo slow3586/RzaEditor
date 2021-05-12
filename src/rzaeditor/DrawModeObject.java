@@ -1,6 +1,6 @@
 package rzaeditor;
 
-import rzaeditor.pageobjects.PageLine;
+import rzaeditor.pageobjects.primitives.PageLine;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.InvocationTargetException;
@@ -18,6 +18,11 @@ public class DrawModeObject extends DrawMode {
     public static Class objectClass = null;
     public static Direction dir = Direction.LEFT;
 
+    public static void initWithClass(Class c){
+        DrawMode.setCurrent(imp);
+        objectClass = c;
+    }
+    
     @Override
     public void keyboardEvent() {
         if(Keyboard.isReleased(KeyEvent.VK_SHIFT)){

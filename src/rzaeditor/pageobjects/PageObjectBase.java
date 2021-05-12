@@ -21,21 +21,25 @@ import rzaeditor.Page;
 
 public abstract class PageObjectBase {
     
-    Vector2i pos = new Vector2i();
+    public Vector2i pos = new Vector2i();
     public boolean selected = false;
     public boolean hovered = false;
     protected Method methodDrawPhantom;
     public String name = "";
-    private Vector2i size = new Vector2i(0,0);
+    public Vector2i size = new Vector2i(0,0);
     public boolean visible = true;
+    public String type = "";
     
     public PageObjectBase(Vector2i p) {
         pos = new Vector2i(p);
-        name = getType()+" №"+(getCountInPage()+1);
-    }
-    
-    public String getType(){
-        return "Объект";
+        
+        try {
+            type = (String) getClass().getField("defaultType").get(null);
+        } catch (SecurityException | IllegalArgumentException | NoSuchFieldException | IllegalAccessException ex) {
+            Logger.getLogger(PageObjectComplex.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        name = type+" №"+(getCountInPage()+1);
     }
     
     public long getCountInPage(){
@@ -56,6 +60,7 @@ public abstract class PageObjectBase {
     public void dataUpdated(){}
     
     public void draw(){
+        Drawing.setLineType(Drawing.LineType.SOLID);
         selectedCheck();
     }
     
@@ -89,11 +94,11 @@ public abstract class PageObjectBase {
     }
     
     public Vector2i getCenterScreenCoords(){
-        return new Vector2i(new Vector2i(pos).add(getSize())).sub(getSize().div(2));
+        return new Vector2i(new Vector2i(pos).add(size).sub(new Vector2i(size).div(2)));
     }
     
     public Rectanglei getRect(){
-        return new Rectanglei(pos.x, pos.y, pos.x+getSize().x, pos.y+getSize().y);
+        return new Rectanglei(pos.x, pos.y, pos.x+size.x, pos.y+size.y);
     }
     
     public boolean isRectTouching(Rectanglei r){
@@ -109,14 +114,6 @@ public abstract class PageObjectBase {
         return r.containsPoint(vec);
     }
     
-    public void setSize(Vector2i s){
-        size = s;
-    }
-    
-    public Vector2i getSize(){
-        return new Vector2i(size);
-    }
-    
     final public Vector2i toGlobal(int x, int y){
         return new Vector2i(pos.x+x, pos.y+y);
     }
@@ -126,7 +123,7 @@ public abstract class PageObjectBase {
     }
     
     public void onSelect(){
-        InfoTable.addLine("Имя", name, null);
-        InfoTable.addLine("Тип", getType(), null);
+        InfoTable.addLineText("Имя", this, "name");
+        InfoTable.addLineText("Тип", this, "type");
     }
 }

@@ -1,5 +1,7 @@
-package rzaeditor.pageobjects;
+package rzaeditor.pageobjects.relays;
 
+import rzaeditor.pageobjects.contacts.ContactClosed;
+import rzaeditor.pageobjects.contacts.ContactOpen;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.logging.Level;
@@ -12,10 +14,15 @@ import rzaeditor.InfoTable;
 import rzaeditor.Logic;
 import rzaeditor.MainFrame;
 import rzaeditor.Page;
+import rzaeditor.pageobjects.Wire;
+import rzaeditor.pageobjects.intersections.WireIntersection;
 
 public class RelayRT40 extends Relay {
 
     public static final Vector2i defaultSize = new Vector2i(3,2);
+    public static final String defaultIDru = "РТ";
+    public static final String defaultIDen = "KA";
+    public static final String defaultType = "Реле РТ-40";
     
     public int contactId0 = 2;
     public int contactId1 = 8;
@@ -28,23 +35,9 @@ public class RelayRT40 extends Relay {
     
     public RelayRT40(Vector2i p, Direction dir) {
         super(p, dir);
-        id = "РТ";
-        WireIntersection w0 = WireIntersection.getWI(0,1,this); 
-        WireIntersection w1 = WireIntersection.getWI(3,1,this); 
-        w0.addWireless(w1);
-        Wire.checkAllWires();
-        wireIntersections.add(w0);
-        wireIntersections.add(w1);
-    }
-
-    @Override
-    public String getType() {
-        return "Реле РТ-40";
     }
     
     public static void drawPhantom(Vector2i pos) {
-        Drawing.drawLineGrid(0,1,1,1);
-        Drawing.drawLineGrid(2,1,3,1);
         Drawing.drawRectGrid(1,0,1,2);
     }
 
@@ -53,7 +46,7 @@ public class RelayRT40 extends Relay {
         super.drawContactLabels();
         
         Drawing.drawString(String.valueOf(contactId0), -Drawing.getStringWidth(String.valueOf(contactId0))/2, Logic.posToScreen(15));
-        Drawing.drawString(String.valueOf(contactId1), Logic.gridToScreen(getSize().x)-Drawing.getStringWidth(String.valueOf(contactId1))/2, Logic.posToScreen(15));
+        Drawing.drawString(String.valueOf(contactId1), Logic.gridToScreen(size.x)-Drawing.getStringWidth(String.valueOf(contactId1))/2, Logic.posToScreen(15));
     }
 
     @Override
@@ -75,13 +68,8 @@ public class RelayRT40 extends Relay {
     @Override
     public void onSelect() {
         super.onSelect();
-        
-        try {
-            InfoTable.addLineNameAssign("Открытый контакт", this, getClass().getField("contactOpen"));
-            InfoTable.addLineNameAssign("Закрытый контакт", this, getClass().getField("contactClosed"));
-        } catch (NoSuchFieldException | SecurityException ex) {
-            Logger.getLogger(RelayRT40.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        InfoTable.addLineNameAssign("Открытый контакт", this, "contactOpen");
+        InfoTable.addLineNameAssign("Закрытый контакт", this, "contactClosed");
     }
 
     @Override

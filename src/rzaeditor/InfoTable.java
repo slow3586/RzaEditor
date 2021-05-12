@@ -15,6 +15,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
@@ -55,12 +56,46 @@ public class InfoTable extends JTable {
             addLine(n, "", f);
     }
     
-    public static void addLineAssign(){
+    public static void showEditTextField(PageObjectBase editedObject, Field field){
+        InfoTableEditMenu.imp.ep.removeAll();
+        JTextField tf = new JTextField();
+        InfoTableEditMenu.imp.ep.add(tf);
+        tf.setLocation(0, 0);
+        tf.setSize(350, 20);
+        InfoTableEditMenu.imp.ep.revalidate();
+        InfoTableEditMenu.butOK.addActionListener((ActionEvent e) -> {
+            try {
+                field.set(editedObject, tf.getText());
+                editedObject.dataUpdated();
+                InfoTableEditMenu.imp.setVisible(false);
+            } catch (IllegalArgumentException | IllegalAccessException ex) {
+                Logger.getLogger(InfoTable.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        InfoTableEditMenu.imp.setVisible(true);
+    }
+    
+    public static void addLineText(String rowName, PageObjectBase editedObject, String fieldName){
+        try {
+            Field field = editedObject.getClass().getField(fieldName);
+            final String fieldValue = (String)field.get(editedObject);
+
+            String v = "";
+            if(fieldValue!=null)
+                v=fieldValue;
+            
+            addLine(rowName, v, () -> {
+                showEditTextField(editedObject, field);        
+            });
+        } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException ex) {
+            Logger.getLogger(InfoTable.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
     
-    public static void addLineNameAssign(String rowName, PageObjectBase editedObject, Field field){
+    public static void addLineNameAssign(String rowName, PageObjectBase editedObject, String fieldName){
         try {
+            Field field = editedObject.getClass().getField(fieldName);
             final PageObjectBase fieldValue = (PageObjectBase) field.get(editedObject);
             
             Consumer c = (Consumer) (Object foundAssignObject) -> {
@@ -71,15 +106,13 @@ public class InfoTable extends JTable {
                     Logger.getLogger(InfoTable.class.getName()).log(Level.SEVERE, null, ex);
                 }
             };
+            String name = "";
             if(fieldValue!=null)
-                addLine(rowName, fieldValue.name, () -> {
-                    DrawModeAssign.doAssign(editedObject, field.getType(), c);
-                });
-            else
-                addLine(rowName, "", () -> {
-                    DrawModeAssign.doAssign(editedObject, field.getType(), c);
-                });
-        } catch (IllegalArgumentException | IllegalAccessException ex) {
+                name=fieldValue.name;
+            addLine(rowName, name, () -> {
+                DrawModeAssign.doAssign(editedObject, field.getType(), c);
+            });
+        } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException ex) {
             Logger.getLogger(InfoTable.class.getName()).log(Level.SEVERE, null, ex);
         }
         

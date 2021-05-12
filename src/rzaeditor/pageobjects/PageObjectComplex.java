@@ -1,5 +1,6 @@
 package rzaeditor.pageobjects;
 
+import rzaeditor.pageobjects.intersections.WireIntersection;
 import java.awt.Color;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -25,7 +26,13 @@ public abstract class PageObjectComplex extends PageObjectBase {
     
     public static final boolean canSwitchDirection = false;
     public Direction direction = Direction.LEFT;
+    protected Method methodDrawDefWILines;
     public HashSet<WireIntersection> wireIntersections = new HashSet<>();
+    public static final int defaultWireIntersectOffset = 1;
+    public static final String defaultIDru = "";
+    public static final String defaultIDen = "";
+    public static Vector2i defaultSize = new Vector2i(3,1);
+    public static final String defaultType = "Объект сложный";
     
     public static enum Direction{
         LEFT,
@@ -51,19 +58,49 @@ public abstract class PageObjectComplex extends PageObjectBase {
         }
         
         try {
+            methodDrawDefWILines = getClass().getMethod("drawDefaultWireIntersectLines", Class.class);
+        } catch (NoSuchMethodException | SecurityException ex) {
+            System.err.println("drawPhantom method not found in class "+getClass().getName()+"!!!");
+            Logger.getLogger(PageObjectComplex.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try {
             Field f = getClass().getField("defaultSize");
-            setSize(Logic.swapIfTrue((Vector2i) f.get(Vector2i.class),dir==UP||dir==DOWN));
+            size = Logic.swapIfTrue((Vector2i) f.get(Vector2i.class),dir==UP||dir==DOWN);
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
             System.err.println("defaultSize field not found in class "+getClass().getName()+"!!!");
             Logger.getLogger(PageObjectComplex.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        
+        addDefaultWireIntersects();
+        setDefaultID();
     }
     
-    @Override
-    public String getType() {
-        return "Сложный объект";
+    public void setDefaultID(){
+        String nid = "";
+        try {
+            nid = (String) this.getClass().getField("defaultIDru").get(null);
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(PageObjectComplex.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        id = nid;
     }
-
+    
+    public void addDefaultWireIntersects(){
+        int offset = 1;
+        try {
+            offset = this.getClass().getField("defaultWireIntersectOffset").getInt(null);
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(PageObjectComplex.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        WireIntersection w0 = WireIntersection.getWI(0,offset,this); 
+        WireIntersection w1 = WireIntersection.getWI(size.x,offset,this); 
+        w0.addWireless(w1);
+        wireIntersections.add(w0);
+        wireIntersections.add(w1);
+    }
+    
     public void drawChildren(){
         //children.forEach((t) -> {
         //   t.draw();
@@ -78,6 +115,7 @@ public abstract class PageObjectComplex extends PageObjectBase {
             objectClass.getMethod("rotateCheck", Vector2i.class, Vector2i.class, Direction.class)
                     .invoke(null, p, objectClass.getField("defaultSize").get(Vector2i.class), dir);
             objectClass.getMethod("drawPhantom", Vector2i.class).invoke(null, Cursor.posGrid);
+            objectClass.getMethod("drawDefaultWireIntersectLines", Class.class).invoke(null, c);
         } catch (NoSuchMethodException | SecurityException | NoSuchFieldException | IllegalArgumentException | IllegalAccessException | InvocationTargetException ex) {
             Logger.getLogger(PageObjectComplex.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -116,7 +154,7 @@ public abstract class PageObjectComplex extends PageObjectBase {
     }
     
     public void drawIDLabel(){
-        Drawing.drawString(id, Logic.gridToScreen(getSize().x)/2-Drawing.getStringWidth(String.valueOf(id))/2, Logic.posToScreen(-3));
+        Drawing.drawString(id, Logic.gridToScreen(size.x)/2-Drawing.getStringWidth(String.valueOf(id))/2, Logic.posToScreen(-3));
     }
     
     public void drawContactLabels(){
@@ -153,13 +191,13 @@ public abstract class PageObjectComplex extends PageObjectBase {
     
     public void draw(){
         super.draw();
-        PageObjectComplex.rotateCheck(pos, getSize(), direction);
+        PageObjectComplex.rotateCheck(pos, size, direction);
         try {
             methodDrawPhantom.invoke(null, pos);
+            methodDrawDefWILines.invoke(null, this.getClass());
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger(PageObjectComplex.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
         drawLabels();
         if(selected)
             drawConnections();
@@ -167,7 +205,18 @@ public abstract class PageObjectComplex extends PageObjectBase {
     }
     
     public Vector2i getCenterPos(){
-        return new Vector2i(Math.round(pos.x*Logic.zoomGridGap+getSize().x*Logic.zoomGridGap/2), Math.round(pos.y*Logic.zoomGridGap+getSize().y*Logic.zoomGridGap/2));
+        return new Vector2i(Math.round(pos.x*Logic.zoomGridGap+size.x*Logic.zoomGridGap/2), Math.round(pos.y*Logic.zoomGridGap+size.y*Logic.zoomGridGap/2));
+    }
+    
+    public static void drawDefaultWireIntersectLines(Class c){
+        try {
+            Vector2i s = (Vector2i) c.getField("defaultSize").get(null);
+            int o = (int) c.getField("defaultWireIntersectOffset").get(null);
+            Drawing.drawLineGrid(0,o,1,o);
+            Drawing.drawLineGrid(s.x-1,o,s.x,o);
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(PageObjectComplex.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void drawConnection(PageObjectComplex c){
@@ -177,13 +226,13 @@ public abstract class PageObjectComplex extends PageObjectBase {
     
     public void drawConnections(){
         Drawing.setTranslate(Page.current.pos.x, Page.current.pos.y);
-        Drawing.setStroke(1);
+        Drawing.setStrokeSize(1);
         Drawing.setColor(Color.red);
     }
 
     @Override
     public void onSelect() {
         super.onSelect();
-        InfoTable.addLine("ID", id, null);
+        InfoTable.addLineText("ID", this, "id");
     }
 }

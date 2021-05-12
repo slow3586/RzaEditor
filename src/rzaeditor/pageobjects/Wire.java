@@ -1,5 +1,6 @@
 package rzaeditor.pageobjects;
 
+import rzaeditor.pageobjects.intersections.WireIntersection;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -19,14 +20,10 @@ public class Wire extends PageObjectBase{
     WireIntersection endWI = null;
     WireIntersection startWI = null;
     Color color = Color.BLACK;
+    public static final String defaultType = "Провод";
     
     Wire(Vector2i p){
         super(p);
-    }
-    
-    @Override
-    public String getType() {
-        return "Провод";
     }
     
     public static void checkAllWires(){
@@ -125,6 +122,7 @@ public class Wire extends PageObjectBase{
         startWI = WireIntersection.getWI(s);
         endWI = WireIntersection.getWI(e);
         pos = startWI.pos;
+        size = getVec();
         startWI.wires.add(this);
         endWI.wires.add(this);
         if(startWI.wireless.contains(endWI)){
@@ -149,18 +147,17 @@ public class Wire extends PageObjectBase{
         return w;
     }
 
-    @Override
-    public Vector2i getSize() {
-        return getVec();
-    }
-
     public void delete() {
-        startWI.wires.remove(this);
-        startWI.checkIsEmpty();
-        startWI=null;
-        endWI.wires.remove(this);
-        endWI.checkIsEmpty();
-        endWI=null;
+        if(startWI!=null){
+            startWI.wires.remove(this);
+            startWI.checkIsEmpty();
+            startWI=null;
+        }
+        if(endWI!=null){
+            endWI.wires.remove(this);
+            endWI.checkIsEmpty();
+            endWI=null;
+        }
         Page.current.objects.remove(this);
         checkAllWires();
     }
@@ -178,7 +175,6 @@ public class Wire extends PageObjectBase{
         Drawing.setColor(Color.black);
         //Drawing.setColor(color);
         selectedCheck();
-        Drawing.setStroke(1 * Logic.zoom);
         Vector2i s = getVec();
         Drawing.drawLineGrid(0,0, s.x, s.y);
     }

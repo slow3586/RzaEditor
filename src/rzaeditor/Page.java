@@ -10,7 +10,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import rzaeditor.pageobjects.PageObjectComplex;
 import rzaeditor.pageobjects.Wire;
-import rzaeditor.pageobjects.WireIntersection;
+import rzaeditor.pageobjects.intersections.WireIntersection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 import org.joml.Vector2i;
 import org.joml.primitives.Rectanglei;
 import rzaeditor.pageobjects.PageObjectBase;
-import rzaeditor.pageobjects.Primitive;
+import rzaeditor.pageobjects.primitives.Primitive;
 
 public class Page {
     

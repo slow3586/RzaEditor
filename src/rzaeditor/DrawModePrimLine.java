@@ -1,6 +1,6 @@
 package rzaeditor;
 
-import rzaeditor.pageobjects.PageLine;
+import rzaeditor.pageobjects.primitives.PageLine;
 import java.awt.Color;
 import static rzaeditor.Logic.dragEnd;
 import static rzaeditor.Logic.dragStart;

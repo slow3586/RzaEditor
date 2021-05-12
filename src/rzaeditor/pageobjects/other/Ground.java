@@ -1,17 +1,27 @@
-package rzaeditor.pageobjects;
+package rzaeditor.pageobjects.other;
 
 import org.joml.Vector2i;
 import rzaeditor.Drawing;
+import rzaeditor.pageobjects.PageObjectComplex;
+import rzaeditor.pageobjects.intersections.WireIntersection;
 
 public class Ground extends PageObjectComplex {
 
     public static final Vector2i defaultSize = new Vector2i(2,2);
     public static final boolean canSwitchDirection = true;
+    public static final String defaultType = "Заземление";
     
     public Ground(Vector2i pos, Direction dir) {
         super(pos, dir);
-        id="";
+        WireIntersection w = WireIntersection.getWI(0, 1, this);
+        wireIntersections.add(w);
     }
+
+    @Override
+    public void addDefaultWireIntersects() {
+    }
+    
+    public static void drawDefaultWireIntersectLines(Class c) {}
     
     public static void drawPhantom(Vector2i pos) {
         Drawing.drawLineGrid(0, 1, 1, 1);

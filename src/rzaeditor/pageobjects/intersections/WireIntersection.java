@@ -1,4 +1,4 @@
-package rzaeditor.pageobjects;
+package rzaeditor.pageobjects.intersections;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -10,19 +10,18 @@ import org.joml.Vector2i;
 import rzaeditor.Drawing;
 import rzaeditor.Logic;
 import rzaeditor.Page;
+import rzaeditor.pageobjects.PageObjectBase;
+import rzaeditor.pageobjects.PageObjectComplex;
 import rzaeditor.pageobjects.PageObjectComplex.Direction;
+import rzaeditor.pageobjects.Wire;
 
 public class WireIntersection extends PageObjectBase{
-    HashSet<Wire> wires = new HashSet<>();
+    public HashSet<Wire> wires = new HashSet<>();
     //HashSet<WireIntersection> connected = new HashSet<>();
-    HashSet<WireIntersection> wireless = new HashSet<>();
-    HashSet<WireIntersection> voltageTo = new HashSet<>();
-    boolean on = true;
-    
-    @Override
-    public String getType() {
-        return "Связка";
-    }
+    public HashSet<WireIntersection> wireless = new HashSet<>();
+    public HashSet<WireIntersection> voltageTo = new HashSet<>();
+    public boolean on = true;
+    public static final String defaultType = "Связка";
 
     private WireIntersection(Vector2i p) {
         super(p);

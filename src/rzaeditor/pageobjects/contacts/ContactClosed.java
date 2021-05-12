@@ -1,26 +1,18 @@
-package rzaeditor.pageobjects;
+package rzaeditor.pageobjects.contacts;
 
 import org.joml.Vector2i;
 import rzaeditor.Drawing;
 import rzaeditor.Logic;
 import static rzaeditor.Logic.posToScreen;
 import rzaeditor.Page;
+import rzaeditor.pageobjects.intersections.WireIntersection;
 
 public class ContactClosed extends Contact {
-    public static Vector2i defaultSize = new Vector2i(3,1);
+    public static final int defaultWireIntersectOffset = 0;
+    public static final String defaultType = "Закрытый контакт";
     
     public ContactClosed(Vector2i p, Direction dir) {
         super(p,dir);
-        WireIntersection w0 = WireIntersection.getWI(0,0,this); 
-        WireIntersection w1 = WireIntersection.getWI(3,0,this); 
-        w0.addWireless(w1);
-        wireIntersections.add(w0);
-        wireIntersections.add(w1);
-    }
-    
-    @Override
-    public String getType() {
-        return "Закрытый контакт";
     }
     
     public static void drawPhantom(Vector2i pos) {

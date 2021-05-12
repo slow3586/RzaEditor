@@ -1,12 +1,12 @@
 package rzaeditor;
 
-import rzaeditor.pageobjects.PageLine;
+import rzaeditor.pageobjects.primitives.PageLine;
 import java.awt.Color;
 import org.joml.Vector2i;
 import static rzaeditor.Logic.dragEnd;
 import static rzaeditor.Logic.dragStart;
 import static rzaeditor.Logic.zoomGridGap;
-import rzaeditor.pageobjects.PageRect;
+import rzaeditor.pageobjects.primitives.PageRect;
 
 public class DrawModePrimRect extends DrawMode {
 

@@ -28,7 +28,7 @@ public class Cursor {
     public static void draw(){
         setColor(Color.red);
         Drawing.setTranslate(new Vector2i(posPageGridSnap).add(Page.current.pos));
-        Drawing.setStroke(1);
+        Drawing.setStrokeSize(1);
         Drawing.drawOval(0,0, Logic.zoomGridGap, Logic.zoomGridGap);
     }
 

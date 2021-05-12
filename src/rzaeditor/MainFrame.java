@@ -1,9 +1,18 @@
 package rzaeditor;
 
+import rzaeditor.pageobjects.other.BusBar;
+import rzaeditor.pageobjects.other.Ground;
+import rzaeditor.pageobjects.source.CurrentTransformer;
+import rzaeditor.pageobjects.relays.*;
+import rzaeditor.pageobjects.relays.RelayRT85;
+import rzaeditor.pageobjects.contacts.*;
+import rzaeditor.pageobjects.contacts.ContactOpen;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.nio.file.Paths;
 import rzaeditor.pageobjects.*;
+import rzaeditor.pageobjects.intersections.*;
+import rzaeditor.pageobjects.other.*;
 
 public class MainFrame extends javax.swing.JFrame {
 
@@ -57,6 +66,12 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuItem16 = new javax.swing.JMenuItem();
         jMenuItem18 = new javax.swing.JMenuItem();
         jMenuItem20 = new javax.swing.JMenuItem();
+        jMenuItem21 = new javax.swing.JMenuItem();
+        jMenuItem22 = new javax.swing.JMenuItem();
+        jMenuItem23 = new javax.swing.JMenuItem();
+        jMenuItem24 = new javax.swing.JMenuItem();
+        jMenuItem25 = new javax.swing.JMenuItem();
+        jMenuItem26 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
 
@@ -238,6 +253,54 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuItem20.setText("Ответвление");
         jMenu8.add(jMenuItem20);
 
+        jMenuItem21.setText("Cart0");
+        jMenuItem21.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem21ActionPerformed(evt);
+            }
+        });
+        jMenu8.add(jMenuItem21);
+
+        jMenuItem22.setText("jMenuItem22");
+        jMenuItem22.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem22ActionPerformed(evt);
+            }
+        });
+        jMenu8.add(jMenuItem22);
+
+        jMenuItem23.setText("Capa");
+        jMenuItem23.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem23ActionPerformed(evt);
+            }
+        });
+        jMenu8.add(jMenuItem23);
+
+        jMenuItem24.setText("Resi");
+        jMenuItem24.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem24ActionPerformed(evt);
+            }
+        });
+        jMenu8.add(jMenuItem24);
+
+        jMenuItem25.setText("WV");
+        jMenuItem25.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem25ActionPerformed(evt);
+            }
+        });
+        jMenu8.add(jMenuItem25);
+
+        jMenuItem26.setText("WC");
+        jMenuItem26.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem26ActionPerformed(evt);
+            }
+        });
+        jMenu8.add(jMenuItem26);
+
         jMenu2.add(jMenu8);
 
         jMenuBar1.add(jMenu2);
@@ -346,6 +409,30 @@ public class MainFrame extends javax.swing.JFrame {
         DrawModeObject.objectClass = BusBar.class;
     }//GEN-LAST:event_jMenuItem19ActionPerformed
 
+    private void jMenuItem22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem22ActionPerformed
+        DrawModeObject.initWithClass(Cart.class);
+    }//GEN-LAST:event_jMenuItem22ActionPerformed
+
+    private void jMenuItem21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem21ActionPerformed
+        DrawModeObject.initWithClass(Cart1.class);
+    }//GEN-LAST:event_jMenuItem21ActionPerformed
+
+    private void jMenuItem23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem23ActionPerformed
+        DrawModeObject.initWithClass(Capacitor.class);
+    }//GEN-LAST:event_jMenuItem23ActionPerformed
+
+    private void jMenuItem24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem24ActionPerformed
+        DrawModeObject.initWithClass(Resistor.class);
+    }//GEN-LAST:event_jMenuItem24ActionPerformed
+
+    private void jMenuItem25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem25ActionPerformed
+        DrawModeObject.initWithClass(VoltageWinding.class);
+    }//GEN-LAST:event_jMenuItem25ActionPerformed
+
+    private void jMenuItem26ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem26ActionPerformed
+        DrawModeObject.initWithClass(CurrentWinding.class);
+    }//GEN-LAST:event_jMenuItem26ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JPanel editPanel;
     public static javax.swing.JTable infoTable;
@@ -371,6 +458,12 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem19;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem20;
+    private javax.swing.JMenuItem jMenuItem21;
+    private javax.swing.JMenuItem jMenuItem22;
+    private javax.swing.JMenuItem jMenuItem23;
+    private javax.swing.JMenuItem jMenuItem24;
+    private javax.swing.JMenuItem jMenuItem25;
+    private javax.swing.JMenuItem jMenuItem26;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;

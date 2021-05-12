@@ -2,22 +2,30 @@ package rzaeditor;
 
 import rzaeditor.pageobjects.PageObjectComplex;
 import rzaeditor.pageobjects.Wire;
-import rzaeditor.pageobjects.WireIntersection;
+import rzaeditor.pageobjects.intersections.WireIntersection;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
-import rzaeditor.pageobjects.Primitive;
+import rzaeditor.pageobjects.primitives.Primitive;
 
 public class Drawing {
     
     private static Graphics2D g;
     private static Vector2i translate = new Vector2i();
+    private static LineType lineType = LineType.SOLID;
+    
+    public enum LineType{
+        SOLID,
+        DOT,
+        DASH
+    }
     
     public static void drawLine(Vector2i s, Vector2i e) {
         drawLine(s.x, s.y, e.x, e.y);
@@ -66,12 +74,27 @@ public class Drawing {
                 Math.round(w*Logic.zoomGridGap), Math.round(h*Logic.zoomGridGap));
     }
     
+    public static void drawRectZoom(float x, float y, float w, float h) {
+        g.drawRect(Math.round(x*Logic.zoom), Math.round(y*Logic.zoom),
+                Math.round(w*Logic.zoom), Math.round(h*Logic.zoom));
+    }
+    
     public static void drawRect(float x, float y, float w, float h) {
         g.drawRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h));
     }
     
     public static void drawArc(Vector2i p, Vector2i s, float startAngle, float endAngle) {
         drawArc(p.x, p.y, s.x, s.y, startAngle, endAngle);
+    }
+    
+    public static void drawArcZoom(float x, float y, float w, float h, float startAngle, float endAngle) {
+        drawArc(Math.round(x*Logic.zoom), Math.round(y*Logic.zoom),
+                Math.round(w*Logic.zoom), Math.round(h*Logic.zoom), startAngle, endAngle);
+    }
+    
+    public static void drawArcGrid(float x, float y, float w, float h, float startAngle, float endAngle) {
+        drawArc(Math.round(x*Logic.zoomGridGap), Math.round(y*Logic.zoomGridGap),
+                Math.round(w*Logic.zoomGridGap), Math.round(h*Logic.zoomGridGap), startAngle, endAngle);
     }
     
     public static void drawArc(float x, float y, float w, float h, float startAngle, float endAngle) {
@@ -94,8 +117,22 @@ public class Drawing {
         g.drawString(str, x, y);
     }
     
-    public static void setStroke(float s){
+    public static void setStrokeSize(float s){
         g.setStroke(new BasicStroke(s));
+    }
+    
+    public static void setLineType(LineType t){
+        lineType=t;
+        BasicStroke os = (BasicStroke) g.getStroke();
+        if(t==LineType.SOLID){
+            g.setStroke(new BasicStroke(os.getLineWidth(), os.getEndCap(), os.getLineJoin(), os.getMiterLimit(), new float[]{1}, 1f));
+        }
+        if(t==LineType.DASH){
+            g.setStroke(new BasicStroke(os.getLineWidth(), os.getEndCap(), os.getLineJoin(), os.getMiterLimit(), new float[]{1,0,1}, 1f));
+        }
+        if(t==LineType.DOT){
+            g.setStroke(new BasicStroke(os.getLineWidth(), os.getEndCap(), os.getLineJoin(), os.getMiterLimit(), new float[]{1,0,1}, 0.5f));
+        }
     }
     
     public static void setColor(Color c){
@@ -154,7 +191,7 @@ public class Drawing {
         }
         
         setColor(new Color(1,1,1));
-        setStroke(1);
+        setStrokeSize(1);
         drawRect(off0.x, off0.y, Page.current.size.x * Logic.zoom, Page.current.size.y * Logic.zoom);
     }
 
@@ -172,6 +209,7 @@ public class Drawing {
         
         Drawing.setColor(Color.BLACK);
         
+        Drawing.setStrokeSize(1 * Logic.zoom);
         Page.current.objects.stream().forEach((t) -> {
             t.draw();
         });

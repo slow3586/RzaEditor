@@ -1,4 +1,4 @@
-package rzaeditor.pageobjects;
+package rzaeditor.pageobjects.contacts;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -7,12 +7,14 @@ import rzaeditor.Drawing;
 import rzaeditor.InfoTable;
 import rzaeditor.Logic;
 import rzaeditor.Page;
+import rzaeditor.pageobjects.PageObjectComplex;
+import rzaeditor.pageobjects.relays.Relay;
 
 abstract public class Contact extends PageObjectComplex {
 
-    int contactId0 = 1;
-    int contactId1 = 3;
-    boolean isOpen = true;
+    public int contactId0 = 1;
+    public int contactId1 = 3;
+    public boolean isOpen = true;
     public Relay relay = null;
     
     public Contact(Vector2i p, Direction dir) {
@@ -28,18 +30,14 @@ abstract public class Contact extends PageObjectComplex {
         super.drawContactLabels();
         
         Drawing.drawString(String.valueOf(contactId0), -Drawing.getStringWidth(String.valueOf(contactId0))/2, Logic.posToScreen(8));
-        Drawing.drawString(String.valueOf(contactId1), Logic.gridToScreen(getSize().x)-Drawing.getStringWidth(String.valueOf(contactId1))/2, Logic.posToScreen(8));
+        Drawing.drawString(String.valueOf(contactId1), Logic.gridToScreen(size.x)-Drawing.getStringWidth(String.valueOf(contactId1))/2, Logic.posToScreen(8));
     }
     
     @Override
     public void onSelect() {
         super.onSelect();
         
-        try {
-            InfoTable.addLineNameAssign("Реле", this, getClass().getField("relay"));
-        } catch (NoSuchFieldException | SecurityException ex) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
-        }
+        InfoTable.addLineNameAssign("Реле", this, "relay");
     }
 
     @Override

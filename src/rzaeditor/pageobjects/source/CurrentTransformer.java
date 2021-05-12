@@ -1,5 +1,6 @@
-package rzaeditor.pageobjects;
+package rzaeditor.pageobjects.source;
 
+import rzaeditor.pageobjects.intersections.WireIntersection;
 import org.joml.Vector2i;
 import rzaeditor.Drawing;
 import rzaeditor.Logic;
@@ -9,18 +10,10 @@ import rzaeditor.Page;
 
 public class CurrentTransformer extends CurrentSource {
     public static final Vector2i defaultSize = new Vector2i(4,2);
+    public static final String defaultType = "Трансформатор тока";
     
     public CurrentTransformer(Vector2i p, Direction dir) {
         super(p, dir);
-        WireIntersection w0 = WireIntersection.getWI(0,1,this); 
-        WireIntersection w1 = WireIntersection.getWI(4,1,this); 
-        wireIntersections.add(w0);
-        wireIntersections.add(w1);
-    }
-    
-    @Override
-    public String getType() {
-        return "Трансформатор тока";
     }
     
     public static void drawPhantom(Vector2i pos) {
@@ -31,8 +24,6 @@ public class CurrentTransformer extends CurrentSource {
                 new Vector2i((int)Math.round(1*Logic.zoomGridGap),  (int)Math.round(1*Logic.zoomGridGap)),
                 0, 180);
         
-        Drawing.drawLineGrid(0,1,1,1);
-        Drawing.drawLineGrid(3,1,4,1);
         
         Drawing.drawLineZoom(4,4,20,4);
         

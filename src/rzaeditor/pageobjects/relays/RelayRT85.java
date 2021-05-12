@@ -1,4 +1,4 @@
-package rzaeditor.pageobjects;
+package rzaeditor.pageobjects.relays;
 
 import java.awt.Color;
 import org.joml.Vector2i;
@@ -6,14 +6,15 @@ import org.joml.primitives.Rectanglei;
 import rzaeditor.Drawing;
 import rzaeditor.Logic;
 import rzaeditor.Page;
+import rzaeditor.pageobjects.intersections.WireIntersection;
 
 public class RelayRT85 extends Relay {
 
+    public static final String defaultType = "Реле РТ-85";
     public static final Vector2i defaultSize = new Vector2i(3,4);
     
     public RelayRT85(Vector2i p, Direction dir) {
         super(p, dir);
-        id = "РТ";
         WireIntersection w0 = WireIntersection.getWI(0,1,this); 
         WireIntersection w1 = WireIntersection.getWI(0,3,this); 
         WireIntersection w2 = WireIntersection.getWI(3,2,this);
@@ -23,10 +24,9 @@ public class RelayRT85 extends Relay {
         wireIntersections.add(w1);
         wireIntersections.add(w2);
     }
-    
+
     @Override
-    public String getType() {
-        return "Реле РТ-85";
+    public void addDefaultWireIntersects() {
     }
     
     public static void drawPhantom(Vector2i pos) {

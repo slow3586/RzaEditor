@@ -6,7 +6,7 @@ import org.joml.primitives.Rectanglei;
 import rzaeditor.Drawing;
 import rzaeditor.Logic;
 import rzaeditor.Page;
-import rzaeditor.pageobjects.intersections.WireIntersection;
+import rzaeditor.pageobjects.WireIntersection;
 
 public class RelayRT85 extends Relay {
 

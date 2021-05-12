@@ -3,7 +3,7 @@ package rzaeditor.pageobjects.other;
 import org.joml.Vector2i;
 import rzaeditor.Drawing;
 import rzaeditor.pageobjects.PageObjectComplex;
-import rzaeditor.pageobjects.intersections.WireIntersection;
+import rzaeditor.pageobjects.WireIntersection;
 
 public class Ground extends PageObjectComplex {
 

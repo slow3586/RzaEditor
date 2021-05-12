@@ -3,7 +3,7 @@ package rzaeditor.pageobjects.source;
 import org.joml.Vector2i;
 import rzaeditor.pageobjects.PageObjectComplex;
 
-public class CurrentSource extends PageObjectComplex {
+public abstract class CurrentSource extends PageObjectComplex {
 
     float currentValue = 0;
 

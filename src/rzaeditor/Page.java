@@ -10,7 +10,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import rzaeditor.pageobjects.PageObjectComplex;
 import rzaeditor.pageobjects.Wire;
-import rzaeditor.pageobjects.intersections.WireIntersection;
+import rzaeditor.pageobjects.WireIntersection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;

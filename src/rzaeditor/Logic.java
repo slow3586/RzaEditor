@@ -1,5 +1,6 @@
 package rzaeditor;
 
+import rzaeditor.drawmodes.DrawMode;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashSet;

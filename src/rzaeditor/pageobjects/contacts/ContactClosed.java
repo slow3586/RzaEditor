@@ -5,7 +5,7 @@ import rzaeditor.Drawing;
 import rzaeditor.Logic;
 import static rzaeditor.Logic.posToScreen;
 import rzaeditor.Page;
-import rzaeditor.pageobjects.intersections.WireIntersection;
+import rzaeditor.pageobjects.WireIntersection;
 
 public class ContactClosed extends Contact {
     public static final int defaultWireIntersectOffset = 0;

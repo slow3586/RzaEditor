@@ -1,12 +1,14 @@
-package rzaeditor;
+package rzaeditor.drawmodes;
 
 import java.lang.reflect.Field;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static rzaeditor.DrawModeSelect.hoveredObjects;
-import static rzaeditor.DrawModeSelect.selectedObjects;
+import rzaeditor.Cursor;
+import rzaeditor.Page;
+import static rzaeditor.drawmodes.DrawModeSelect.hoveredObjects;
+import static rzaeditor.drawmodes.DrawModeSelect.selectedObjects;
 import rzaeditor.pageobjects.PageObjectBase;
 import rzaeditor.pageobjects.PageObjectComplex;
 

@@ -1,7 +1,7 @@
 package rzaeditor.pageobjects.other;
 
 import rzaeditor.pageobjects.source.CurrentSource;
-import rzaeditor.pageobjects.intersections.WireIntersection;
+import rzaeditor.pageobjects.WireIntersection;
 import org.joml.Vector2i;
 import rzaeditor.Drawing;
 

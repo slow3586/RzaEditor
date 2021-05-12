@@ -1,18 +1,23 @@
 package rzaeditor;
 
-import rzaeditor.pageobjects.other.BusBar;
-import rzaeditor.pageobjects.other.Ground;
-import rzaeditor.pageobjects.source.CurrentTransformer;
-import rzaeditor.pageobjects.relays.*;
-import rzaeditor.pageobjects.relays.RelayRT85;
-import rzaeditor.pageobjects.contacts.*;
-import rzaeditor.pageobjects.contacts.ContactOpen;
+import rzaeditor.drawmodes.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.lang.reflect.Modifier;
 import java.nio.file.Paths;
-import rzaeditor.pageobjects.*;
-import rzaeditor.pageobjects.intersections.*;
-import rzaeditor.pageobjects.other.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import org.reflections.Reflections;
+import org.reflections.scanners.ResourcesScanner;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
+import org.reflections.util.FilterBuilder;
+import rzaeditor.pageobjects.PageObjectBase;
+import rzaeditor.pageobjects.PageObjectComplex;
 
 public class MainFrame extends javax.swing.JFrame {
 
@@ -28,6 +33,35 @@ public class MainFrame extends javax.swing.JFrame {
             }         
         });
         addKeyListener(Keyboard.imp);
+
+        addPackage("contacts", "Контакты");
+        addPackage("relays", "Реле");
+        addPackage("intersections", "Связки");
+        addPackage("source", "Источники");
+        addPackage("other", "Другое");
+    }
+    
+    public void addPackage(String n, String ns){
+        List<ClassLoader> classLoadersList = new LinkedList<ClassLoader>();
+        classLoadersList.add(ClasspathHelper.contextClassLoader());
+        classLoadersList.add(ClasspathHelper.staticClassLoader());
+        
+        Reflections refs = refs = new Reflections(new ConfigurationBuilder()
+            .setScanners(new SubTypesScanner(true), new ResourcesScanner())
+            .setUrls(ClasspathHelper.forClassLoader(classLoadersList.toArray(new ClassLoader[0])))
+            .filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix("rzaeditor.pageobjects."+n))));
+        Set<Class<? extends PageObjectComplex>> subs = refs.getSubTypesOf(PageObjectComplex.class);
+        JMenu m = new JMenu(ns);
+        subs.forEach((t) -> {
+            if(Modifier.isAbstract(t.getModifiers())) return;
+            System.out.println(t.getName());
+            JMenuItem i = new JMenuItem(t.getSimpleName());
+            i.addActionListener((e) -> {
+                DrawModeObject.initWithClass(t);
+            });
+            m.add(i);
+        });
+        menuDraw.add(m);
     }
 
     @SuppressWarnings("unchecked")
@@ -46,32 +80,11 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem14 = new javax.swing.JMenuItem();
         jMenuItem11 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        menuDraw = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem10 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem17 = new javax.swing.JMenuItem();
-        jMenu6 = new javax.swing.JMenu();
-        jMenuItem12 = new javax.swing.JMenuItem();
-        jMenuItem19 = new javax.swing.JMenuItem();
-        jMenu7 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem13 = new javax.swing.JMenuItem();
-        jMenu8 = new javax.swing.JMenu();
-        jMenuItem15 = new javax.swing.JMenuItem();
-        jMenuItem16 = new javax.swing.JMenuItem();
-        jMenuItem18 = new javax.swing.JMenuItem();
-        jMenuItem20 = new javax.swing.JMenuItem();
-        jMenuItem21 = new javax.swing.JMenuItem();
-        jMenuItem22 = new javax.swing.JMenuItem();
-        jMenuItem23 = new javax.swing.JMenuItem();
-        jMenuItem24 = new javax.swing.JMenuItem();
-        jMenuItem25 = new javax.swing.JMenuItem();
-        jMenuItem26 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
 
@@ -141,7 +154,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Рисование");
+        menuDraw.setText("Рисование");
 
         jMenuItem1.setText("Провод");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
@@ -149,7 +162,7 @@ public class MainFrame extends javax.swing.JFrame {
                 jMenuItem1ActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem1);
+        menuDraw.add(jMenuItem1);
 
         jMenu5.setText("Линии");
 
@@ -169,141 +182,9 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenu5.add(jMenuItem10);
 
-        jMenu2.add(jMenu5);
+        menuDraw.add(jMenu5);
 
-        jMenu3.setText("Контакт");
-
-        jMenuItem4.setText("Замкнутый");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem4);
-
-        jMenuItem5.setText("Разомкнутый");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem5);
-
-        jMenuItem17.setText("Ключ");
-        jMenu3.add(jMenuItem17);
-
-        jMenu2.add(jMenu3);
-
-        jMenu6.setText("Источники");
-
-        jMenuItem12.setText("Трансформатор тока");
-        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem12ActionPerformed(evt);
-            }
-        });
-        jMenu6.add(jMenuItem12);
-
-        jMenuItem19.setText("Шинка");
-        jMenuItem19.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem19ActionPerformed(evt);
-            }
-        });
-        jMenu6.add(jMenuItem19);
-
-        jMenu2.add(jMenu6);
-
-        jMenu7.setText("Реле");
-
-        jMenuItem3.setText("Реле РТ-40");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
-            }
-        });
-        jMenu7.add(jMenuItem3);
-
-        jMenuItem13.setText("Реле РТ-85");
-        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem13ActionPerformed(evt);
-            }
-        });
-        jMenu7.add(jMenuItem13);
-
-        jMenu2.add(jMenu7);
-
-        jMenu8.setText("Разное");
-
-        jMenuItem15.setText("Заземление");
-        jMenuItem15.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem15ActionPerformed(evt);
-            }
-        });
-        jMenu8.add(jMenuItem15);
-
-        jMenuItem16.setText("Автомат");
-        jMenu8.add(jMenuItem16);
-
-        jMenuItem18.setText("Разъединение");
-        jMenu8.add(jMenuItem18);
-
-        jMenuItem20.setText("Ответвление");
-        jMenu8.add(jMenuItem20);
-
-        jMenuItem21.setText("Cart0");
-        jMenuItem21.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem21ActionPerformed(evt);
-            }
-        });
-        jMenu8.add(jMenuItem21);
-
-        jMenuItem22.setText("jMenuItem22");
-        jMenuItem22.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem22ActionPerformed(evt);
-            }
-        });
-        jMenu8.add(jMenuItem22);
-
-        jMenuItem23.setText("Capa");
-        jMenuItem23.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem23ActionPerformed(evt);
-            }
-        });
-        jMenu8.add(jMenuItem23);
-
-        jMenuItem24.setText("Resi");
-        jMenuItem24.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem24ActionPerformed(evt);
-            }
-        });
-        jMenu8.add(jMenuItem24);
-
-        jMenuItem25.setText("WV");
-        jMenuItem25.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem25ActionPerformed(evt);
-            }
-        });
-        jMenu8.add(jMenuItem25);
-
-        jMenuItem26.setText("WC");
-        jMenuItem26.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem26ActionPerformed(evt);
-            }
-        });
-        jMenu8.add(jMenuItem26);
-
-        jMenu2.add(jMenu8);
-
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(menuDraw);
 
         jMenu4.setText("Выбор");
 
@@ -342,18 +223,9 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        DrawMode.setCurrent(DrawModeWire.imp);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         DrawMode.setCurrent(DrawModeSelect.imp);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
-
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        DrawMode.setCurrent(DrawModeObject.imp);
-        DrawModeObject.objectClass = ContactClosed.class;
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
         Page.open(Paths.get("unnamed.txt").toFile());
@@ -363,116 +235,45 @@ public class MainFrame extends javax.swing.JFrame {
         Page.current = Page.newCircuitA3Page();
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
-    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        DrawMode.setCurrent(DrawModePrimLine.imp);
-    }//GEN-LAST:event_jMenuItem8ActionPerformed
-
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
         Page.current.save();
     }//GEN-LAST:event_jMenuItem9ActionPerformed
-
-    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-        DrawMode.setCurrent(DrawModePrimRect.imp);
-    }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
         //Page.current = Page.fromText("");
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        DrawMode.setCurrent(DrawModeObject.imp);
-        DrawModeObject.objectClass = RelayRT40.class;
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        DrawMode.setCurrent(DrawModePrimRect.imp);
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
 
-    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
-        DrawMode.setCurrent(DrawModeObject.imp);
-        DrawModeObject.objectClass = CurrentTransformer.class;
-    }//GEN-LAST:event_jMenuItem12ActionPerformed
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        DrawMode.setCurrent(DrawModePrimLine.imp);
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
 
-    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
-        DrawMode.setCurrent(DrawModeObject.imp);
-        DrawModeObject.objectClass = RelayRT85.class;
-    }//GEN-LAST:event_jMenuItem13ActionPerformed
-
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        DrawMode.setCurrent(DrawModeObject.imp);
-        DrawModeObject.objectClass = ContactOpen.class;
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
-
-    private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
-        DrawMode.setCurrent(DrawModeObject.imp);
-        DrawModeObject.objectClass = Ground.class;
-    }//GEN-LAST:event_jMenuItem15ActionPerformed
-
-    private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
-        DrawMode.setCurrent(DrawModeObject.imp);
-        DrawModeObject.objectClass = BusBar.class;
-    }//GEN-LAST:event_jMenuItem19ActionPerformed
-
-    private void jMenuItem22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem22ActionPerformed
-        DrawModeObject.initWithClass(Cart.class);
-    }//GEN-LAST:event_jMenuItem22ActionPerformed
-
-    private void jMenuItem21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem21ActionPerformed
-        DrawModeObject.initWithClass(Cart1.class);
-    }//GEN-LAST:event_jMenuItem21ActionPerformed
-
-    private void jMenuItem23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem23ActionPerformed
-        DrawModeObject.initWithClass(Capacitor.class);
-    }//GEN-LAST:event_jMenuItem23ActionPerformed
-
-    private void jMenuItem24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem24ActionPerformed
-        DrawModeObject.initWithClass(Resistor.class);
-    }//GEN-LAST:event_jMenuItem24ActionPerformed
-
-    private void jMenuItem25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem25ActionPerformed
-        DrawModeObject.initWithClass(VoltageWinding.class);
-    }//GEN-LAST:event_jMenuItem25ActionPerformed
-
-    private void jMenuItem26ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem26ActionPerformed
-        DrawModeObject.initWithClass(CurrentWinding.class);
-    }//GEN-LAST:event_jMenuItem26ActionPerformed
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        DrawMode.setCurrent(DrawModeWire.imp);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JPanel editPanel;
     public static javax.swing.JTable infoTable;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
-    private javax.swing.JMenu jMenu6;
-    private javax.swing.JMenu jMenu7;
-    private javax.swing.JMenu jMenu8;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
-    private javax.swing.JMenuItem jMenuItem12;
-    private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
-    private javax.swing.JMenuItem jMenuItem15;
-    private javax.swing.JMenuItem jMenuItem16;
-    private javax.swing.JMenuItem jMenuItem17;
-    private javax.swing.JMenuItem jMenuItem18;
-    private javax.swing.JMenuItem jMenuItem19;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem20;
-    private javax.swing.JMenuItem jMenuItem21;
-    private javax.swing.JMenuItem jMenuItem22;
-    private javax.swing.JMenuItem jMenuItem23;
-    private javax.swing.JMenuItem jMenuItem24;
-    private javax.swing.JMenuItem jMenuItem25;
-    private javax.swing.JMenuItem jMenuItem26;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JMenu menuDraw;
     public static javax.swing.JLabel zoomLabel;
     // End of variables declaration//GEN-END:variables
 

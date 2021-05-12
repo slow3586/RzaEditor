@@ -1,8 +1,9 @@
 package rzaeditor;
 
+import rzaeditor.drawmodes.DrawMode;
 import rzaeditor.pageobjects.PageObjectComplex;
 import rzaeditor.pageobjects.Wire;
-import rzaeditor.pageobjects.intersections.WireIntersection;
+import rzaeditor.pageobjects.WireIntersection;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -10,6 +11,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
+import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
@@ -111,6 +113,13 @@ public class Drawing {
     
     public static int getStringWidth(String s){
         return g.getFontMetrics(g.getFont()).stringWidth(s);
+    }
+    
+    public static Vector2i getStringHeight(String s){
+        FontRenderContext frc = new FontRenderContext(new AffineTransform(), true, true);
+        int textwidth = (int)(g.getFont().getStringBounds(s, frc).getWidth());
+        int textheight = (int)(g.getFont().getStringBounds(s, frc).getHeight());
+        return new Vector2i(textwidth, textheight);
     }
     
     public static void drawString(String str, float x, float y) {

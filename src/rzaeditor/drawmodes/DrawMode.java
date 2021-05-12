@@ -1,5 +1,6 @@
-package rzaeditor;
+package rzaeditor.drawmodes;
 
+import rzaeditor.Logic;
 import static rzaeditor.Logic.ep;
 
 public abstract class DrawMode {

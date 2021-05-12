@@ -8,14 +8,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.joml.Vector2i;
 import org.joml.primitives.Rectanglei;
-import rzaeditor.DrawModeAssign;
+import rzaeditor.drawmodes.DrawModeAssign;
 import rzaeditor.Drawing;
 import rzaeditor.InfoTable;
 import rzaeditor.Logic;
 import rzaeditor.MainFrame;
 import rzaeditor.Page;
 import rzaeditor.pageobjects.Wire;
-import rzaeditor.pageobjects.intersections.WireIntersection;
+import rzaeditor.pageobjects.WireIntersection;
 
 public class RelayRT40 extends Relay {
 

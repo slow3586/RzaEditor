@@ -1,6 +1,6 @@
 package rzaeditor.pageobjects.source;
 
-import rzaeditor.pageobjects.intersections.WireIntersection;
+import rzaeditor.pageobjects.WireIntersection;
 import org.joml.Vector2i;
 import rzaeditor.Drawing;
 import rzaeditor.Logic;

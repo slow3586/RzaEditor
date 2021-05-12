@@ -3,7 +3,7 @@ package rzaeditor.pageobjects.contacts;
 import org.joml.Vector2i;
 import rzaeditor.Drawing;
 import rzaeditor.Logic;
-import rzaeditor.pageobjects.intersections.WireIntersection;
+import rzaeditor.pageobjects.WireIntersection;
 import static rzaeditor.Logic.posToScreen;
 
 public class ContactOpen extends Contact {

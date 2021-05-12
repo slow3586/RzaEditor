@@ -1,4 +1,4 @@
-package rzaeditor;
+package rzaeditor.drawmodes;
 
 import rzaeditor.pageobjects.primitives.PageLine;
 import java.awt.Color;
@@ -7,6 +7,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.joml.Vector2i;
+import rzaeditor.Cursor;
+import rzaeditor.Drawing;
+import rzaeditor.Keyboard;
+import rzaeditor.Logic;
+import rzaeditor.Page;
 import static rzaeditor.Logic.dragEnd;
 import static rzaeditor.Logic.dragStart;
 import rzaeditor.pageobjects.PageObjectComplex;

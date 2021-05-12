@@ -1,8 +1,10 @@
-package rzaeditor;
+package rzaeditor.drawmodes;
 
 import rzaeditor.pageobjects.primitives.PageLine;
 import java.awt.Color;
 import org.joml.Vector2i;
+import rzaeditor.Drawing;
+import rzaeditor.Logic;
 import static rzaeditor.Logic.dragEnd;
 import static rzaeditor.Logic.dragStart;
 import static rzaeditor.Logic.zoomGridGap;

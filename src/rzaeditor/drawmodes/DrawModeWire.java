@@ -1,9 +1,11 @@
-package rzaeditor;
+package rzaeditor.drawmodes;
 
 import rzaeditor.pageobjects.Wire;
 import java.awt.Color;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
+import rzaeditor.Drawing;
+import rzaeditor.Logic;
 import static rzaeditor.Logic.*;
 
 public class DrawModeWire extends DrawMode {

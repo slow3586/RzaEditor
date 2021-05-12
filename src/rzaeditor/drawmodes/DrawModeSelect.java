@@ -1,4 +1,4 @@
-package rzaeditor;
+package rzaeditor.drawmodes;
 
 import rzaeditor.pageobjects.PageObjectComplex;
 import rzaeditor.pageobjects.Wire;
@@ -9,6 +9,12 @@ import java.util.function.Consumer;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 import org.joml.primitives.Rectanglei;
+import rzaeditor.Cursor;
+import rzaeditor.Drawing;
+import rzaeditor.InfoTable;
+import rzaeditor.Keyboard;
+import rzaeditor.Logic;
+import rzaeditor.Page;
 import static rzaeditor.Drawing.drawRect;
 import static rzaeditor.Logic.*;
 import rzaeditor.pageobjects.PageObjectBase;

@@ -1,7 +1,9 @@
-package rzaeditor;
+package rzaeditor.drawmodes;
 
 import rzaeditor.pageobjects.primitives.PageLine;
 import java.awt.Color;
+import rzaeditor.Drawing;
+import rzaeditor.Logic;
 import static rzaeditor.Logic.dragEnd;
 import static rzaeditor.Logic.dragStart;
 

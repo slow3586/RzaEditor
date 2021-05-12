@@ -1,6 +1,5 @@
 package rzaeditor.pageobjects;
 
-import rzaeditor.pageobjects.intersections.WireIntersection;
 import java.awt.Color;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -13,8 +12,8 @@ import org.joml.Vector2i;
 import org.joml.primitives.Rectanglef;
 import org.joml.primitives.Rectanglei;
 import rzaeditor.Cursor;
-import rzaeditor.DrawModeObject;
-import static rzaeditor.DrawModeObject.objectClass;
+import rzaeditor.drawmodes.DrawModeObject;
+import static rzaeditor.drawmodes.DrawModeObject.objectClass;
 import rzaeditor.Drawing;
 import rzaeditor.InfoTable;
 import rzaeditor.Logic;

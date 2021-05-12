@@ -1,4 +1,4 @@
-package rzaeditor.pageobjects.intersections;
+package rzaeditor.pageobjects;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

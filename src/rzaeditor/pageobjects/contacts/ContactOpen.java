@@ -22,10 +22,4 @@ public class ContactOpen extends Contact {
     public void drawIDLabel() {
         Drawing.drawString(id, Logic.gridToScreen(size.x)/2-Drawing.getStringWidth(String.valueOf(id))/2, Logic.posToScreen(1));
     }
-    
-    @Override
-    public void drawContactLabels() {
-        Drawing.drawString(String.valueOf(contactId0), -Drawing.getStringWidth(String.valueOf(contactId0))/2, Logic.posToScreen(14));
-        Drawing.drawString(String.valueOf(contactId1), Logic.gridToScreen(size.x)-Drawing.getStringWidth(String.valueOf(contactId1))/2, Logic.posToScreen(14));
-    }
 }

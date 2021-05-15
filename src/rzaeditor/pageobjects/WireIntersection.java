@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 import rzaeditor.Drawing;
+import rzaeditor.InfoTable;
 import rzaeditor.Logic;
 import rzaeditor.Page;
 import rzaeditor.pageobjects.PageObjectBase;
@@ -22,11 +23,21 @@ public class WireIntersection extends PageObjectBase{
     public HashSet<WireIntersection> voltageTo = new HashSet<>();
     public boolean on = true;
     public static final String defaultType = "Связка";
+    public String textAbove = "";
+    public String textBelow = "";
+    public WIType wiType = WIType.NORMAL;
+            
+    public static enum WIType{
+        NORMAL,
+        TERMINAL
+    }
 
     private WireIntersection(Vector2i p) {
         super(p);
         
         Page.current.objects.add(this);
+        
+        
     }
     
     public static WireIntersection getWI(int x, int y, PageObjectComplex o) {
@@ -37,6 +48,8 @@ public class WireIntersection extends PageObjectBase{
     public String save() {
         return null;
     }
+    
+    
 
     public static WireIntersection getWI(Vector2i p) {
         WireIntersection wi = getWIAt(p);
@@ -51,31 +64,47 @@ public class WireIntersection extends PageObjectBase{
         i.wireless.add(this);
     }
     
+    public void removeWireless(WireIntersection i){
+        if(wireless.contains(i))
+        wireless.remove(i);
+        i.wireless.remove(this);
+    }
+    
     public void removeWire(Wire w){
         wires.remove(w);
         checkIsEmpty();
     }
 
+    @Override
+    public void onSelect() {
+        super.onSelect();
+        InfoTable.addLineText("Текст сверху", this, "textAbove");
+        InfoTable.addLineText("Текст снизу", this, "textBelow");
+    }
+    
     public void draw() {
         
-        int size = Math.round(3 * Logic.zoom);
+        int size = 2;
+        if(textAbove.length()!=0 || textBelow.length()!=0){
+            size = 3;
+        }
         
         selectedCheck();
         Drawing.setTranslateGrid(pos);
+        Drawing.setFontSizeZoom(5);
+        Drawing.drawStringZoomCentered(textAbove, 0, -6);
+        Drawing.drawStringZoomCentered(textBelow, 0, 6);
         
-        Drawing.fillOval(-size/2, -size/2, size, size);
+        if(wiType==WIType.NORMAL)
+            Drawing.fillOvalZoom(-size/2, -size/2, size, size);
+        else if(wiType==WIType.NORMAL){
+            Drawing.fillOvalZoom(-size/2, -size/2, size, size);
+            Drawing.drawLineZoom(0, 6, 6, 0);
+        }
     }
 
     private static WireIntersection getWIAt(Vector2i p) {
-        HashSet<WireIntersection> s = new HashSet<>();
-        s.addAll(Page.current.getWireIntersections());
-        Page.current.objects.forEach((t) -> {
-            if(!t.getClass().equals(PageObjectComplex.class)) return;
-            
-            PageObjectComplex o = (PageObjectComplex) t;
-            s.addAll(o.wireIntersections);
-        });
-        Optional<WireIntersection> m = s.stream().filter((t) -> {
+        Optional<WireIntersection> m = Page.current.getWireIntersections().stream().filter((t) -> {
             return t.pos.equals(p);
         }).findFirst();
         return m.orElse(null);
@@ -86,4 +115,12 @@ public class WireIntersection extends PageObjectBase{
             delete();
         }
     }
+
+    @Override
+    public void delete() {
+        if(wires.isEmpty() && wireless.isEmpty())
+            super.delete();
+    }
+    
+    
 }

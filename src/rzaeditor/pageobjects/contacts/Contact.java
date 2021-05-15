@@ -12,8 +12,6 @@ import rzaeditor.pageobjects.relays.Relay;
 
 abstract public class Contact extends PageObjectComplex {
 
-    public int contactId0 = 1;
-    public int contactId1 = 3;
     public boolean isOpen = true;
     public Relay relay = null;
     
@@ -23,14 +21,6 @@ abstract public class Contact extends PageObjectComplex {
     
     public void activate(){
         isOpen=!isOpen;
-    }
-
-    @Override
-    public void drawContactLabels() {
-        super.drawContactLabels();
-        
-        Drawing.drawString(String.valueOf(contactId0), -Drawing.getStringWidth(String.valueOf(contactId0))/2, Logic.posToScreen(8));
-        Drawing.drawString(String.valueOf(contactId1), Logic.gridToScreen(size.x)-Drawing.getStringWidth(String.valueOf(contactId1))/2, Logic.posToScreen(8));
     }
     
     @Override

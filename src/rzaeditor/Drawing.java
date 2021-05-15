@@ -62,6 +62,10 @@ public class Drawing {
     public static void drawOval(float x, float y, float x1, float y1) {
         g.drawOval(Math.round(x), Math.round(y), Math.round(x1), Math.round(y1));
     }
+    
+    public static void fillOvalZoom(float x, float y, float x1, float y1) {
+        fillOval(Math.round(x*Logic.zoom), Math.round(y*Logic.zoom), Math.round(x1*Logic.zoom), Math.round(y1*Logic.zoom));
+    }
 
     public static void fillOval(float x, float y, float x1, float y1) {
         g.fillOval(Math.round(x), Math.round(y), Math.round(x1), Math.round(y1));
@@ -111,19 +115,32 @@ public class Drawing {
         g.setFont(g.getFont().deriveFont(s));
     }
     
+    public static void setFontSizeZoom(float s){
+        setFontSize(s * Logic.zoom);
+    }
+    
     public static int getStringWidth(String s){
         return g.getFontMetrics(g.getFont()).stringWidth(s);
     }
     
     public static Vector2i getStringHeight(String s){
-        FontRenderContext frc = new FontRenderContext(new AffineTransform(), true, true);
-        int textwidth = (int)(g.getFont().getStringBounds(s, frc).getWidth());
+        FontRenderContext frc = g.getFontRenderContext();
+        int textwidth = getStringWidth(s);
         int textheight = (int)(g.getFont().getStringBounds(s, frc).getHeight());
         return new Vector2i(textwidth, textheight);
     }
     
     public static void drawString(String str, float x, float y) {
-        g.drawString(str, x, y);
+        g.drawString(str, Math.round(x), Math.round(y));
+    }
+    
+    public static void drawStringZoom(String str, float x, float y) {
+        g.drawString(str, Math.round(x*Logic.zoom), Math.round(y*Logic.zoom));
+    }
+    
+    public static void drawStringZoomCentered(String str, float x, float y) {
+        Vector2i s = getStringHeight(str);
+        drawString(str, x-s.x/2, y*Logic.zoom+s.y/3);
     }
     
     public static void setStrokeSize(float s){

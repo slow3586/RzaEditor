@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import org.reflections.Reflections;
@@ -54,12 +56,16 @@ public class MainFrame extends javax.swing.JFrame {
         JMenu m = new JMenu(ns);
         subs.forEach((t) -> {
             if(Modifier.isAbstract(t.getModifiers())) return;
-            System.out.println(t.getName());
-            JMenuItem i = new JMenuItem(t.getSimpleName());
-            i.addActionListener((e) -> {
-                DrawModeObject.initWithClass(t);
-            });
-            m.add(i);
+            try {
+                String in = (String) t.getField("defaultType").get(null);
+                JMenuItem i = new JMenuItem(in);
+                i.addActionListener((e) -> {
+                    DrawModeObject.initWithClass(t);
+                });
+                m.add(i);
+            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
         menuDraw.add(m);
     }

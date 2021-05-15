@@ -75,17 +75,23 @@ public class DrawModeSelect extends DrawMode {
 
     @Override
     public void mouseReleased() {  
-        InfoTable.reset();
+        boolean shiftDown = Keyboard.isDown(KeyEvent.VK_SHIFT); 
+        if(!shiftDown)
+            selectedObjects.clear();
         
         Page.current.objects.stream().forEach((t) -> {
             PageObjectBase o = (PageObjectBase) t;
-            o.selected = o.hovered;
+            if(shiftDown)
+                o.selected = o.hovered || o.selected;
+            else
+                o.selected = o.hovered;
             o.hovered = false;
             if(o.selected){
                 selectedObjects.add(o);
-                o.onSelect();
             }
         });
+        
+        InfoTable.reset();
         
         if(hoveredObjects.isEmpty())
             cleanup();

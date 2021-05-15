@@ -39,11 +39,11 @@ public class Wire extends PageObjectBase{
         int index = 0;
         ArrayList<Wire> wires = new ArrayList<>();
         wires.addAll(Page.current.getWires());
+                /*
         for (int i = 0; i < wires.size()-1; i++) {
             Wire w0 = wires.get(i);
             for (int j = i+1; j < wires.size(); j++) {
                 Wire w1 = wires.get(j);  
-                
                 if(w0.isHorizontal() == w1.isHorizontal() && w0.startWI.pos == w1.endWI.pos && w0.startWI.wires.size()==2){
                     w0.setStartWI(w1.startWI);
                     w1.delete();
@@ -54,7 +54,8 @@ public class Wire extends PageObjectBase{
                     w1.delete();
                     return;
                 }
-                
+                */
+                /*
                 if(w0.isHorizontal() == w1.isHorizontal() && w0.containsWire(w1)){
                     if(w0.isHorizontal()){
                         if(w0.pos.x > w1.pos.x){
@@ -72,7 +73,8 @@ public class Wire extends PageObjectBase{
                     w1.delete();
                     return;
                 }
-
+                    */
+                /*
                 if(w0.pointInside(w1.startWI.pos, 1)){
                     w0.split(w0.startWI.pos);
                     return;
@@ -91,6 +93,7 @@ public class Wire extends PageObjectBase{
                 }
             }
         }
+                */
         
         
         
@@ -99,7 +102,8 @@ public class Wire extends PageObjectBase{
     public void split(Vector2i p){
         Vector2i t = new Vector2i(endWI.pos);
         setEndWI(WireIntersection.getWI(p));
-        Wire.create(p, t, true);
+        Wire w = Wire.create(p, t, true);
+        
     }
     
     public void setStartWI(WireIntersection i){
@@ -124,6 +128,15 @@ public class Wire extends PageObjectBase{
         size = getVec();
         startWI.wires.add(this);
         endWI.wires.add(this);
+        if(Page.current.getWires().stream().filter((t) -> {
+            return t!=this;
+        }).filter((t) -> {
+            return pos.equals(t.pos) && size.equals(t.size);
+        }).findFirst().isPresent()){
+            delete();
+            return false;
+        }
+        
         if(startWI.wireless.contains(endWI)){
             delete();
             return false;

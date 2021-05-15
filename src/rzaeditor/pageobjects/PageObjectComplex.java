@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.joml.Vector2i;
-import org.joml.primitives.Rectanglef;
 import org.joml.primitives.Rectanglei;
 import rzaeditor.Cursor;
 import rzaeditor.drawmodes.DrawModeObject;
@@ -32,6 +31,10 @@ public abstract class PageObjectComplex extends PageObjectBase {
     public static final String defaultIDen = "";
     public static Vector2i defaultSize = new Vector2i(3,1);
     public static final String defaultType = "Объект сложный";
+    public static final String defaultContactId0 = "";
+    public static final String defaultContactId1 = "";
+    public WireIntersection leftWI = null;
+    public WireIntersection rightWI = null;
     
     public static enum Direction{
         LEFT,
@@ -76,6 +79,23 @@ public abstract class PageObjectComplex extends PageObjectBase {
         setDefaultID();
     }
     
+    public static boolean canPutHere(Class<PageObjectComplex> c, Vector2i p, Direction dir){
+        try {
+            Field f =  c.getField("defaultSize");
+            Vector2i s = Logic.swapIfTrue((Vector2i) f.get(Vector2i.class),dir==UP||dir==DOWN);
+            Rectanglei r = new Rectanglei(p, new Vector2i(p).add(s));
+            return !Page.current.objects.stream().filter((t) -> {
+                return !(t instanceof Wire); //To change body of generated lambdas, choose Tools | Templates.
+            }).anyMatch((t) -> {
+                System.out.println(t.isRectInside(r));
+                return t.isRectInside(r);
+            });
+        } catch (SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException ex) {
+            Logger.getLogger(PageObjectComplex.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return true;
+    }
+    
     public void setDefaultID(){
         String nid = "";
         try {
@@ -87,26 +107,24 @@ public abstract class PageObjectComplex extends PageObjectBase {
     }
     
     public void addDefaultWireIntersects(){
-        int offset = 1;
         try {
-            offset = this.getClass().getField("defaultWireIntersectOffset").getInt(null);
+            int offset = this.getClass().getField("defaultWireIntersectOffset").getInt(null);
+            String s0 = (String) this.getClass().getField("defaultContactId0").get(null);
+            String s1 = (String) this.getClass().getField("defaultContactId1").get(null);
+            leftWI = WireIntersection.getWI(0,offset,this); 
+            rightWI = WireIntersection.getWI(size.x,offset,this); 
+            leftWI.addWireless(rightWI);
+            wireIntersections.add(leftWI);
+            wireIntersections.add(rightWI);
+            leftWI.textBelow = s0;
+            rightWI.textBelow = s1;
+            Wire.checkAllWires();
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
             Logger.getLogger(PageObjectComplex.class.getName()).log(Level.SEVERE, null, ex);
         }
-        WireIntersection w0 = WireIntersection.getWI(0,offset,this); 
-        WireIntersection w1 = WireIntersection.getWI(size.x,offset,this); 
-        w0.addWireless(w1);
-        wireIntersections.add(w0);
-        wireIntersections.add(w1);
     }
     
     public void drawChildren(){
-        //children.forEach((t) -> {
-        //   t.draw();
-        //});
-        wireIntersections.forEach((t) -> {
-            t.draw();
-        });
     }
     
     public static void callRotateCheck(Class c, Vector2i p, Direction dir){
@@ -140,29 +158,31 @@ public abstract class PageObjectComplex extends PageObjectBase {
         }
     }
     
-    public void setPos(int x, int y){
-        pos.x = x;
-        pos.y = y;
-    }
-    
     public void drawLabels(){
-        Drawing.setFontSize(7 * Logic.zoom);
+        Drawing.setFontSizeZoom(7);
         drawIDLabel();
-        Drawing.setFontSize(5 * Logic.zoom);
-        drawContactLabels();
     }
     
     public void drawIDLabel(){
-        Drawing.drawString(id, Logic.gridToScreen(size.x)/2-Drawing.getStringWidth(String.valueOf(id))/2, Logic.posToScreen(-3));
+        Drawing.drawStringZoomCentered(id, Logic.gridToScreen(size.x)/2, -6);
+        //Drawing.drawString(id, Logic.gridToScreen(size.x)/2-Drawing.getStringWidth(String.valueOf(id))/2, Logic.posToScreen(-3));
     }
     
-    public void drawContactLabels(){
-        
+    public void setContactId0(String s){
+        if(leftWI!=null)
+            leftWI.textBelow = s;
     }
-
+    
+    public void setContactId1(String s){
+        if(rightWI!=null)
+            rightWI.textBelow = s;
+    }
+    
     @Override
     public void delete() {
         super.delete();
+        leftWI.wireless.remove(rightWI);
+        rightWI.wireless.remove(leftWI);
         wireIntersections.forEach((t) -> {
             t.delete();
         });

@@ -7,6 +7,7 @@ import rzaeditor.pageobjects.PageObjectComplex;
 public class CartTwoSide extends PageObjectComplex {
 
     public static final Vector2i defaultSize = new Vector2i(4,2);
+    public static final String defaultType = "Тележка 2";
     //public static final boolean canSwitchDirection = true;
     
     public CartTwoSide(Vector2i pos, Direction dir) {

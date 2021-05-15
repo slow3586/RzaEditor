@@ -20,6 +20,8 @@ import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
+import rzaeditor.drawmodes.DrawMode;
+import rzaeditor.drawmodes.DrawModeSelect;
 import rzaeditor.pageobjects.PageObjectBase;
 import rzaeditor.pageobjects.PageObjectComplex;
 
@@ -39,6 +41,11 @@ public class InfoTable extends JTable {
         InfoTableModel.col1.clear();
         InfoTableModel.col2.clear();
         InfoTableModel.rows=0;
+        if(DrawMode.getCurrent()==DrawModeSelect.imp && !DrawModeSelect.selectedObjects.isEmpty()){
+            DrawModeSelect.selectedObjects.forEach((t) -> {
+                t.onSelect();
+            });
+        }
         InfoTableModel.imp.fireTableDataChanged();
     }
     

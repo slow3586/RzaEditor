@@ -8,6 +8,7 @@ import rzaeditor.Drawing;
 public class BusBar extends CurrentSource {
 
     public static Vector2i defaultSize = new Vector2i(4,2);
+    public static final String defaultType = "Шинка";
     
     public BusBar(Vector2i pos, Direction dir) {
         super(pos, dir);

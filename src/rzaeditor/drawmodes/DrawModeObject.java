@@ -22,6 +22,7 @@ public class DrawModeObject extends DrawMode {
     public static DrawModeObject imp = new DrawModeObject();
     public static Class objectClass = null;
     public static Direction dir = Direction.LEFT;
+    public static boolean canPutHere = false;
 
     public static void initWithClass(Class c){
         DrawMode.setCurrent(imp);
@@ -59,15 +60,24 @@ public class DrawModeObject extends DrawMode {
     
     @Override
     public void draw() {
-       if(!Logic.isDragging) return;
         
-        Drawing.setColor(Color.RED);
+        if(canPutHere)
+            Drawing.setColor(Color.GREEN);
+        else
+            Drawing.setColor(Color.RED);
+            
         
         PageObjectComplex.callRotateCheck(objectClass, Cursor.posGrid, dir);
     }
 
     @Override
+    public void mouseMove() {
+        canPutHere = PageObjectComplex.canPutHere(objectClass, Cursor.posGrid, dir);
+    }
+
+    @Override
     public void mouseReleased() {
+        if(!canPutHere) return;
         try {
             PageObjectComplex o = (PageObjectComplex) objectClass.getConstructor(Vector2i.class, Direction.class).newInstance(Cursor.posGrid, dir);
             Page.current.objects.add(o);

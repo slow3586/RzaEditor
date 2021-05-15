@@ -1,11 +1,23 @@
 package rzaeditor.pageobjects.contacts;
 
 import org.joml.Vector2i;
+import rzaeditor.Drawing;
 
 public class KeySwitch extends Contact {
+    
+    public static final Vector2i defaultSize = new Vector2i(6,4);
+    public static final String defaultType = "Ключ";
     
     public KeySwitch(Vector2i p, Direction dir) {
         super(p, dir);
     }
     
+    
+    public static void drawPhantom(Vector2i pos) {
+        Drawing.drawLineZoom(9, 0, 9, 12);
+        Drawing.drawLineZoom(18, 0, 18, 12);
+        Drawing.drawLineZoom(27, 0, 27, 12);
+        Drawing.drawOvalZoom(6, 3, 6, 6);
+        Drawing.drawOvalZoom(24, 3, 6, 6);
+    }
 }

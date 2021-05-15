@@ -42,6 +42,13 @@ public abstract class PageObjectBase {
         name = type+" №"+(getCountInPage()+1);
     }
     
+    public static boolean canPutHere(Class<PageObjectBase> c, Vector2i p, Vector2i s){
+        Rectanglei r = new Rectanglei(p, new Vector2i(p).add(s));
+        return Page.current.objects.stream().anyMatch((t) -> {
+            return t.isRectInside(r);
+        });
+    }
+    
     public long getCountInPage(){
         return Page.current.objects.stream().filter((t) -> {
             return t.getClass().equals(this.getClass());
@@ -57,7 +64,9 @@ public abstract class PageObjectBase {
             Drawing.setColor(Color.black);
     }
     
-    public void dataUpdated(){}
+    public void dataUpdated(){
+        InfoTable.reset();
+    }
     
     public void draw(){
         Drawing.setLineType(Drawing.LineType.SOLID);
@@ -99,6 +108,12 @@ public abstract class PageObjectBase {
     
     public Rectanglei getRect(){
         return new Rectanglei(pos.x, pos.y, pos.x+size.x, pos.y+size.y);
+    }
+    
+    public boolean isRectInside(Rectanglei r1){
+        Rectanglei r0 = getRect();
+        return r0.minX < r1.maxX && r0.maxX > r1.minX &&
+               r0.maxY > r1.minY && r0.minY < r1.maxY;
     }
     
     public boolean isRectTouching(Rectanglei r){

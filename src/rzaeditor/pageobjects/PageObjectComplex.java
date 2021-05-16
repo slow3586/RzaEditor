@@ -14,6 +14,7 @@ import rzaeditor.Cursor;
 import rzaeditor.drawmodes.DrawModeObject;
 import static rzaeditor.drawmodes.DrawModeObject.objectClass;
 import rzaeditor.Drawing;
+import rzaeditor.Help;
 import rzaeditor.InfoTable;
 import rzaeditor.Logic;
 import static rzaeditor.Logic.zoomGridGap;
@@ -40,8 +41,21 @@ public abstract class PageObjectComplex extends PageObjectBase {
         LEFT,
         UP,
         RIGHT,
-        DOWN
+        DOWN;
+        
+        public boolean isHorizontal(){
+            return !isVertical();
+        }
+        
+        public boolean isVertical(){
+            if(this==UP || this==DOWN)
+                return true;
+            
+            return false;
+        }
     }
+    
+    
     
     public String id = "?";
     
@@ -52,106 +66,89 @@ public abstract class PageObjectComplex extends PageObjectBase {
             if(dir!=LEFT && dir!=UP)
                 direction=LEFT;
         }
-        try {
-            methodDrawPhantom = getClass().getMethod("drawPhantom", Vector2i.class);
-        } catch (NoSuchMethodException | SecurityException ex) {
-            System.err.println("drawPhantom method not found in class "+getClass().getName()+"!!!");
-            Logger.getLogger(PageObjectComplex.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
-        try {
-            methodDrawDefWILines = getClass().getMethod("drawDefaultWireIntersectLines", Class.class);
-        } catch (NoSuchMethodException | SecurityException ex) {
-            System.err.println("drawPhantom method not found in class "+getClass().getName()+"!!!");
-            Logger.getLogger(PageObjectComplex.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        try {
-            Field f = getClass().getField("defaultSize");
-            size = Logic.swapIfTrue((Vector2i) f.get(Vector2i.class),dir==UP||dir==DOWN);
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            System.err.println("defaultSize field not found in class "+getClass().getName()+"!!!");
-            Logger.getLogger(PageObjectComplex.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+        methodDrawPhantom = getMethod("drawPhantom", Vector2i.class);
+        methodDrawDefWILines = getMethod("drawDefaultWireIntersectLines", Class.class, Direction.class);
+        size = rotateDefaultSize(getClass(), dir);
         
         addDefaultWireIntersects();
         setDefaultID();
     }
     
+    public static Vector2i getDefaultSize(Class<PageObjectComplex> c){
+        return (Vector2i) Help.getFieldValue(c, "defaultSize", null);
+    }
+    
     public static boolean canPutHere(Class<PageObjectComplex> c, Vector2i p, Direction dir){
-        try {
-            Field f =  c.getField("defaultSize");
-            Vector2i s = Logic.swapIfTrue((Vector2i) f.get(Vector2i.class),dir==UP||dir==DOWN);
-            Rectanglei r = new Rectanglei(p, new Vector2i(p).add(s));
-            return !Page.current.objects.stream().filter((t) -> {
-                return !(t instanceof Wire); //To change body of generated lambdas, choose Tools | Templates.
-            }).anyMatch((t) -> {
-                System.out.println(t.isRectInside(r));
-                return t.isRectInside(r);
-            });
-        } catch (SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException ex) {
-            Logger.getLogger(PageObjectComplex.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return true;
+        Vector2i s = rotateDefaultSize(c, dir);
+        Rectanglei r = new Rectanglei(p, new Vector2i(p).add(s));
+        return !Page.current.objects.stream().filter((t) -> {
+            return !(t instanceof Wire); //To change body of generated lambdas, choose Tools | Templates.
+        }).anyMatch((t) -> {
+            return t.isRectInside(r);
+        });
     }
     
     public void setDefaultID(){
-        String nid = "";
-        try {
-            nid = (String) this.getClass().getField("defaultIDru").get(null);
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            Logger.getLogger(PageObjectComplex.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        id = nid;
+        id = (String) getFieldValue("defaultIDru");
     }
     
     public void addDefaultWireIntersects(){
-        try {
-            int offset = this.getClass().getField("defaultWireIntersectOffset").getInt(null);
-            String s0 = (String) this.getClass().getField("defaultContactId0").get(null);
-            String s1 = (String) this.getClass().getField("defaultContactId1").get(null);
-            leftWI = WireIntersection.getWI(0,offset,this); 
-            rightWI = WireIntersection.getWI(size.x,offset,this); 
+            int offset = (int) getFieldValue("defaultWireIntersectOffset");
+            String s0 = (String) getFieldValue("defaultContactId0");
+            String s1 = (String) getFieldValue("defaultContactId1");
+            Vector2i s = rotateDefaultSize(this.getClass(), direction);
+            Vector2i offsetv = new Vector2i();
+            if(direction.isHorizontal()){
+                offsetv.y = offset;
+            }
+            else if(direction == Direction.UP){
+                offsetv.x = s.x - offset;
+            }
+            else if(direction == Direction.DOWN){
+                offsetv.x = s.x + offset;
+            }
+            Vector2i offset2 = new Vector2i(s.x,0);
+            if(direction.isVertical())
+                offset2.set(0, s.y);
+            leftWI = WireIntersection.getWI(offsetv.x,offsetv.y, this); 
+            rightWI = WireIntersection.getWI(offsetv.x+offset2.x,offsetv.y+offset2.y, this); 
             leftWI.addWireless(rightWI);
             wireIntersections.add(leftWI);
             wireIntersections.add(rightWI);
             leftWI.textBelow = s0;
             rightWI.textBelow = s1;
             Wire.checkAllWires();
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            Logger.getLogger(PageObjectComplex.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    }
+    
+    public static Vector2i rotateDefaultSize(Class c, Direction dir){
+        return Logic.swapIfTrue(getDefaultSize(c), dir.isVertical());
     }
     
     public void drawChildren(){
     }
     
     public static void callRotateCheck(Class c, Vector2i p, Direction dir){
-        try {
-            objectClass.getMethod("rotateCheck", Vector2i.class, Vector2i.class, Direction.class)
-                    .invoke(null, p, objectClass.getField("defaultSize").get(Vector2i.class), dir);
-            objectClass.getMethod("drawPhantom", Vector2i.class).invoke(null, Cursor.posGrid);
-            objectClass.getMethod("drawDefaultWireIntersectLines", Class.class).invoke(null, c);
-        } catch (NoSuchMethodException | SecurityException | NoSuchFieldException | IllegalArgumentException | IllegalAccessException | InvocationTargetException ex) {
-            Logger.getLogger(PageObjectComplex.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Help.invokeMethodF(c, "rotateCheck", p, rotateDefaultSize(c, dir), dir);
+        Help.invokeMethodF(c, "drawPhantom", Cursor.posGrid);
+        Help.invokeMethodF(c, "drawDefaultWireIntersectLines", c, dir);
     }
     
     public static void rotateCheck(Vector2i pos, Vector2i size, Direction dir){
+//        System.out.println(pos.x+" "+pos.y+" "+dir+" "+size.x+" "+size.y);
         if(dir==Direction.LEFT){
             Drawing.setTranslateGrid(pos.x, pos.y);
         }
-        if(dir==Direction.UP){
+        else if(dir==Direction.UP){
             Drawing.setTranslateGrid(pos.x+size.x, pos.y);
             Drawing.setRot(90);
         }
-        if(dir==Direction.RIGHT){
+        else if(dir==Direction.RIGHT){
             Drawing.setTranslateGrid(pos.x+size.x, pos.y);
-            Drawing.setRot(90);
+            //Drawing.setRot(0);
             Drawing.setScale(0, -1);
         }
-        if(dir==Direction.DOWN){
+        else if(dir==Direction.DOWN){
             Drawing.setTranslateGrid(pos.x+size.x, pos.y);
             Drawing.setRot(90);
             Drawing.setScale(0, -1);
@@ -211,12 +208,8 @@ public abstract class PageObjectComplex extends PageObjectBase {
     public void draw(){
         super.draw();
         PageObjectComplex.rotateCheck(pos, size, direction);
-        try {
-            methodDrawPhantom.invoke(null, pos);
-            methodDrawDefWILines.invoke(null, this.getClass());
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            Logger.getLogger(PageObjectComplex.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Help.invokeMethodF(methodDrawPhantom, pos);
+        Help.invokeMethodF(methodDrawDefWILines, this.getClass(), direction);
         drawLabels();
         if(selected)
             drawConnections();
@@ -227,15 +220,11 @@ public abstract class PageObjectComplex extends PageObjectBase {
         return new Vector2i(Math.round(pos.x*Logic.zoomGridGap+size.x*Logic.zoomGridGap/2), Math.round(pos.y*Logic.zoomGridGap+size.y*Logic.zoomGridGap/2));
     }
     
-    public static void drawDefaultWireIntersectLines(Class c){
-        try {
-            Vector2i s = (Vector2i) c.getField("defaultSize").get(null);
-            int o = (int) c.getField("defaultWireIntersectOffset").get(null);
-            Drawing.drawLineGrid(0,o,1,o);
-            Drawing.drawLineGrid(s.x-1,o,s.x,o);
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            Logger.getLogger(PageObjectComplex.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public static void drawDefaultWireIntersectLines(Class c, Direction dir){
+        Vector2i s = rotateDefaultSize(c, Direction.LEFT);
+        int o = (int) Help.getFieldValue(c, "defaultWireIntersectOffset");
+        Drawing.drawLineGrid(0,o,1,o);
+        Drawing.drawLineGrid(s.x-1,o,s.x,o);
     }
     
     public void drawConnection(PageObjectComplex c){

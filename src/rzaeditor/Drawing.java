@@ -236,9 +236,17 @@ public class Drawing {
         Drawing.setColor(Color.BLACK);
         
         Drawing.setStrokeSize(1 * Logic.zoom);
-        Page.current.objects.stream().forEach((t) -> {
+        
+        Page.current.objects.stream().sorted((o1, o2) -> {
+            if(o2 instanceof WireIntersection){
+                return -1;
+            }else{
+                return 0;
+            }
+        }).forEach((t) -> {
             t.draw();
         });
+        
         
         Drawing.resetTransform();
     }

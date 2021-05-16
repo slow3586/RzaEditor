@@ -15,6 +15,7 @@ import org.joml.Vector2i;
 import org.joml.primitives.Rectanglei;
 import rzaeditor.Cursor;
 import rzaeditor.Drawing;
+import rzaeditor.Help;
 import rzaeditor.InfoTable;
 import rzaeditor.Logic;
 import rzaeditor.Page;
@@ -32,12 +33,7 @@ public abstract class PageObjectBase {
     
     public PageObjectBase(Vector2i p) {
         pos = new Vector2i(p);
-        
-        try {
-            type = (String) getClass().getField("defaultType").get(null);
-        } catch (SecurityException | IllegalArgumentException | NoSuchFieldException | IllegalAccessException ex) {
-            Logger.getLogger(PageObjectComplex.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        type = (String) getFieldValue("defaultType");
         
         name = type+" №"+(getCountInPage()+1);
     }
@@ -53,6 +49,18 @@ public abstract class PageObjectBase {
         return Page.current.objects.stream().filter((t) -> {
             return t.getClass().equals(this.getClass());
         }).count(); 
+    }
+    
+    final public Method getMethod(String m, Class<?>... params){
+        return Help.getMethod(getClass(), m, params);
+    }
+    
+    final public Field getField(String m){
+        return Help.getField(getClass(), m);
+    }
+    
+    final public Object getFieldValue(String m){
+        return Help.getFieldValue(getClass(), m, this);
     }
     
     public void selectedCheck(){

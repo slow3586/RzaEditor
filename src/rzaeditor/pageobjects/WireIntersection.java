@@ -3,6 +3,7 @@ package rzaeditor.pageobjects;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
 import org.joml.Vector2f;
@@ -34,14 +35,14 @@ public class WireIntersection extends PageObjectBase{
 
     private WireIntersection(Vector2i p) {
         super(p);
-        
+        System.out.println(p.x+" "+p.y);
         Page.current.objects.add(this);
         
         
     }
     
     public static WireIntersection getWI(int x, int y, PageObjectComplex o) {
-        return getWI(Logic.swapIfTrue(x,y, o.direction==Direction.UP || o.direction==Direction.DOWN).add(o.pos.x, o.pos.y));
+        return getWI(new Vector2i(x,y).add(o.pos.x, o.pos.y));
     }
 
     @Override
@@ -80,14 +81,12 @@ public class WireIntersection extends PageObjectBase{
         super.onSelect();
         InfoTable.addLineText("Текст сверху", this, "textAbove");
         InfoTable.addLineText("Текст снизу", this, "textBelow");
+        InfoTable.addLineOptions("Вид", this, "wiType", new String[]{"Обычная", "Клемма"}, new Object[]{WIType.NORMAL, WIType.TERMINAL});
     }
     
     public void draw() {
         
-        int size = 2;
-        if(textAbove.length()!=0 || textBelow.length()!=0){
-            size = 3;
-        }
+        int size = 3;
         
         selectedCheck();
         Drawing.setTranslateGrid(pos);
@@ -96,10 +95,13 @@ public class WireIntersection extends PageObjectBase{
         Drawing.drawStringZoomCentered(textBelow, 0, 6);
         
         if(wiType==WIType.NORMAL)
-            Drawing.fillOvalZoom(-size/2, -size/2, size, size);
-        else if(wiType==WIType.NORMAL){
-            Drawing.fillOvalZoom(-size/2, -size/2, size, size);
-            Drawing.drawLineZoom(0, 6, 6, 0);
+            Drawing.fillOvalZoom(-2, -2, 4, 4);
+        else if(wiType==WIType.TERMINAL){
+            Drawing.setColor(Color.white);
+            Drawing.fillOvalZoom(-2, -2, 4, 4);
+            Drawing.setColor(Color.black);
+            Drawing.drawOvalZoom(-2, -2, 4, 4);
+            Drawing.drawLineZoom(1-3, 5-3, 5-3, 1-3);
         }
     }
 

@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -81,6 +82,46 @@ public class InfoTable extends JTable {
             }
         });
         InfoTableEditMenu.imp.setVisible(true);
+    }
+    
+    public static void showEditOptionSelect(PageObjectBase editedObject, Field field, String[] optionsText, Object[] options){
+        InfoTableEditMenu.imp.ep.removeAll();
+        JComboBox tf = new JComboBox();
+        InfoTableEditMenu.imp.ep.add(tf);
+        tf.setLocation(0, 0);
+        tf.setSize(350, 20);
+        for (String s : optionsText) {
+            tf.addItem(s);
+        }
+        InfoTableEditMenu.imp.ep.revalidate();
+        InfoTableEditMenu.butOK.addActionListener((ActionEvent e) -> {
+            try {
+                field.set(editedObject, options[tf.getSelectedIndex()]);
+                editedObject.dataUpdated();
+                InfoTableEditMenu.imp.setVisible(false);
+            } catch (IllegalArgumentException | IllegalAccessException ex) {
+                Logger.getLogger(InfoTable.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        InfoTableEditMenu.imp.setVisible(true);
+    }
+    
+    public static void addLineOptions(String rowName, PageObjectBase editedObject, String fieldName, String[] optionsText, Object[] options){
+        try {
+            Field field = editedObject.getClass().getField(fieldName);
+            final String fieldValue = field.get(editedObject).toString();
+
+            String v = "";
+            if(fieldValue!=null)
+                v=fieldValue;
+            
+            addLine(rowName, v, () -> {
+                showEditOptionSelect(editedObject, field, optionsText, options);        
+            });
+        } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException ex) {
+            Logger.getLogger(InfoTable.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
     
     public static void addLineText(String rowName, PageObjectBase editedObject, String fieldName){

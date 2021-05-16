@@ -55,14 +55,12 @@ public abstract class PageObjectComplex extends PageObjectBase {
         }
     }
     
-    
-    
     public String id = "?";
     
     public PageObjectComplex(Vector2i pos, Direction dir) {
         super(pos);
         direction=dir;
-        if(!canSwitchDirection){
+        if(!(boolean)getFieldValue("canSwitchDirection")){
             if(dir!=LEFT && dir!=UP)
                 direction=LEFT;
         }
@@ -106,7 +104,7 @@ public abstract class PageObjectComplex extends PageObjectBase {
                 offsetv.x = s.x - offset;
             }
             else if(direction == Direction.DOWN){
-                offsetv.x = s.x + offset;
+                offsetv.x = offset;
             }
             Vector2i offset2 = new Vector2i(s.x,0);
             if(direction.isVertical())
@@ -135,7 +133,7 @@ public abstract class PageObjectComplex extends PageObjectBase {
     }
     
     public static void rotateCheck(Vector2i pos, Vector2i size, Direction dir){
-//        System.out.println(pos.x+" "+pos.y+" "+dir+" "+size.x+" "+size.y);
+        System.out.println(pos.x+" "+pos.y+" "+dir+" "+size.x+" "+size.y);
         if(dir==Direction.LEFT){
             Drawing.setTranslateGrid(pos.x, pos.y);
         }
@@ -144,14 +142,12 @@ public abstract class PageObjectComplex extends PageObjectBase {
             Drawing.setRot(90);
         }
         else if(dir==Direction.RIGHT){
-            Drawing.setTranslateGrid(pos.x+size.x, pos.y);
-            //Drawing.setRot(0);
-            Drawing.setScale(0, -1);
+            Drawing.setTranslateGrid(pos.x+size.x, pos.y+size.y);
+            Drawing.setRot(180);
         }
         else if(dir==Direction.DOWN){
-            Drawing.setTranslateGrid(pos.x+size.x, pos.y);
-            Drawing.setRot(90);
-            Drawing.setScale(0, -1);
+            Drawing.setTranslateGrid(pos.x, pos.y+size.y);
+            Drawing.setRot(270);
         }
     }
     

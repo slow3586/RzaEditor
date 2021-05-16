@@ -9,7 +9,7 @@ import static rzaeditor.Logic.posToScreen;
 import rzaeditor.Page;
 
 public class CurrentTransformer extends CurrentSource {
-    public static final Vector2i defaultSize = new Vector2i(4,2);
+    public static final Vector2i defaultSize = new Vector2i(4,1);
     public static final String defaultType = "Трансформатор тока";
     
     public CurrentTransformer(Vector2i p, Direction dir) {

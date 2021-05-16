@@ -8,7 +8,7 @@ public class CartOneSide extends PageObjectComplex {
 
     public static final Vector2i defaultSize = new Vector2i(4,2);
     public static final String defaultType = "Тележка 1";
-    //public static final boolean canSwitchDirection = true;
+    public static final boolean canSwitchDirection = true;
     
     public CartOneSide(Vector2i pos, Direction dir) {
         super(pos, dir);

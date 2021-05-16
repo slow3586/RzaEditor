@@ -16,7 +16,6 @@ public abstract class DrawMode {
     public static void setCurrent(DrawMode m){
         current.cleanup();
         current = m;
-        Logic.mouseEvent();
     }
     
     public void cleanup(){}

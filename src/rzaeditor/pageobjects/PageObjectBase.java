@@ -13,12 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.joml.Vector2i;
 import org.joml.primitives.Rectanglei;
-import rzaeditor.Cursor;
-import rzaeditor.Drawing;
-import rzaeditor.Help;
-import rzaeditor.InfoTable;
-import rzaeditor.Logic;
-import rzaeditor.Page;
+import rzaeditor.*;
 
 public abstract class PageObjectBase {
     
@@ -34,7 +29,6 @@ public abstract class PageObjectBase {
     public PageObjectBase(Vector2i p) {
         pos = new Vector2i(p);
         type = (String) getFieldValue("defaultType");
-        
         name = type+" №"+(getCountInPage()+1);
     }
     

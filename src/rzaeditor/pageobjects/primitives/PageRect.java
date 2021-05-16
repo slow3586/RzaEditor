@@ -1,6 +1,7 @@
 package rzaeditor.pageobjects.primitives;
 
 import java.awt.Color;
+import java.awt.Stroke;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 import rzaeditor.Drawing;

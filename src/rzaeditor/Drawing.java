@@ -19,9 +19,9 @@ import rzaeditor.pageobjects.primitives.Primitive;
 
 public class Drawing {
     
-    private static Graphics2D g;
+    public static Graphics2D g;
     private static Vector2i translate = new Vector2i();
-    private static LineType lineType = LineType.SOLID;
+    public static LineType lineType = LineType.SOLID;
     
     public enum LineType{
         SOLID,
@@ -144,7 +144,8 @@ public class Drawing {
     }
     
     public static void setStrokeSize(float s){
-        g.setStroke(new BasicStroke(s));
+        BasicStroke os = (BasicStroke) g.getStroke();
+        g.setStroke(new BasicStroke(s, os.getEndCap(), os.getLineJoin(), os.getMiterLimit(), os.getDashArray(), os.getDashPhase()));
     }
     
     public static void setLineType(LineType t){
@@ -154,7 +155,7 @@ public class Drawing {
             g.setStroke(new BasicStroke(os.getLineWidth(), os.getEndCap(), os.getLineJoin(), os.getMiterLimit(), new float[]{1}, 1f));
         }
         if(t==LineType.DASH){
-            g.setStroke(new BasicStroke(os.getLineWidth(), os.getEndCap(), os.getLineJoin(), os.getMiterLimit(), new float[]{1,0,1}, 1f));
+            g.setStroke(new BasicStroke(os.getLineWidth(), os.getEndCap(), os.getLineJoin(), os.getMiterLimit(), new float[]{15,15}, 2f));
         }
         if(t==LineType.DOT){
             g.setStroke(new BasicStroke(os.getLineWidth(), os.getEndCap(), os.getLineJoin(), os.getMiterLimit(), new float[]{1,0,1}, 0.5f));

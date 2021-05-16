@@ -25,7 +25,6 @@ public abstract class Primitive extends PageObjectBase {
     @Override
     public void onSelect() {
         super.onSelect();
-        
-        //InfoTable.addLineNameAssign("Тип линии", this, getClass().getField("lineType"));
+        InfoTable.addLineOptions("Тип линии", this, "lineType", new String[]{"Простая", "Прерывистая"}, new Drawing.LineType[]{Drawing.LineType.SOLID,Drawing.LineType.DASH});
     }
 }

@@ -66,35 +66,35 @@ public class InfoTable extends JTable {
     }
     
     public static void showEditTextField(PageObjectBase editedObject, Field field){
-        InfoTableEditMenu.imp.ep.removeAll();
-        JTextField tf = new JTextField();
-        InfoTableEditMenu.imp.ep.add(tf);
-        tf.setLocation(0, 0);
-        tf.setSize(350, 20);
-        InfoTableEditMenu.imp.ep.revalidate();
-        InfoTableEditMenu.butOK.addActionListener((ActionEvent e) -> {
+        JTextField t = new JTextField();
+        showInfoEdit(t, "", "", (ActionEvent e) -> {
             try {
-                field.set(editedObject, tf.getText());
+                field.set(editedObject, t.getText());
                 editedObject.dataUpdated();
                 InfoTableEditMenu.imp.setVisible(false);
             } catch (IllegalArgumentException | IllegalAccessException ex) {
                 Logger.getLogger(InfoTable.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+    }
+    
+    public static void showInfoEdit(Component c, String oldVal, String defVal, ActionListener onOK){
+        InfoTableEditMenu.imp.ep.removeAll();
+        InfoTableEditMenu.imp.ep.add(c);
+        c.setLocation(0, 0);
+        c.setSize(350, 20);
+        InfoTableEditMenu.imp.setLocationRelativeTo(null);
+        InfoTableEditMenu.imp.ep.revalidate();
+        InfoTableEditMenu.butOK.addActionListener(onOK);
         InfoTableEditMenu.imp.setVisible(true);
     }
     
     public static void showEditOptionSelect(PageObjectBase editedObject, Field field, String[] optionsText, Object[] options){
-        InfoTableEditMenu.imp.ep.removeAll();
         JComboBox tf = new JComboBox();
-        InfoTableEditMenu.imp.ep.add(tf);
-        tf.setLocation(0, 0);
-        tf.setSize(350, 20);
         for (String s : optionsText) {
             tf.addItem(s);
         }
-        InfoTableEditMenu.imp.ep.revalidate();
-        InfoTableEditMenu.butOK.addActionListener((ActionEvent e) -> {
+        showInfoEdit(tf, "", "", (ActionEvent e) -> {
             try {
                 field.set(editedObject, options[tf.getSelectedIndex()]);
                 editedObject.dataUpdated();
@@ -103,7 +103,6 @@ public class InfoTable extends JTable {
                 Logger.getLogger(InfoTable.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        InfoTableEditMenu.imp.setVisible(true);
     }
     
     public static void addLineOptions(String rowName, PageObjectBase editedObject, String fieldName, String[] optionsText, Object[] options){

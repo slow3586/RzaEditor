@@ -68,6 +68,15 @@ public class Help {
         }
     }
     
+    public static boolean hasField(Class c, String f){
+        Field[] fields = c.getFields();
+        for (Field field : fields) {
+            if(field.getName().equals(f))
+                return true;
+        }
+        return false;
+    }
+    
     public static Object getFieldValue(Class c, String f){
         try {
             return getField(c,f).get(null);

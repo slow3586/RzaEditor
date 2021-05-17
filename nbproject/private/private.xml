@@ -4,29 +4,39 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/other/Fuse.java</file>
-            <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/InfoTable.java</file>
             <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/contacts/Contact.java</file>
             <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/InfoTableEditMenu.java</file>
-            <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/PageObjectBase.java</file>
             <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/contacts/ContactClosed.java</file>
             <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/contacts/ContactOpen.java</file>
             <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/intersections/CartOneSide.java</file>
-            <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/other/BusBar.java</file>
+            <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/other/CurrentWinding.java</file>
             <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/WireIntersection.java</file>
             <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/PageObjectComplex.java</file>
             <file>jar:file:/D:/RzaEditor/RzaEditor/lib/joml-primitives-1.10.0-sources.jar!/org/joml/primitives/Rectanglei.java</file>
+            <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/primitives/PageText.java</file>
+            <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/Help.java</file>
+            <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/primitives/Primitive.java</file>
+            <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/other/Light.java</file>
+            <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/drawmodes/DrawModeSelect.java</file>
+            <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/Logic.java</file>
+            <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/intersections/CartTwoSide.java</file>
+            <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/Wire.java</file>
+            <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/source/CurrentTransformer.java</file>
+            <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/InfoTable.java</file>
+            <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/MainFrame.java</file>
+            <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/PageObjectBase.java</file>
+            <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/other/BusBar.java</file>
+            <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/primitives/PageRect.java</file>
+            <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/primitives/PageLine.java</file>
             <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/drawmodes/DrawModeObject.java</file>
             <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/Drawing.java</file>
             <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/intersections/ScrewTerminal.java</file>
             <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/contacts/ContactClosedTimedDeact.java</file>
             <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/other/Capacitor.java</file>
-            <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/other/Light.java</file>
             <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/relays/RelayRT40.java</file>
             <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/drawmodes/DrawModePrimLine.java</file>
-            <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/drawmodes/DrawModeSelect.java</file>
-            <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/Logic.java</file>
-            <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/intersections/CartTwoSide.java</file>
-            <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/Wire.java</file>
+            <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/pageobjects/relays/RelayRT85.java</file>
+            <file>file:/D:/RzaEditor/RzaEditor/src/rzaeditor/drawmodes/DrawMode.java</file>
         </group>
     </open-files>
 </project-private>

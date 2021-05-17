@@ -1,11 +1,6 @@
-rzaeditor.pageobjects.Wire	4	8	
-rzaeditor.pageobjects.Wire	4	8	
-rzaeditor.pageobjects.contacts.ContactClosed	17	11	LEFT	
-rzaeditor.pageobjects.Wire	4	4	
-rzaeditor.pageobjects.contacts.ContactOpen	25	11	LEFT	
-rzaeditor.pageobjects.relays.RelayRT40	27	15	LEFT	
-rzaeditor.pageobjects.Wire	4	16	
-rzaeditor.pageobjects.Wire	41	8	
-rzaeditor.pageobjects.Wire	30	16	
-rzaeditor.pageobjects.Wire	4	16	
-rzaeditor.pageobjects.Wire	4	4	
+class=rzaeditor.pageobjects.relays.RelayRT40internalId=0
+size=3,2
+pos=15,6
+name=Реле РТ-40 №1
+type=Реле РТ-40
+

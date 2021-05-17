@@ -9,6 +9,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.joml.Vector2i;
@@ -25,11 +27,29 @@ public abstract class PageObjectBase {
     public Vector2i size = new Vector2i(0,0);
     public boolean visible = true;
     public String type = "";
+    public int internalId = 0;
+    public static String[] fieldsToSave = new String[]{"internalId", "pos", "name", "size", "type"};
     
     public PageObjectBase(Vector2i p) {
         pos = new Vector2i(p);
         type = (String) getFieldValue("defaultType");
         name = type+" №"+(getCountInPage()+1);
+        Page.current.objects.stream().forEach((t) -> {
+            if(t.internalId<internalId)
+                internalId = t.internalId+1;
+        });
+    }
+    
+    public static HashSet<String> getFieldsToSave(Class<PageObjectBase> c){
+        HashSet<String> a = new HashSet<>();
+        while(true){
+            if(Help.hasField(c, "fieldsToSave"))
+                a.addAll(Arrays.asList((String[])Help.getFieldValue(c, "fieldsToSave")));
+            System.out.println(c.getName());
+            if(c.getSimpleName().contains("PageObjectBase")) break;
+            c = (Class<PageObjectBase>) c.getSuperclass();
+        }
+        return a;
     }
     
     public static boolean canPutHere(Class<PageObjectBase> c, Vector2i p, Vector2i s){
@@ -57,6 +77,10 @@ public abstract class PageObjectBase {
         return Help.getFieldValue(getClass(), m, this);
     }
     
+    public void moveTo(Vector2i p){
+        pos = p;
+    }
+    
     public void selectedCheck(){
         if(selected)
             Drawing.setColor(Color.red);
@@ -75,17 +99,31 @@ public abstract class PageObjectBase {
         selectedCheck();
     }
     
-    public static String werw(Object... a){
-        StringBuilder s = new StringBuilder();
-        for (Object o : a) {
-            s.append(o.toString());
-            s.append("\t");
-        }
-        return s.toString();
-    }
-    
     public String save(){
-        return werw(getClass().getName(), pos.x, pos.y);
+        Class<PageObjectBase> c = (Class<PageObjectBase>) getClass();
+        HashSet<String> h = getFieldsToSave(c);
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("class=").append(c.getName()).append("\n");
+        for (String fieldName : h) {
+            stringBuilder.append(fieldName);
+            stringBuilder.append("=");
+            Object o = getFieldValue(fieldName);
+            if(o instanceof String){
+                stringBuilder.append((String) o);
+            }
+            else if(o instanceof Vector2i){
+                Vector2i ov = (Vector2i) o;
+                stringBuilder.append(ov.x).append(",").append(ov.y);
+            }
+            else if(o instanceof PageObjectBase){
+                stringBuilder.append(((PageObjectBase) o).internalId);
+            }
+            else{
+                stringBuilder.append(o.toString());
+            }
+            stringBuilder.append("\n");
+        }
+        return stringBuilder.toString();
     }
     
     public static PageObjectBase read(Class c, String[] args){

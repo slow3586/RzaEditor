@@ -31,7 +31,11 @@ public class DrawModeObject extends DrawMode {
     
     @Override
     public void keyboardEvent() {
-        if(Keyboard.isReleased(KeyEvent.VK_SHIFT)){
+        if(Keyboard.isReleased(KeyEvent.VK_ESCAPE)){
+            DrawMode.setCurrent(DrawModeSelect.imp);
+            return;
+        }
+        else if(Keyboard.isReleased(KeyEvent.VK_SHIFT)){
             boolean canSwitchDir = false;
             try {
                canSwitchDir = (boolean) objectClass.getField("canSwitchDirection").get(boolean.class);

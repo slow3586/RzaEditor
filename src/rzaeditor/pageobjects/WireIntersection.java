@@ -41,6 +41,17 @@ public class WireIntersection extends PageObjectBase{
         
     }
     
+    @Override
+    public void moveTo(Vector2i p){
+        WireIntersection n = getWIAt(p);
+        if(n==null){
+            pos = p;
+        }else{
+            n.wireless.addAll(wireless);
+            //n.
+        }
+    }
+    
     public static WireIntersection getWI(int x, int y, PageObjectComplex o) {
         return getWI(new Vector2i(x,y).add(o.pos.x, o.pos.y));
     }
@@ -50,8 +61,6 @@ public class WireIntersection extends PageObjectBase{
         return null;
     }
     
-    
-
     public static WireIntersection getWI(Vector2i p) {
         WireIntersection wi = getWIAt(p);
         if (wi == null) {
@@ -107,6 +116,7 @@ public class WireIntersection extends PageObjectBase{
 
     private static WireIntersection getWIAt(Vector2i p) {
         Optional<WireIntersection> m = Page.current.getWireIntersections().stream().filter((t) -> {
+            System.out.println(p+" "+t.pos);
             return t.pos.equals(p);
         }).findFirst();
         return m.orElse(null);

@@ -183,11 +183,11 @@ public class Wire extends PageObjectBase{
     }
 
     public void draw() {
-        Drawing.setTranslateGrid(startWI.pos);
+        Drawing.setTranslateGrid(pos);
         Drawing.setColor(Color.black);
         //Drawing.setColor(color);
         selectedCheck();
-        Vector2i s = getVec();
+        Vector2i s = size;
         Drawing.drawLineGrid(0,0, s.x, s.y);
     }
 

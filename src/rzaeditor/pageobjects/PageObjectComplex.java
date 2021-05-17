@@ -5,6 +5,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -87,6 +88,18 @@ public abstract class PageObjectComplex extends PageObjectBase {
         });
     }
     
+    public static boolean canPutHereIgnore(Class<PageObjectComplex> c, Vector2i p, Direction dir, HashSet<PageObjectBase> ignoreList){
+        Vector2i s = rotateDefaultSize(c, dir);
+        Rectanglei r = new Rectanglei(p, new Vector2i(p).add(s));
+        return !Page.current.objects.stream().filter((t) -> {
+            return !ignoreList.contains(t);
+        }).filter((t) -> {
+            return !(t instanceof Wire);
+        }).anyMatch((t) -> {
+            return t.isRectInside(r);
+        });
+    }
+    
     public void setDefaultID(){
         id = (String) getFieldValue("defaultIDru");
     }
@@ -123,17 +136,33 @@ public abstract class PageObjectComplex extends PageObjectBase {
         return Logic.swapIfTrue(getDefaultSize(c), dir.isVertical());
     }
     
+    @Override
+    public void moveTo(Vector2i p){
+        super.moveTo(p);
+        /*
+        HashSet s = new HashSet<PageObjectBase>();
+        s.add(this);
+        if(canPutHereIgnore((Class<PageObjectComplex>) getClass(), p, direction, s)){
+            this.pos = p;
+        }
+        */
+        leftWI.moveTo(new Vector2i(p).add(new Vector2i(leftWI.pos).sub(pos)));
+        rightWI.moveTo(new Vector2i(p).add(new Vector2i(rightWI.pos).sub(pos)));
+        //deleteDefaultWireIntersects();
+        //addDefaultWireIntersects();
+    }
+    
     public void drawChildren(){
     }
     
     public static void callRotateCheck(Class c, Vector2i p, Direction dir){
         Help.invokeMethodF(c, "rotateCheck", p, rotateDefaultSize(c, dir), dir);
-        Help.invokeMethodF(c, "drawPhantom", Cursor.posGrid);
+        Help.invokeMethodF(c, "drawPhantom", p);
         Help.invokeMethodF(c, "drawDefaultWireIntersectLines", c, dir);
     }
     
     public static void rotateCheck(Vector2i pos, Vector2i size, Direction dir){
-        System.out.println(pos.x+" "+pos.y+" "+dir+" "+size.x+" "+size.y);
+        //System.out.println(pos.x+" "+pos.y+" "+dir+" "+size.x+" "+size.y);
         if(dir==Direction.LEFT){
             Drawing.setTranslateGrid(pos.x, pos.y);
         }
@@ -171,19 +200,18 @@ public abstract class PageObjectComplex extends PageObjectBase {
             rightWI.textBelow = s;
     }
     
-    @Override
-    public void delete() {
-        super.delete();
+    public void deleteDefaultWireIntersects(){
         leftWI.wireless.remove(rightWI);
         rightWI.wireless.remove(leftWI);
         wireIntersections.forEach((t) -> {
             t.delete();
         });
     }
-
+    
     @Override
-    public String save() {
-        return super.save()+werw(direction);
+    public void delete() {
+        super.delete();
+        deleteDefaultWireIntersects();
     }
     
     public static PageObjectComplex read(Class c, String[] args){

@@ -40,7 +40,7 @@ public class DrawModeWire extends DrawMode {
             e.y=s.y;
         else
             e.x=s.x;
-        
+        if(new Vector2i(e).sub(s).lengthSquared()==0) return;
         if(Wire.canBePlacedAt(s, e)){
             Wire.create(s, e, true);
         }

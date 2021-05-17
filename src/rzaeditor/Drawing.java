@@ -66,6 +66,10 @@ public class Drawing {
     public static void fillOvalZoom(float x, float y, float x1, float y1) {
         fillOval(Math.round(x*Logic.zoom), Math.round(y*Logic.zoom), Math.round(x1*Logic.zoom), Math.round(y1*Logic.zoom));
     }
+    
+    public static void fillOvalGridCenter(float x, float y, float x1, float y1) {
+        fillOval(Math.round(x*Logic.zoomGridGap-x1/2*Logic.zoom), Math.round(y*Logic.zoomGridGap-y1/2*Logic.zoom), Math.round(x1*Logic.zoom), Math.round(y1*Logic.zoom));
+    }
 
     public static void fillOval(float x, float y, float x1, float y1) {
         g.fillOval(Math.round(x), Math.round(y), Math.round(x1), Math.round(y1));

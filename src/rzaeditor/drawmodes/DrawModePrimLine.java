@@ -6,6 +6,8 @@ import rzaeditor.Drawing;
 import rzaeditor.Logic;
 import static rzaeditor.Logic.dragEnd;
 import static rzaeditor.Logic.dragStart;
+import static rzaeditor.Logic.dragStartFixed;
+import rzaeditor.Page;
 
 public class DrawModePrimLine extends DrawMode {
 
@@ -23,7 +25,9 @@ public class DrawModePrimLine extends DrawMode {
 
     @Override
     public void mouseReleased() {
-        PageLine.create(dragStart, dragEnd);
+        PageLine l = new PageLine(dragStartFixed);
+        l.size = Logic.dragVecFixed;
+        Page.current.objects.add(l);
     }
 
 }

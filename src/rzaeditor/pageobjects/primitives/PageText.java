@@ -10,6 +10,8 @@ import rzaeditor.pageobjects.PageObjectBase;
 public class PageText extends Primitive {
 public static final String defaultType = "Текст";
 public String text = "";
+
+public static final String[] fieldsToSave = new String[]{"text"};
     
     public PageText(Vector2i pos) {
         super(pos);

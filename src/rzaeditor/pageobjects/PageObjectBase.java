@@ -10,9 +10,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import org.joml.Vector2i;
 import org.joml.primitives.Rectanglei;
 import rzaeditor.*;
@@ -28,16 +30,17 @@ public abstract class PageObjectBase {
     public boolean visible = true;
     public String type = "";
     public int internalId = 0;
-    public static String[] fieldsToSave = new String[]{"internalId", "pos", "name", "size", "type"};
+    public static final String[] fieldsToSave = new String[]{"internalId", "pos", "name", "size"};
     
     public PageObjectBase(Vector2i p) {
         pos = new Vector2i(p);
         type = (String) getFieldValue("defaultType");
         name = type+" №"+(getCountInPage()+1);
         Page.current.objects.stream().forEach((t) -> {
-            if(t.internalId<internalId)
+            if(internalId<=t.internalId)
                 internalId = t.internalId+1;
         });
+        Page.current.objects.add(this);
     }
     
     public static HashSet<String> getFieldsToSave(Class<PageObjectBase> c){
@@ -108,8 +111,15 @@ public abstract class PageObjectBase {
             stringBuilder.append(fieldName);
             stringBuilder.append("=");
             Object o = getFieldValue(fieldName);
-            if(o instanceof String){
-                stringBuilder.append((String) o);
+            if(o==null){
+                stringBuilder.append("null");
+            }
+            else if(o instanceof String){
+                if(((String) o).length()==0){
+                    stringBuilder.append(" ");
+                }else{
+                    stringBuilder.append((String) o);
+                }
             }
             else if(o instanceof Vector2i){
                 Vector2i ov = (Vector2i) o;
@@ -117,6 +127,12 @@ public abstract class PageObjectBase {
             }
             else if(o instanceof PageObjectBase){
                 stringBuilder.append(((PageObjectBase) o).internalId);
+            }
+            else if(o instanceof HashSet){
+                HashSet m = (HashSet) o;
+                m.forEach((t) -> {
+                    stringBuilder.append(t).append(";");
+                });
             }
             else{
                 stringBuilder.append(o.toString());

@@ -23,15 +23,17 @@ public class RelayRT40 extends Relay {
     public static final String defaultIDru = "РТ";
     public static final String defaultIDen = "KA";
     public static final String defaultType = "Реле РТ-40";
-    
     public static final String defaultContactId0 = "2";
     public static final String defaultContactId1 = "8";
+    public static final String contactOpenId0 = "1";
+    public static final String contactOpenId1 = "3";
+    public static final String contactClosedId0 = "5";
+    public static final String contactClosedId1 = "7";
+    
     public ContactOpen contactOpen = null;
     public ContactClosed contactClosed = null;
-    public final String contactOpenId0 = "1";
-    public final String contactOpenId1 = "3";
-    public final String contactClosedId0 = "5";
-    public final String contactClosedId1 = "7";
+    
+    public static final String[] fieldsToSave = new String[]{"contactOpen", "contactClosed"};
     
     public RelayRT40(Vector2i p, Direction dir) {
         super(p, dir);

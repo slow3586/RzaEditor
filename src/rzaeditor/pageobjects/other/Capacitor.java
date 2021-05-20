@@ -5,7 +5,7 @@ import rzaeditor.Drawing;
 import rzaeditor.pageobjects.PageObjectComplex;
 
 public class Capacitor extends PageObjectComplex {
-    public static Vector2i defaultSize = new Vector2i(3,2);
+    public static final Vector2i defaultSize = new Vector2i(3,2);
     public static final String defaultType = "Конденсатор";
     
     public Capacitor(Vector2i p, Direction dir) {

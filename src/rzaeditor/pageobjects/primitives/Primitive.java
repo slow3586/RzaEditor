@@ -11,6 +11,7 @@ import rzaeditor.pageobjects.PageObjectBase;
 public abstract class Primitive extends PageObjectBase {
             
     public Drawing.LineType lineType = Drawing.LineType.SOLID;
+    public static final String[] fieldsToSave = new String[]{"lineType"};
     
     public Primitive(Vector2i p) {
         super(p);

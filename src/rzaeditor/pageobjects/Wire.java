@@ -16,10 +16,10 @@ import rzaeditor.Logic;
 import rzaeditor.Page;
 
 public class Wire extends PageObjectBase{
-    WireIntersection endWI = null;
-    WireIntersection startWI = null;
-    Color color = Color.BLACK;
+    public WireIntersection endWI = null;
+    public WireIntersection startWI = null;
     public static final String defaultType = "Провод";
+    public static final String[] fieldsToSave = new String[]{"endWI", "startWI"};
     
     Wire(Vector2i p){
         super(p);
@@ -102,8 +102,7 @@ public class Wire extends PageObjectBase{
     public void split(Vector2i p){
         Vector2i t = new Vector2i(endWI.pos);
         setEndWI(WireIntersection.getWI(p));
-        Wire w = Wire.create(p, t, true);
-        
+        Wire w = Wire.create(p, t);
     }
     
     public void setStartWI(WireIntersection i){
@@ -144,15 +143,16 @@ public class Wire extends PageObjectBase{
         return true;
     }
     
-    public static Wire create(Vector2i s, Vector2i e, boolean update) {
+    
+    public static Wire create(Vector2i s, Vector2i e) {
         if(s.x!=e.x && s.y!=e.y){
             throw new IllegalArgumentException("Tried to create a non-straight wire. s:"+s.x+" "+s.y+" e:"+e.x+" "+e.y);
         }
         
         Wire w = new Wire(s);
         if(!w.setStartEndWI(s, e)) return null;
-        w.color = new Color((float) Math.random(), (float) Math.random(), (float) Math.random());
-        Page.current.objects.add(w);
+        //w.color = new Color((float) Math.random(), (float) Math.random(), (float) Math.random());
+        //Page.current.objects.add(w);
         
         checkAllWires();
         

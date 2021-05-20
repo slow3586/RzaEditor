@@ -2,12 +2,15 @@ package rzaeditor;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.HashMap;
 import rzaeditor.pageobjects.PageObjectComplex;
 import rzaeditor.pageobjects.Wire;
 import rzaeditor.pageobjects.WireIntersection;
@@ -15,9 +18,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import org.joml.Vector2i;
 import org.joml.primitives.Rectanglei;
 import rzaeditor.pageobjects.PageObjectBase;
+import rzaeditor.pageobjects.PageObjectComplex.Direction;
 import rzaeditor.pageobjects.primitives.Primitive;
 
 public class Page {
@@ -73,7 +78,7 @@ public class Page {
         
     }
     
-    public static void open(File f){
+    public static void openold(File f){
         try {
             List<String> readAllLines = Files.readAllLines(f.toPath());
             for (String l : readAllLines) {
@@ -92,6 +97,86 @@ public class Page {
         }
     }
     
+    public static void open(File f){
+        try {
+            String s = Help.listtostr(Help.readfile(f.toPath()));
+            Pattern p0 = Pattern.compile("(class=.*?)(?=\\nclass|\\z)", Pattern.DOTALL);
+            ArrayList<String> s0 = Help.findall(p0, s, 1);
+            HashMap<Integer, HashMap<String, String>> paramList = new HashMap<>();
+            for (String s1 : s0) {
+                HashMap<String, String> params = new HashMap<>();
+                String[] s2 = s1.split("\n");
+                for (String s3 : s2) {
+                    String[] s4 = s3.split("=");
+                    if(s4.length==2)
+                        params.put(s4[0], s4[1]);
+                    else{
+                        for (String s5 : s4) {
+                            System.out.println(s5);
+                        }
+                        throw new IllegalArgumentException("s4 length not 2, is "+s4.length);
+                    }
+                }
+                paramList.put(Integer.valueOf(params.get("internalId")), params);
+
+                Class c = Class.forName(params.get("class"));
+                Constructor con = null;
+                PageObjectBase o = null;
+                if(c==WireIntersection.class){continue;}
+                Vector2i pos = Help.fromStr(params.get("pos"));
+                if(c==Wire.class){
+                    o = Wire.create(pos, new Vector2i(pos).add(Help.fromStr(params.get("size"))));
+                }
+                else if(PageObjectComplex.class.isAssignableFrom(c)){
+                    con = c.getConstructor(Vector2i.class, PageObjectComplex.Direction.class);
+                    o = (PageObjectBase) con.newInstance(pos, Direction.valueOf(params.get("direction")));
+                }
+                else if(PageObjectBase.class.isAssignableFrom(c)){
+                    con = c.getConstructor(Vector2i.class);
+                    o = (PageObjectBase) con.newInstance(pos);
+                }
+                o.internalId =Integer.parseInt(params.get("internalId"));
+            }
+            
+            HashSet<PageObjectBase> objects1 = Page.current.objects;
+            paramList.forEach((t, u) -> {
+                try {
+                    if(Class.forName(u.get("class")).equals(WireIntersection.class)){
+                        WireIntersection wi = WireIntersection.getWI(Help.fromStr(u.get("pos")));
+                        wi.internalId = t;
+                    }
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(Page.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+            
+            Page.current.objects.forEach((o) -> {
+                HashMap<String, String> p = paramList.get(o.internalId);
+                Class c = o.getClass();
+                p.forEach((t, u) -> {
+                    if(t.equals("class"))return;
+                    Field fd = Help.getField(c, t);
+                    Class<?> fc = fd.getType();
+                    if(fc==String.class)
+                        Help.setFieldValue(c, t, o, u);
+                    else if(fc==int.class)
+                        Help.setFieldValue(c, t, o, Integer.valueOf(u));
+                    else if(fc==int.class){
+                        Help.setFieldValue(c, t, o, Help.fromStr(u));
+                    }
+                    else if(fc.isAssignableFrom(PageObjectComplex.class)){
+
+                    }
+                    else if(fc.isAssignableFrom(PageObjectBase.class)){
+
+                    }
+                });
+            });
+        } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            Logger.getLogger(Page.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public void save(){
         ArrayList<String> s = new ArrayList<>();
         objects.forEach((t) -> {
@@ -101,6 +186,7 @@ public class Page {
         });
         System.out.println(s.toString());
         try {
+            Files.deleteIfExists(file.toPath());
             Files.write(file.toPath(), s);
         } catch (IOException ex) {
             Logger.getLogger(Page.class.getName()).log(Level.SEVERE, null, ex);

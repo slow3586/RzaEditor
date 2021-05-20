@@ -1,11 +1,18 @@
 package rzaeditor;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.joml.Vector2i;
 import rzaeditor.pageobjects.PageObjectComplex;
 
 public class Help {
@@ -13,18 +20,21 @@ public class Help {
         try {
             return c.getField(f);
         } catch (NoSuchFieldException | SecurityException ex) {
-            
+            throw new IllegalArgumentException(f+" field not found");
         }
-        return null;
     }
     
     public static Method getMethod(Class c, String m, Class<?>... params){
         try {
             return c.getMethod(m, params);
         } catch (NoSuchMethodException | SecurityException ex) {
+            throw new IllegalArgumentException(m+" method not found");
         }
-
-        return null;
+    }
+    
+    public static Vector2i fromStr(String s){
+        String[] coords = s.split(",");
+        return new Vector2i(Integer.valueOf(coords[0]), Integer.valueOf(coords[1]));
     }
     
     public static void invokeMethodF(Class c, String m, Object... args){
@@ -102,5 +112,64 @@ public class Help {
             Logger.getLogger(Help.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+    
+    public static void setFieldValue(Class c, String f, Object fieldOf, Object fieldVal){
+        try {
+            Field field = getField(c, f);
+            field.set(fieldOf, fieldVal);
+        } catch (IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(Help.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public static String findfirst(Pattern p, String s, int i) {
+        Matcher m = p.matcher(s);
+        String o = null;
+        if (m.find()) {
+            o = m.group(i);
+        }
+        return o;
+    }
+
+    public static ArrayList<String> findall(Pattern p, String s, int i) {
+        Matcher m = p.matcher(s);
+        ArrayList<String> o = new ArrayList<>();
+        while (m.find()) {
+            o.add(m.group(i));
+        }
+        return o;
+    }
+    
+    public static ArrayList<ArrayList<String>> findall(Pattern p, String s, int[] i) {
+        Matcher m = p.matcher(s);
+        ArrayList<ArrayList<String>> o = new ArrayList<>();
+        while (m.find()) {
+            ArrayList<String> a = new ArrayList<>();
+            for (int j = 0; j < i.length; j++) {
+                a.add(m.group(i[j]));
+            }
+            o.add(a);
+        }
+        return o;
+    }
+    
+    public static String listtostr(List<String> l) {
+        StringBuilder r = new StringBuilder();
+        for (String line : l) {
+            r.append(line);
+            r.append("\n");
+        }
+        return r.toString();
+    }
+
+    public static List<String> readfile(Path f) {
+        List<String> l = new ArrayList<>();
+        try {
+            l = Files.readAllLines(f);
+        } catch (IOException ex) {
+            
+        }
+        return l;
     }
 }

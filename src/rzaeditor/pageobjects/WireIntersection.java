@@ -18,15 +18,16 @@ import rzaeditor.pageobjects.PageObjectComplex.Direction;
 import rzaeditor.pageobjects.Wire;
 
 public class WireIntersection extends PageObjectBase{
+    public static final String defaultType = "Связка";
     public HashSet<Wire> wires = new HashSet<>();
     //HashSet<WireIntersection> connected = new HashSet<>();
     public HashSet<WireIntersection> wireless = new HashSet<>();
     public HashSet<WireIntersection> voltageTo = new HashSet<>();
     public boolean on = true;
-    public static final String defaultType = "Связка";
     public String textAbove = "";
     public String textBelow = "";
     public WIType wiType = WIType.NORMAL;
+    public static final String[] fieldsToSave = new String[]{"textAbove", "textBelow", "wiType"};
             
     public static enum WIType{
         NORMAL,
@@ -35,10 +36,6 @@ public class WireIntersection extends PageObjectBase{
 
     private WireIntersection(Vector2i p) {
         super(p);
-        System.out.println(p.x+" "+p.y);
-        Page.current.objects.add(this);
-        
-        
     }
     
     @Override
@@ -54,11 +51,6 @@ public class WireIntersection extends PageObjectBase{
     
     public static WireIntersection getWI(int x, int y, PageObjectComplex o) {
         return getWI(new Vector2i(x,y).add(o.pos.x, o.pos.y));
-    }
-
-    @Override
-    public String save() {
-        return null;
     }
     
     public static WireIntersection getWI(Vector2i p) {

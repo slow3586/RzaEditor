@@ -15,14 +15,6 @@ public class PageRect extends Primitive {
     public PageRect(Vector2i pos) {
         super(pos);
     }
-    
-    public static PageRect create(Vector2i pos, Vector2i size){
-        PageRect pl = new PageRect(pos);
-        pl.size = new Vector2i(size);
-        
-        Page.current.objects.add(pl);
-        return pl;
-    }
 
     @Override
     public void draw() {

@@ -14,6 +14,7 @@ abstract public class Contact extends PageObjectComplex {
 
     public boolean isOpen = true;
     public Relay relay = null;
+    public static final String[] fieldsToSave = new String[]{"relay"};
     
     public Contact(Vector2i p, Direction dir) {
         super(p, dir);

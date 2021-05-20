@@ -25,18 +25,19 @@ import static rzaeditor.pageobjects.PageObjectComplex.Direction.*;
 public abstract class PageObjectComplex extends PageObjectBase {
     
     public static final boolean canSwitchDirection = false;
-    public Direction direction = Direction.LEFT;
     protected Method methodDrawDefWILines;
     public HashSet<WireIntersection> wireIntersections = new HashSet<>();
     public static final int defaultWireIntersectOffset = 1;
     public static final String defaultIDru = "";
     public static final String defaultIDen = "";
-    public static Vector2i defaultSize = new Vector2i(3,1);
+    public static final Vector2i defaultSize = new Vector2i(3,1);
     public static final String defaultType = "Объект сложный";
     public static final String defaultContactId0 = "";
     public static final String defaultContactId1 = "";
+    public Direction direction = Direction.LEFT;
     public WireIntersection leftWI = null;
     public WireIntersection rightWI = null;
+    public static final String[] fieldsToSave = new String[]{"direction", "leftWI", "rightWI"};
     
     public static enum Direction{
         LEFT,

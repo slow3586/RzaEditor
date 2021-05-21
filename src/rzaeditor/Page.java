@@ -98,6 +98,8 @@ public class Page {
     }
     
     public static void open(File f){
+        newCircuitA3Page();
+        
         try {
             String s = Help.listtostr(Help.readfile(f.toPath()));
             Pattern p0 = Pattern.compile("(class=.*?)(?=\\nclass|\\z)", Pattern.DOTALL);
@@ -122,9 +124,11 @@ public class Page {
                 Class c = Class.forName(params.get("class"));
                 Constructor con = null;
                 PageObjectBase o = null;
-                if(c==WireIntersection.class){continue;}
                 Vector2i pos = Help.fromStr(params.get("pos"));
-                if(c==Wire.class){
+                if(c==WireIntersection.class){
+                    o = WireIntersection.getWI(pos);
+                }
+                else if(c==Wire.class){
                     o = Wire.create(pos, new Vector2i(pos).add(Help.fromStr(params.get("size"))));
                 }
                 else if(PageObjectComplex.class.isAssignableFrom(c)){
@@ -138,21 +142,21 @@ public class Page {
                 o.internalId =Integer.parseInt(params.get("internalId"));
             }
             
-            HashSet<PageObjectBase> objects1 = Page.current.objects;
-            paramList.forEach((t, u) -> {
-                try {
-                    if(Class.forName(u.get("class")).equals(WireIntersection.class)){
-                        WireIntersection wi = WireIntersection.getWI(Help.fromStr(u.get("pos")));
-                        wi.internalId = t;
-                    }
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(Page.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            });
-            
             Page.current.objects.forEach((o) -> {
                 HashMap<String, String> p = paramList.get(o.internalId);
                 Class c = o.getClass();
+                if(p==null){
+                    System.out.println("id:"+o.internalId+" class:"+c.toString());
+                    throw new IllegalArgumentException();
+                }
+                Class c0 = Help.forName(p.get("class"));
+                if(!c.equals(c0)){
+                    System.out.println(c.toString()+" vs "+c0.toString());
+                    System.out.println("id:"+o.internalId+" id:"+Page.current.objects.stream().filter((t1) -> {
+                        return t1.internalId==o.internalId;
+                    }).findFirst());
+                    throw new IllegalArgumentException();
+                }
                 p.forEach((t, u) -> {
                     if(t.equals("class"))return;
                     Field fd = Help.getField(c, t);
@@ -184,7 +188,6 @@ public class Page {
             if(ss!=null)
                 s.add(ss);
         });
-        System.out.println(s.toString());
         try {
             Files.deleteIfExists(file.toPath());
             Files.write(file.toPath(), s);

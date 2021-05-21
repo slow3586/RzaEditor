@@ -24,6 +24,15 @@ public class Help {
         }
     }
     
+    public static Class forName(String c){
+        try {
+            return Class.forName(c);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Help.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
     public static Method getMethod(Class c, String m, Class<?>... params){
         try {
             return c.getMethod(m, params);

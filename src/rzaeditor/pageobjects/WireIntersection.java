@@ -87,7 +87,7 @@ public class WireIntersection extends PageObjectBase{
     
     public void draw() {
         
-        int size = 3;
+        final int s = 3;
         
         selectedCheck();
         Drawing.setTranslateGrid(pos);
@@ -96,19 +96,15 @@ public class WireIntersection extends PageObjectBase{
         Drawing.drawStringZoomCentered(textBelow, 0, 6);
         
         if(wiType==WIType.NORMAL)
-            Drawing.fillOvalZoom(-2, -2, 4, 4);
+            Drawing.fillOvalZoom(-s/2, -s/2, s, s);
         else if(wiType==WIType.TERMINAL){
-            Drawing.setColor(Color.white);
-            Drawing.fillOvalZoom(-2, -2, 4, 4);
-            Drawing.setColor(Color.black);
-            Drawing.drawOvalZoom(-2, -2, 4, 4);
-            Drawing.drawLineZoom(1-3, 5-3, 5-3, 1-3);
+            Drawing.fillDrawOvalZoom(-s/2, -s/2, s, s);
+            Drawing.drawLineZoom(-s/2, s/2, s/2, -s/2);
         }
     }
 
     private static WireIntersection getWIAt(Vector2i p) {
         Optional<WireIntersection> m = Page.current.getWireIntersections().stream().filter((t) -> {
-            System.out.println(p+" "+t.pos);
             return t.pos.equals(p);
         }).findFirst();
         return m.orElse(null);

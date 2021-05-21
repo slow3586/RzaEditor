@@ -13,6 +13,10 @@ import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Arc2D;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 import rzaeditor.pageobjects.primitives.Primitive;
@@ -22,6 +26,10 @@ public class Drawing {
     public static Graphics2D g;
     private static Vector2i translate = new Vector2i();
     public static LineType lineType = LineType.SOLID;
+    public static Line2D line2d = new Line2D.Float();
+    public static Ellipse2D oval2d = new Ellipse2D.Float();
+    public static Rectangle2D rect2d = new Rectangle2D.Float();
+    public static Arc2D arc2d = new Arc2D.Float();
     
     public enum LineType{
         SOLID,
@@ -34,16 +42,17 @@ public class Drawing {
     }
     
     public static void drawLine(float x, float y, float x1, float y1) {
-        g.drawLine(Math.round(x), Math.round(y), Math.round(x1), Math.round(y1));
+        line2d.setLine(x, y, x1, y1);
+        g.draw(line2d);
     }
     
     public static void drawLineZoom(float x, float y, float x1, float y1) {
-        g.drawLine(Math.round(x*Logic.zoom), Math.round(y*Logic.zoom), Math.round(x1*Logic.zoom), Math.round(y1*Logic.zoom));
+        drawLine(x*Logic.zoom, y*Logic.zoom, x1*Logic.zoom, y1*Logic.zoom);
     }
     
     public static void drawLineGrid(int x, int y, int x1, int y1) {
-        g.drawLine(Math.round(x*Logic.zoomGridGap), Math.round(y*Logic.zoomGridGap), 
-                Math.round(x1*Logic.zoomGridGap), Math.round(y1*Logic.zoomGridGap));
+        drawLine(x*Logic.zoomGridGap, y*Logic.zoomGridGap, 
+                x1*Logic.zoomGridGap, y1*Logic.zoomGridGap);
     }
     
     public static void setScale(float x, float y){
@@ -51,28 +60,37 @@ public class Drawing {
     }
     
     public static void drawLineGrid(Vector2i s, Vector2i e) {
-        g.drawLine(Math.round(s.x*Logic.zoomGridGap), Math.round(s.y*Logic.zoomGridGap), 
-                Math.round(e.x*Logic.zoomGridGap), Math.round(e.y*Logic.zoomGridGap));
+        drawLineGrid(s.x, s.y, e.x, e.y);
     }
     
     public static void drawOvalZoom(float x, float y, float x1, float y1) {
-        drawOval(Math.round(x*Logic.zoom), Math.round(y*Logic.zoom), Math.round(x1*Logic.zoom), Math.round(y1*Logic.zoom));
+        drawOval(x*Logic.zoom, y*Logic.zoom, x1*Logic.zoom, y1*Logic.zoom);
     }
 
     public static void drawOval(float x, float y, float x1, float y1) {
-        g.drawOval(Math.round(x), Math.round(y), Math.round(x1), Math.round(y1));
+        oval2d.setFrame(x, y, x1, y1);
+        g.draw(oval2d);
     }
     
     public static void fillOvalZoom(float x, float y, float x1, float y1) {
-        fillOval(Math.round(x*Logic.zoom), Math.round(y*Logic.zoom), Math.round(x1*Logic.zoom), Math.round(y1*Logic.zoom));
+        fillOval(x*Logic.zoom, y*Logic.zoom, x1*Logic.zoom, y1*Logic.zoom);
+    }
+    
+    public static void fillDrawOvalZoom(float x, float y, float x1, float y1) {
+        Color c = g.getColor();
+        Drawing.setColor(Color.white);
+        fillOvalZoom(x,y,x1,y1);
+        Drawing.setColor(c);
+        drawOvalZoom(x,y,x1,y1);
     }
     
     public static void fillOvalGridCenter(float x, float y, float x1, float y1) {
-        fillOval(Math.round(x*Logic.zoomGridGap-x1/2*Logic.zoom), Math.round(y*Logic.zoomGridGap-y1/2*Logic.zoom), Math.round(x1*Logic.zoom), Math.round(y1*Logic.zoom));
+        fillOval(x*Logic.zoomGridGap-x1/2*Logic.zoom, y*Logic.zoomGridGap-y1/2*Logic.zoom, x1*Logic.zoom, y1*Logic.zoom);
     }
 
     public static void fillOval(float x, float y, float x1, float y1) {
-        g.fillOval(Math.round(x), Math.round(y), Math.round(x1), Math.round(y1));
+        oval2d.setFrame(x, y, x1, y1);
+        g.fill(oval2d);
     }
 
     public static void drawRect(Vector2i s, Vector2i e) {
@@ -80,17 +98,16 @@ public class Drawing {
     }
     
     public static void drawRectGrid(int x, int y, int w, int h) {
-        g.drawRect(Math.round(x*Logic.zoomGridGap), Math.round(y*Logic.zoomGridGap),
-                Math.round(w*Logic.zoomGridGap), Math.round(h*Logic.zoomGridGap));
+        drawRect(x*Logic.zoomGridGap, y*Logic.zoomGridGap,w*Logic.zoomGridGap, h*Logic.zoomGridGap);
     }
     
     public static void drawRectZoom(float x, float y, float w, float h) {
-        g.drawRect(Math.round(x*Logic.zoom), Math.round(y*Logic.zoom),
-                Math.round(w*Logic.zoom), Math.round(h*Logic.zoom));
+        drawRect(x*Logic.zoom, y*Logic.zoom, w*Logic.zoom, h*Logic.zoom);
     }
     
     public static void drawRect(float x, float y, float w, float h) {
-        g.drawRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h));
+        rect2d.setFrame(x, y, w, h);
+        g.draw(rect2d);
     }
     
     public static void drawArc(Vector2i p, Vector2i s, float startAngle, float endAngle) {
@@ -98,17 +115,18 @@ public class Drawing {
     }
     
     public static void drawArcZoom(float x, float y, float w, float h, float startAngle, float endAngle) {
-        drawArc(Math.round(x*Logic.zoom), Math.round(y*Logic.zoom),
-                Math.round(w*Logic.zoom), Math.round(h*Logic.zoom), startAngle, endAngle);
+        drawArc(x*Logic.zoom, y*Logic.zoom,
+                w*Logic.zoom, h*Logic.zoom, startAngle, endAngle);
     }
     
     public static void drawArcGrid(float x, float y, float w, float h, float startAngle, float endAngle) {
-        drawArc(Math.round(x*Logic.zoomGridGap), Math.round(y*Logic.zoomGridGap),
-                Math.round(w*Logic.zoomGridGap), Math.round(h*Logic.zoomGridGap), startAngle, endAngle);
+        drawArc(x*Logic.zoomGridGap, y*Logic.zoomGridGap,
+                w*Logic.zoomGridGap, h*Logic.zoomGridGap, startAngle, endAngle);
     }
     
     public static void drawArc(float x, float y, float w, float h, float startAngle, float endAngle) {
-        g.drawArc(Math.round(x), Math.round(y), Math.round(w), Math.round(h), Math.round(startAngle), Math.round(endAngle));
+        arc2d.setArc(x, y, w, h, startAngle, endAngle, 1);
+        g.draw(arc2d);
     }
     
     public static void setFont(Font font){
@@ -135,11 +153,11 @@ public class Drawing {
     }
     
     public static void drawString(String str, float x, float y) {
-        g.drawString(str, Math.round(x), Math.round(y));
+        g.drawString(str, x, y);
     }
     
     public static void drawStringZoom(String str, float x, float y) {
-        g.drawString(str, Math.round(x*Logic.zoom), Math.round(y*Logic.zoom));
+        drawString(str, x*Logic.zoom, y*Logic.zoom);
     }
     
     public static void drawStringZoomCentered(String str, float x, float y) {

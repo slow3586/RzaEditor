@@ -1,27 +1,249 @@
+class=rzaeditor.pageobjects.WireIntersection
+internalId=2
+size=0,0
+pos=8,4
+name=Связка №3
+textAbove= 
+textBelow= 
+wiType=NORMAL
+
+class=rzaeditor.pageobjects.WireIntersection
+internalId=45
+size=0,0
+pos=45,4
+name=Связка №20
+textAbove= 
+textBelow=2
+wiType=NORMAL
+
+class=rzaeditor.pageobjects.Wire
+internalId=32
+size=3,0
+pos=39,1
+name=Провод №7
+endWI=33
+startWI=31
+
+class=rzaeditor.pageobjects.other.CurrentWinding
+rightWI=22
+internalId=20
+leftWI=21
+size=4,2
+pos=20,3
+name=Обмотка токовая №1
+direction=LEFT
+
+class=rzaeditor.pageobjects.Wire
+internalId=43
+size=26,0
+pos=10,1
+name=Провод №14
+endWI=30
+startWI=16
+
+class=rzaeditor.pageobjects.WireIntersection
+internalId=14
+size=0,0
+pos=10,4
+name=Связка №4
+textAbove= 
+textBelow= 
+wiType=NORMAL
+
 class=rzaeditor.pageobjects.Wire
 internalId=3
-size=12,0
-pos=19,13
-name=Провод №2
-endWI=5
+size=2,0
+pos=2,4
+name=Провод №1
+endWI=14
 startWI=4
 
-class=rzaeditor.pageobjects.relays.RelayRT40
-rightWI=8
+class=rzaeditor.pageobjects.WireIntersection
+internalId=49
+size=0,0
+pos=50,4
+name=Связка №22
+textAbove= 
+textBelow= 
+wiType=NORMAL
+
+class=rzaeditor.pageobjects.Wire
+internalId=7
+size=0,4
+pos=2,8
+name=Провод №3
+endWI=8
+startWI=6
+
+class=rzaeditor.pageobjects.WireIntersection
 internalId=6
-contactClosed=null
-leftWI=7
-size=3,2
-pos=15,15
-contactOpen=null
-name=Реле РТ-40 №1
+size=0,0
+pos=2,8
+name=Связка №4
+textAbove= 
+textBelow= 
+wiType=NORMAL
+
+class=rzaeditor.pageobjects.Wire
+internalId=42
+size=4,0
+pos=24,4
+name=Провод №13
+endWI=24
+startWI=22
+
+class=rzaeditor.pageobjects.Wire
+internalId=34
+size=0,3
+pos=42,1
+name=Провод №8
+endWI=35
+startWI=33
+
+class=rzaeditor.pageobjects.WireIntersection
+internalId=33
+size=0,0
+pos=42,1
+name=Связка №20
+textAbove= 
+textBelow= 
+wiType=NORMAL
+
+class=rzaeditor.pageobjects.Wire
+internalId=40
+size=2,0
+pos=10,4
+name=Провод №11
+endWI=18
+startWI=35
+
+class=rzaeditor.pageobjects.Wire
+internalId=47
+size=3,0
+pos=42,4
+name=Провод №7
+endWI=61
+startWI=35
+
+class=rzaeditor.pageobjects.Wire
+internalId=50
+size=0,4
+pos=50,4
+name=Провод №16
+endWI=51
+startWI=49
+
+class=rzaeditor.pageobjects.WireIntersection
+internalId=16
+size=0,0
+pos=10,1
+name=Связка №24
+textAbove= 
+textBelow= 
+wiType=NORMAL
+
+class=rzaeditor.pageobjects.WireIntersection
+internalId=14
+size=0,0
+pos=4,4
+name=Связка №4
+textAbove= 
+textBelow= 
+wiType=NORMAL
+
+class=rzaeditor.pageobjects.intersections.CartOneSide
+rightWI=19
+internalId=17
+leftWI=18
+size=4,2
+pos=12,3
+name=Тележка 1 №1
 direction=LEFT
 
 class=rzaeditor.pageobjects.WireIntersection
-internalId=5
+internalId=46
 size=0,0
-pos=31,13
-name=Связка №4
+pos=48,4
+name=Связка №23
+textAbove= 
+textBelow=8
+wiType=NORMAL
+
+class=rzaeditor.pageobjects.WireIntersection
+internalId=19
+size=0,0
+pos=16,4
+name=Связка №11
+textAbove= 
+textBelow= 
+wiType=NORMAL
+
+class=rzaeditor.pageobjects.WireIntersection
+internalId=22
+size=0,0
+pos=24,4
+name=Связка №13
+textAbove= 
+textBelow= 
+wiType=NORMAL
+
+class=rzaeditor.pageobjects.WireIntersection
+internalId=61
+size=0,0
+pos=45,4
+name=Связка №23
+textAbove= 
+textBelow= 
+wiType=NORMAL
+
+class=rzaeditor.pageobjects.Wire
+internalId=41
+size=4,0
+pos=16,4
+name=Провод №10
+endWI=21
+startWI=19
+
+class=rzaeditor.pageobjects.source.CurrentTransformer
+rightWI=2
+internalId=0
+leftWI=14
+size=4,1
+pos=4,3
+name=Трансформатор тока №2
+direction=LEFT
+
+class=rzaeditor.pageobjects.Wire
+internalId=5
+size=0,4
+pos=2,4
+name=Провод №13
+endWI=6
+startWI=4
+
+class=rzaeditor.pageobjects.WireIntersection
+internalId=25
+size=0,0
+pos=32,4
+name=Связка №21
+textAbove= 
+textBelow= 
+wiType=NORMAL
+
+class=rzaeditor.pageobjects.WireIntersection
+internalId=67
+size=0,0
+pos=2,8
+name=Связка №28
+textAbove= 
+textBelow= 
+wiType=NORMAL
+
+class=rzaeditor.pageobjects.WireIntersection
+internalId=35
+size=0,0
+pos=42,4
+name=Связка №13
 textAbove= 
 textBelow= 
 wiType=NORMAL
@@ -29,82 +251,214 @@ wiType=NORMAL
 class=rzaeditor.pageobjects.WireIntersection
 internalId=10
 size=0,0
-pos=26,24
-name=Связка №7
+pos=4,8
+name=Связка №1
 textAbove= 
-textBelow=2
+textBelow= 
 wiType=NORMAL
+
+class=rzaeditor.pageobjects.contacts.ContactClosed
+rightWI=31
+internalId=29
+leftWI=30
+size=3,1
+pos=36,1
+relay=null
+name=Закрытый контакт №1
+direction=LEFT
+
+class=rzaeditor.pageobjects.Wire
+internalId=36
+size=3,0
+pos=39,4
+name=Провод №5
+endWI=35
+startWI=28
+
+class=rzaeditor.pageobjects.WireIntersection
+internalId=51
+size=0,0
+pos=50,8
+name=Связка №25
+textAbove= 
+textBelow= 
+wiType=NORMAL
+
+class=rzaeditor.pageobjects.WireIntersection
+internalId=31
+size=0,0
+pos=39,1
+name=Связка №5
+textAbove= 
+textBelow= 
+wiType=NORMAL
+
+class=rzaeditor.pageobjects.WireIntersection
+internalId=28
+size=0,0
+pos=39,4
+name=Связка №12
+textAbove= 
+textBelow= 
+wiType=NORMAL
+
+class=rzaeditor.pageobjects.WireIntersection
+internalId=21
+size=0,0
+pos=20,4
+name=Связка №15
+textAbove=2222
+textBelow= 
+wiType=NORMAL
+
+class=rzaeditor.pageobjects.intersections.CartOneSide
+rightWI=25
+internalId=23
+leftWI=24
+size=4,2
+pos=28,3
+name=Тележка 1 №2
+direction=RIGHT
+
+class=rzaeditor.pageobjects.source.CurrentTransformer
+rightWI=12
+internalId=11
+leftWI=10
+size=4,1
+pos=4,7
+name=Трансформатор тока №1
+direction=LEFT
 
 class=rzaeditor.pageobjects.WireIntersection
 internalId=4
 size=0,0
-pos=19,13
+pos=2,4
 name=Связка №3
 textAbove= 
 textBelow= 
 wiType=NORMAL
 
 class=rzaeditor.pageobjects.WireIntersection
-internalId=7
+internalId=24
 size=0,0
-pos=15,16
-name=Связка №5
-textAbove= 
-textBelow=2
-wiType=NORMAL
-
-class=rzaeditor.pageobjects.relays.RelayRT40
-rightWI=11
-internalId=9
-contactClosed=null
-leftWI=10
-size=3,2
-pos=26,23
-contactOpen=null
-name=Реле РТ-40 №2
-direction=LEFT
-
-class=rzaeditor.pageobjects.WireIntersection
-internalId=1
-size=0,0
-pos=10,7
-name=Связка №1
+pos=28,4
+name=Связка №17
 textAbove= 
 textBelow= 
 wiType=NORMAL
 
+class=rzaeditor.pageobjects.Wire
+internalId=15
+size=0,3
+pos=10,1
+name=Провод №3
+endWI=35
+startWI=16
+
 class=rzaeditor.pageobjects.WireIntersection
-internalId=2
+internalId=18
 size=0,0
-pos=28,7
+pos=12,4
+name=Связка №14
+textAbove= 
+textBelow= 
+wiType=NORMAL
+
+class=rzaeditor.pageobjects.Wire
+internalId=48
+size=2,0
+pos=48,4
+name=Провод №17
+endWI=49
+startWI=46
+
+class=rzaeditor.pageobjects.Wire
+internalId=9
+size=2,0
+pos=2,8
+name=Провод №12
+endWI=10
+startWI=6
+
+class=rzaeditor.pageobjects.Wire
+internalId=13
+size=2,0
+pos=8,4
+name=Провод №8
+endWI=14
+startWI=2
+
+class=rzaeditor.pageobjects.WireIntersection
+internalId=12
+size=0,0
+pos=8,8
 name=Связка №2
 textAbove= 
 textBelow= 
 wiType=NORMAL
 
 class=rzaeditor.pageobjects.WireIntersection
-internalId=8
+internalId=27
 size=0,0
-pos=18,16
-name=Связка №6
+pos=36,4
+name=Связка №22
 textAbove= 
-textBelow=123
+textBelow= 
 wiType=NORMAL
 
-class=rzaeditor.pageobjects.Wire
-internalId=0
-size=18,0
-pos=10,7
-name=Провод №1
-endWI=2
-startWI=1
+class=rzaeditor.pageobjects.relays.RelayRT40
+rightWI=46
+internalId=44
+contactClosed=null
+leftWI=45
+size=3,2
+pos=45,3
+contactOpen=null
+name=Реле РТ-40 №1
+direction=LEFT
 
 class=rzaeditor.pageobjects.WireIntersection
-internalId=11
+internalId=30
 size=0,0
-pos=29,24
+pos=36,1
+name=Связка №9
+textAbove= 
+textBelow= 
+wiType=NORMAL
+
+class=rzaeditor.pageobjects.WireIntersection
+internalId=35
+size=0,0
+pos=10,4
 name=Связка №8
 textAbove= 
-textBelow=8
+textBelow= 
+wiType=NORMAL
+
+class=rzaeditor.pageobjects.contacts.ContactOpen
+rightWI=28
+internalId=26
+leftWI=27
+size=3,1
+pos=36,3
+relay=null
+name=Открытый контакт №1
+direction=LEFT
+
+class=rzaeditor.pageobjects.Wire
+internalId=39
+size=4,0
+pos=32,4
+name=Провод №11
+endWI=27
+startWI=25
+
+class=rzaeditor.pageobjects.WireIntersection
+internalId=8
+size=0,0
+pos=2,12
+name=Связка №11
+textAbove= 
+textBelow= 
 wiType=NORMAL
 

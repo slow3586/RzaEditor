@@ -37,8 +37,8 @@ public abstract class PageObjectBase {
         type = (String) getFieldValue("defaultType");
         name = type+" №"+(getCountInPage()+1);
         Page.current.objects.stream().forEach((t) -> {
-            if(internalId<=t.internalId)
-                internalId = t.internalId+1;
+            //if(internalId<=t.internalId)
+              //  internalId = t.internalId+1;
         });
         Page.current.objects.add(this);
     }
@@ -48,7 +48,6 @@ public abstract class PageObjectBase {
         while(true){
             if(Help.hasField(c, "fieldsToSave"))
                 a.addAll(Arrays.asList((String[])Help.getFieldValue(c, "fieldsToSave")));
-            System.out.println(c.getName());
             if(c.getSimpleName().contains("PageObjectBase")) break;
             c = (Class<PageObjectBase>) c.getSuperclass();
         }

@@ -96,7 +96,6 @@ public class DrawModeSelect extends DrawMode {
                 Class c = t.getClass();
                 Vector2i p = new Vector2i(t.pos).add(Logic.dragVec);
                 if(t instanceof Wire){
-                    System.out.println(((Wire) t).pos+" "+p+" "+Logic.dragVec);
                     Drawing.drawLineGrid(p, new Vector2i(p).add(((Wire) t).size));
                 }
                 else if (t instanceof WireIntersection){

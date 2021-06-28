@@ -40,7 +40,7 @@ public class RelayRT40 extends Relay {
     }
     
     public static void drawPhantom(Vector2i pos) {
-        Drawing.drawRectGrid(1,0,1,2);
+        Relay.drawPhantom(pos);
     }
 
     @Override

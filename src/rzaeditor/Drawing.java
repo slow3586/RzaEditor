@@ -216,12 +216,16 @@ public class Drawing {
         g.rotate(Math.toRadians(angle));
     }
     
+    public static float getStrokeWidth(){
+        return ((BasicStroke)Drawing.g.getStroke()).getLineWidth();
+    }
+    
     public static void drawWire(){
         Vector2i off0 = new Vector2i(Page.current.pos);
         
         resetTransform();
         
-        int every = 4;
+        int every = 6;
         Color c0 = new Color(0.8f,0.8f,0.8f);
         Color c1 = new Color(0.6f,0.6f,0.6f);
         Color cur = c1;
@@ -262,9 +266,9 @@ public class Drawing {
         
         Page.current.objects.stream().sorted((o1, o2) -> {
             if(o2 instanceof WireIntersection){
-                return -1;
+                return -100;
             }else{
-                return 0;
+                return 100;
             }
         }).forEach((t) -> {
             t.draw();

@@ -37,8 +37,8 @@ public abstract class PageObjectBase {
         type = (String) getFieldValue("defaultType");
         name = type+" №"+(getCountInPage()+1);
         Page.current.objects.stream().forEach((t) -> {
-            //if(internalId<=t.internalId)
-              //  internalId = t.internalId+1;
+            if(internalId<=t.internalId)
+                internalId = t.internalId+1;
         });
         Page.current.objects.add(this);
     }

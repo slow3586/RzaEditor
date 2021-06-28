@@ -4,6 +4,8 @@ import rzaeditor.drawmodes.DrawModeAssign;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -21,6 +23,8 @@ import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
+import static rzaeditor.InfoTableEditMenu.butOK;
+import static rzaeditor.InfoTableEditMenu.imp;
 import rzaeditor.drawmodes.DrawMode;
 import rzaeditor.drawmodes.DrawModeSelect;
 import rzaeditor.pageobjects.PageObjectBase;
@@ -87,6 +91,22 @@ public class InfoTable extends JTable {
         InfoTableEditMenu.imp.ep.revalidate();
         InfoTableEditMenu.butOK.addActionListener(onOK);
         InfoTableEditMenu.imp.setVisible(true);
+        c.requestFocus();
+        c.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {}
+            @Override
+            public void keyPressed(KeyEvent e) {}
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if(e.getKeyCode()==KeyEvent.VK_ESCAPE){
+                    InfoTableEditMenu.imp.setVisible(false);
+                }
+                else if(e.getKeyCode()==KeyEvent.VK_ENTER){
+                    butOK.doClick();
+                }
+            }
+        });
     }
     
     public static void showEditOptionSelect(PageObjectBase editedObject, Field field, String[] optionsText, Object[] options){

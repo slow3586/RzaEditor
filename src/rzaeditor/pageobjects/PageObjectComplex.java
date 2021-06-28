@@ -30,14 +30,15 @@ public abstract class PageObjectComplex extends PageObjectBase {
     public static final int defaultWireIntersectOffset = 1;
     public static final String defaultIDru = "";
     public static final String defaultIDen = "";
-    public static final Vector2i defaultSize = new Vector2i(3,1);
+    public static final Vector2i defaultSize = new Vector2i(3,2);
     public static final String defaultType = "Объект сложный";
     public static final String defaultContactId0 = "";
     public static final String defaultContactId1 = "";
     public Direction direction = Direction.LEFT;
     public WireIntersection leftWI = null;
     public WireIntersection rightWI = null;
-    public static final String[] fieldsToSave = new String[]{"direction", "leftWI", "rightWI"};
+    public String id = "?";
+    public static final String[] fieldsToSave = new String[]{"id", "direction", "leftWI", "rightWI"};
     
     public static enum Direction{
         LEFT,
@@ -57,7 +58,6 @@ public abstract class PageObjectComplex extends PageObjectBase {
         }
     }
     
-    public String id = "?";
     
     public PageObjectComplex(Vector2i pos, Direction dir) {
         super(pos);
@@ -123,6 +123,7 @@ public abstract class PageObjectComplex extends PageObjectBase {
             Vector2i offset2 = new Vector2i(s.x,0);
             if(direction.isVertical())
                 offset2.set(0, s.y);
+            /*
             leftWI = WireIntersection.getWI(offsetv.x,offsetv.y, this); 
             rightWI = WireIntersection.getWI(offsetv.x+offset2.x,offsetv.y+offset2.y, this); 
             leftWI.addWireless(rightWI);
@@ -131,6 +132,7 @@ public abstract class PageObjectComplex extends PageObjectBase {
             leftWI.textBelow = s0;
             rightWI.textBelow = s1;
             Wire.checkAllWires();
+            */
     }
     
     public static Vector2i rotateDefaultSize(Class c, Direction dir){

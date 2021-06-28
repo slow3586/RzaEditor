@@ -98,7 +98,7 @@ public class Page {
     }
     
     public static void open(File f){
-        newCircuitA3Page();
+        current = newCircuitA3Page();
         
         try {
             String s = Help.listtostr(Help.readfile(f.toPath()));
@@ -138,7 +138,10 @@ public class Page {
                 else if(PageObjectBase.class.isAssignableFrom(c)){
                     con = c.getConstructor(Vector2i.class);
                     o = (PageObjectBase) con.newInstance(pos);
+                }else{
+                    throw new IllegalArgumentException("Unknown class "+c.toString());
                 }
+                if(o==null) continue;
                 o.internalId =Integer.parseInt(params.get("internalId"));
             }
             

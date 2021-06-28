@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import org.joml.Vector2i;
 import rzaeditor.Cursor;
 import rzaeditor.Drawing;
+import rzaeditor.Help;
 import rzaeditor.Keyboard;
 import rzaeditor.Logic;
 import rzaeditor.Page;
@@ -16,6 +17,8 @@ import static rzaeditor.Logic.dragEnd;
 import static rzaeditor.Logic.dragStart;
 import rzaeditor.pageobjects.PageObjectComplex;
 import rzaeditor.pageobjects.PageObjectComplex.Direction;
+import rzaeditor.pageobjects.Wire;
+import rzaeditor.pageobjects.WireIntersection;
 
 public class DrawModeObject extends DrawMode {
 
@@ -85,6 +88,25 @@ public class DrawModeObject extends DrawMode {
         try {
             PageObjectComplex o = (PageObjectComplex) objectClass.getConstructor(Vector2i.class, Direction.class).newInstance(Cursor.posGrid, dir);
             Page.current.objects.add(o);
+            if(dir.isHorizontal()){
+                for (int i = Cursor.posGrid.x-1; i > 0; i--) {
+                    int offset = (int) Help.getFieldValue(objectClass, "defaultWireIntersectOffset");
+                    Vector2i p = new Vector2i(i,Cursor.posGrid.y+offset);
+                    if(WireIntersection.WIexists(p)){
+                        Wire.create(p, new Vector2i(Cursor.posGrid).add(0, offset));
+                        break;
+                    }
+                }
+            }else{
+                for (int i = Cursor.posGrid.y-1; i > 0; i--) {
+                    int offset = (int) Help.getFieldValue(objectClass, "defaultWireIntersectOffset");
+                    Vector2i p = new Vector2i(Cursor.posGrid.x+offset, i);
+                    if(WireIntersection.WIexists(p)){
+                        Wire.create(p, new Vector2i(Cursor.posGrid).add(offset, 0));
+                        break;
+                    }
+                }
+            }
         } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger(DrawModeObject.class.getName()).log(Level.SEVERE, null, ex);
         }

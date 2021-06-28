@@ -5,6 +5,9 @@
  */
 package rzaeditor;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 /**
  *
  * @author Skvorcov_DA
@@ -15,6 +18,7 @@ public class InfoTableEditMenu extends javax.swing.JFrame {
     
     private InfoTableEditMenu() {
         initComponents();
+        
     }
 
     /**
@@ -46,6 +50,11 @@ public class InfoTableEditMenu extends javax.swing.JFrame {
         jLabel3.setText("Новое значение");
 
         jButton1.setText("Отмена");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         butOK.setText("Сохранить");
 
@@ -122,6 +131,10 @@ public class InfoTableEditMenu extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        imp.setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

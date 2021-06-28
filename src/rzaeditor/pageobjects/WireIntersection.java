@@ -45,12 +45,15 @@ public class WireIntersection extends PageObjectBase{
             pos = p;
         }else{
             n.wireless.addAll(wireless);
-            //n.
         }
     }
     
     public static WireIntersection getWI(int x, int y, PageObjectComplex o) {
         return getWI(new Vector2i(x,y).add(o.pos.x, o.pos.y));
+    }
+    
+    public static boolean WIexists(Vector2i p) {
+        return getWIAt(p) != null;
     }
     
     public static WireIntersection getWI(Vector2i p) {
@@ -87,7 +90,7 @@ public class WireIntersection extends PageObjectBase{
     
     public void draw() {
         
-        final int s = 3;
+        int s = 2;
         
         selectedCheck();
         Drawing.setTranslateGrid(pos);
@@ -98,16 +101,22 @@ public class WireIntersection extends PageObjectBase{
         if(wiType==WIType.NORMAL)
             Drawing.fillOvalZoom(-s/2, -s/2, s, s);
         else if(wiType==WIType.TERMINAL){
+            s=4;
+            float ss = Drawing.getStrokeWidth();
+            Drawing.setStrokeSize(2);
             Drawing.fillDrawOvalZoom(-s/2, -s/2, s, s);
             Drawing.drawLineZoom(-s/2, s/2, s/2, -s/2);
+            Drawing.setStrokeSize(ss);
         }
     }
 
     private static WireIntersection getWIAt(Vector2i p) {
-        Optional<WireIntersection> m = Page.current.getWireIntersections().stream().filter((t) -> {
-            return t.pos.equals(p);
-        }).findFirst();
-        return m.orElse(null);
+        for (PageObjectBase o : Page.current.objects) {
+            if(!(o instanceof WireIntersection)) continue;
+            if(o.pos.x == p.x && o.pos.y == p.y)
+                return (WireIntersection) o;
+        }
+        return null;
     }
 
     public void checkIsEmpty() {
